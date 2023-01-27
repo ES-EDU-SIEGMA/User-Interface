@@ -1,0 +1,28 @@
+this document is used to keep track of when which changes were made and by who
+
+
+CHANGE LOG
+
+09.12.2022: added function saveCocktails to dbcon in which a cocktail has to be given, which then will be inserted into the database (T)
+09.12.2022: fixed a bug where the fillingamount would be inserted at a completely false position (T)
+12.12.2022: fixed the fillingamount bug (T)
+21.12.2022: fixed isNameAvailable and saveCocktail methods
+21.12.2022: DONE ISSUE: newCocktailWindow needs to be implemented
+28.12.2022: newCocktailWindowChanged accordording to RuntimeData changes
+
+
+
+ISSUES
+
+10.10.2022: need to document the code with doxygen (at least thats the best i could think of) 
+		information: 
+			https://stackoverflow.com/questions/58622/how-to-document-python-code-using-doxygen
+			https://www.woolseyworkshop.com/2020/06/25/documenting-python-programs-with-doxygen/
+12.12.2022: mixingProgressWindow needs to be implemented (we gotta wait until the communication is setup and running) (T)
+27.12.2022: changed the way the filling amount gets stored, its now a double list in the rtd.mixDrinkInformation class as it would 
+ 	    otherwise override the other values, now its working but the newCocktailWindow as to be edited accordingly
+
+ISSUES DONE
+
+21.12.2022: DONE ISSUE: newCocktailWindow needs to be implemented
+27.12.2022: DONE ISSUE: editHopperOccupancyWindow is now fully functional
