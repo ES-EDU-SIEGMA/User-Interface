@@ -171,6 +171,8 @@ class welcomeWindow(pyw.QWidget):
     ## closing function
     #
     def exitBtn_onClick(self):
+        #sc.close_connection()
+        dbcon.close_connection()
         self.close()
 
     ## opens the newCocktailWindow when the corresponding Button gets clicked
@@ -250,9 +252,7 @@ if __name__ == '__main__':
         dbcon.__init__()
         app = pyw.QApplication(sys.argv)
         m_startPage = welcomeWindow()
-        app.exec()
-        sc.close_connection()
-        dbcon.close_connection()
+        sys.exit(app.exec())
     except Exception as error:
         app = pyw.QApplication(sys.argv)
         m_error = errorWindow(error)

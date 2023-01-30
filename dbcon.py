@@ -266,14 +266,3 @@ def saveCocktails(toSave : rtd.mixDrinkInformation):
             return False
     except Exception as error:
         raise error
-
-if __name__ == '__main__':
-    try:
-        __init__()
-        #send_query("select * from mixeddrink")
-        getAllAvailableMixedDrinks()
-        close_connection()
-    except Exception  as error:
-        print(error)
-    
-    print("terminated")

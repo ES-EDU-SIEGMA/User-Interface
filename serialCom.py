@@ -34,7 +34,7 @@ def __init__():
                 picoright = pico
             elif pos == "RONDELL":
                 picorondell = pico
-            else
+            else:
                 raise Exception("couldnt identify the pico")
         
         running = True
