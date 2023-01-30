@@ -159,8 +159,8 @@ class mixingProgressWindow(pyw.QWidget):
         for i in range(len(res) - 1):
             hopperTimings[__bvgToMix.m_hopperid % 4] = res[i+1]
             strToSend = f"{hopperTimings[0]};{hopperTimings[1]};{hopperTimings[2]};{hopperTimings[3]};\n"
-            #print(strToSend)
-            sc.send_msg(picoid, strToSend)
+            print(strToSend)
+            # sc.send_msg(picoid, strToSend)
         return (len(res) - 1) * hopperSize
     
     # calculates the time and iteration amounts needed to mix a given beverages
@@ -222,10 +222,10 @@ class mixingProgressWindow(pyw.QWidget):
             pico1Cmd = f"{cmdList[1][0]};{cmdList[1][1]};{cmdList[1][2]};{cmdList[1][3]};\n"
             pico2Cmd = f"{cmdList[2][0]};{cmdList[2][1]};{cmdList[2][2]};{cmdList[2][3]};\n"
 
-            sc.send_msg(0, pico0Cmd)
-            sc.send_msg(1, pico1Cmd)
-            sc.send_msg(2, pico2Cmd)
-            #print(f"pico0: {pico0Cmd}pico1: {pico1Cmd}pico2: {pico2Cmd}")
+            # sc.send_msg(0, pico0Cmd)
+            # sc.send_msg(1, pico1Cmd)
+            # sc.send_msg(2, pico2Cmd)
+            print(f"pico0: {pico0Cmd}pico1: {pico1Cmd}pico2: {pico2Cmd}")
             iterCounter += 1
         return expectedWeight
 
@@ -250,9 +250,9 @@ class mixingProgressWindow(pyw.QWidget):
     #returns the id of the pico which is responsible for the hopper
     def getPicoIdToHopperId(self, __hopperid : int):
         picoid = 0
-        if __hopperid < 5:
+        if __hopperid < 4:
             picoid = 1
-        elif __hopperid >= 5 and __hopperid < 9:
+        elif __hopperid >= 4 and __hopperid < 8:
             picoid = 0
         else:
             picoid = 2

@@ -125,7 +125,7 @@ class changeDrinkWindow(pyw.QWidget):
                     temp = currentBeverageBtn(self.parentWidget, rtd.beverage(-1, hopperid, "EMPTY SLOT", 0), hopperid)
                     tempBvg = rtd.beverage(-1, hopperid, "EMPTY SLOT", 0)
                     self.m_currentBvg = tempBvg
-                    self.parentWidget.hopperList[hopperid - 1] = temp
+                    self.parentWidget.hopperList[hopperid] = temp
                     self.informationLabel.setText(f"Removed {self.parentWidget.rtData.m_beverageList[i].m_name} from Hopper {hopperid}")
                     del self.parentWidget.rtData.m_beverageList[i]
                     self.m_allBeverages = dbcon.getAllOtherBeverages()
@@ -139,7 +139,7 @@ class changeDrinkWindow(pyw.QWidget):
                         tempBvg.m_hopperid = hopperid
                         self.informationLabel.setText(f"Put {tempBvg.m_name} on hopper {hopperid}")
                         self.m_currentBvg = tempBvg
-                        self.parentWidget.hopperList[hopperid - 1] = currentBeverageBtn(self.parentWidget, tempBvg, hopperid)
+                        self.parentWidget.hopperList[hopperid] = currentBeverageBtn(self.parentWidget, tempBvg, hopperid)
                         break
             else:
                 #find old beverage
@@ -156,7 +156,7 @@ class changeDrinkWindow(pyw.QWidget):
                                 #override all the old data
                                 self.m_currentBvg = self.m_allBeverages[x]
                                 self.parentWidget.rtData.m_beverageList[i] = self.m_allBeverages[x]
-                                self.parentWidget.hopperList[hopperid - 1] = currentBeverageBtn(self.parentWidget, self.parentWidget.rtData.m_beverageList[i], hopperid)
+                                self.parentWidget.hopperList[hopperid] = currentBeverageBtn(self.parentWidget, self.parentWidget.rtData.m_beverageList[i], hopperid)
                                 #update beverages with hopperid = null
                                 self.m_allBeverages = dbcon.getAllOtherBeverages()
                                 break
@@ -220,10 +220,10 @@ class editHoppers(pyw.QWidget):
             self.hopperList.insert(self.rtData.m_beverageList[i].m_hopperid, temp)
 
         if len(self.usedSlots) < 12:
-            for i in range(1,13):
+            for i in range(12):
                 if i not in self.usedSlots:
                     temp = currentBeverageBtn(self, rtd.beverage(-1, i, "EMPTY SLOT", 0), i)
-                    self.hopperList.insert(i - 1, temp)
+                    self.hopperList.insert(i, temp)
 
         self.backBtn = pyw.QPushButton("Back to Mainmenu", self)
         self.backBtn.clicked.connect(lambda: self.backBtn_onClick())

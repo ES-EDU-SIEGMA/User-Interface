@@ -231,13 +231,30 @@ class welcomeWindow(pyw.QWidget):
             fullWeight = currentWeight
         return correctHoppers == len(self.m_runtimeData.m_beverageList)     
 
+class errorWindow(pyw.QWidget):
+    def __init__(self, __errorMsg):
+        super().__init__()
+        self.setWindowTitle('ERROR')
+        #self.showMaximized()
+        self.error = pyw.QLabel(__errorMsg.__str__(), self)
+        self.error.setStyleSheet("font-size: 20pt; color: red; font-family: Arial;")
+        self.error.setAlignment(pyc.Qt.AlignCenter)
+        self.error.move(0, 30)
+        self.showFullScreen()
+    
+
 if __name__ == '__main__':
     #time.sleep(5) # give the pi enough time to setup the usb ports and everything
     try:
-        sc.__init__()
+        #sc.__init__()
         dbcon.__init__()
         app = pyw.QApplication(sys.argv)
         m_startPage = welcomeWindow()
-        sys.exit(app.exec())
+        app.exec()
+        sc.close_connection()
+        dbcon.close_connection()
     except Exception as error:
-        print(error)
+        app = pyw.QApplication(sys.argv)
+        m_error = errorWindow(error)
+        sys.exit(app.exec())
+        
