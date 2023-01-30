@@ -262,13 +262,18 @@ class editHoppers(pyw.QWidget):
             elif i >= 4 and i < 8:
                 self.hopperDisplayLayout.addWidget(self.hopperList[i], row, 10, span, span)
             else:
+
+                #       0
+                #   1       3
+                #       2
+
                 if i == 8:    #top
                     self.hopperDisplayLayout.addWidget(self.hopperList[i], 1, 5, span, span)
                 elif i == 9:  #side left
                     self.hopperDisplayLayout.addWidget(self.hopperList[i], 4, 3, span, span)
-                elif i == 10: #side right
+                elif i == 11: #side right
                     self.hopperDisplayLayout.addWidget(self.hopperList[i], 4, 7, span, span)
-                elif i == 11: #bottom
+                elif i == 10: #bottom
                     self.hopperDisplayLayout.addWidget(self.hopperList[i], 7, 5, span, span)
             if row == 9:
                 row = 0
