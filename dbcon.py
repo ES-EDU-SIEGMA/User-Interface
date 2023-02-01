@@ -217,7 +217,7 @@ def getAllAvailableMixedDrinks():
     except Exception as error:
         raise error
 
-# returns a list of all 
+# returns a list of all mixeddrinks stored in the database as a list of mixDrinkInformation objects
 def getAllMixedDrinks() -> list[rtd.mixDrinkInformation]:
     global connected
     global txn

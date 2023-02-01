@@ -181,7 +181,7 @@ class welcomeWindow(pyw.QWidget):
         self.cocktailWindow = ncw.newCocktailWindow(self)
         self.hide()
 
-    ## opens the progressWindow when one of the custom pushbuttons get clicked
+    ## opens the progressWindow when one of the custom pushbuttons gets clicked
     #
     def qsDrinkButton_onClick(self, index : int, mixeddrink : bool):
         #find the fitting beverage or mixeddrink
@@ -194,6 +194,7 @@ class welcomeWindow(pyw.QWidget):
     ## opens the editHoppers - Window when the corresponding Button gets clicked
     #
     def editHopperOccupancyBtn_onClick(self):
+        sc.send_msg(2, "0\n")
         self.editHopperWindow = ehw.editHoppers(self, self.m_runtimeData)
         self.hide()
 
@@ -248,7 +249,7 @@ class errorWindow(pyw.QWidget):
 if __name__ == '__main__':
     #time.sleep(5) # give the pi enough time to setup the usb ports and everything
     try:
-        #sc.__init__()
+        sc.__init__()
         dbcon.__init__()
         app = pyw.QApplication(sys.argv)
         m_startPage = welcomeWindow()

@@ -36,7 +36,7 @@ def __init__():
                 picorondell = pico
             else:
                 raise Exception("couldnt identify the pico")
-        
+
         running = True
         
     except Exception as error:
