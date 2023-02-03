@@ -7,6 +7,7 @@ import editHoppersWindow as ehw
 import runtimeData as rtd
 import serialCom as sc
 import dbcon as dbcon
+import scaleReader as sr
 import sys
 import globals as go
 import time
@@ -171,7 +172,7 @@ class welcomeWindow(pyw.QWidget):
     ## closing function
     #
     def exitBtn_onClick(self):
-        #sc.close_connection()
+        sc.close_connection()
         dbcon.close_connection()
         self.close()
 
@@ -181,7 +182,7 @@ class welcomeWindow(pyw.QWidget):
         self.cocktailWindow = ncw.newCocktailWindow(self)
         self.hide()
 
-    ## opens the progressWindow when one of the custom pushbuttons gets clicked
+    ## opens the progressWindow when one of the custom pushbuttons get clicked
     #
     def qsDrinkButton_onClick(self, index : int, mixeddrink : bool):
         #find the fitting beverage or mixeddrink
@@ -189,15 +190,13 @@ class welcomeWindow(pyw.QWidget):
             self.progressWindow = spw.mixingProgressWindow(self, None, self.m_runtimeData.getMixedDrinkToId(index))
         else:
             self.progressWindow = spw.mixingProgressWindow(self, self.m_runtimeData.getBeverageToId(index), None)
-        #self.hide()
+        self.hide()
     
     ## opens the editHoppers - Window when the corresponding Button gets clicked
     #
     def editHopperOccupancyBtn_onClick(self):
-        sc.send_msg(2, "0\n")
         self.editHopperWindow = ehw.editHoppers(self, self.m_runtimeData)
         self.hide()
-
 
     ## integration test, emptys each hopper once and compares the actual weight with the expected
     #
@@ -207,7 +206,7 @@ class welcomeWindow(pyw.QWidget):
 
         correctHoppers = 0
 
-        #emptyGlassWeight = sr.getCurrentWeight()
+        emptyGlassWeight = sr.getCurrentWeight()
 
         fullWeight += emptyGlassWeight
 
@@ -228,7 +227,7 @@ class welcomeWindow(pyw.QWidget):
             if currentHopper > 8:
                 hoppersize = 40
             currentWeight = 0
-            #currentWeight = sr.getCurrentWeight()
+            currentWeight = sr.getCurrentWeight()
             if (currentWeight - fullWeight) in range(hoppersize-5, hoppersize+5):
                 correctHoppers += 1
             fullWeight = currentWeight
@@ -248,14 +247,14 @@ class errorWindow(pyw.QWidget):
 
 if __name__ == '__main__':
     #time.sleep(5) # give the pi enough time to setup the usb ports and everything
+    app = pyw.QApplication(sys.argv)
     try:
         sc.__init__()
         dbcon.__init__()
-        app = pyw.QApplication(sys.argv)
+        sr.__init__()
         m_startPage = welcomeWindow()
         sys.exit(app.exec())
     except Exception as error:
-        app = pyw.QApplication(sys.argv)
         m_error = errorWindow(error)
         sys.exit(app.exec())
         

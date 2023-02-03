@@ -4,6 +4,7 @@ import PyQt5.QtGui as pyg
 import runtimeData as rtd
 import cssTheme as css
 import serialCom as sc
+import scaleReader as sr
 import globals as go
 import time
 
@@ -107,7 +108,7 @@ class mixingProgressWindow(pyw.QWidget):
         self.startMixingBtn.setEnabled(False)
         self.drinkSizeSelect.setEnabled(False)
         expectedWeight = 0
-        emptyDrinkWeight = 0 #sr.getCurrentWeight()
+        emptyDrinkWeight = sr.getCurrentWeight()
 
         currentDrinkSizeIndex = self.drinkSizeSelect.currentIndex()
         multip = ((1 + currentDrinkSizeIndex) / 10)
@@ -124,14 +125,15 @@ class mixingProgressWindow(pyw.QWidget):
             expectedWeight = self.mixMixDrink(self.m_mixedDrinkToMix, multip)
         else:
             expectedWeight = self.mixBeverage(self.m_beverageToMix, multip)
-
-        expectedWeight = expectedWeight + emptyDrinkWeight
-
-        # currentWeight = sr.getCurrentWeight()
-        # while currentWeight not in range(expectedWeight - 10, expectedWeight + 20):  # a little bit of breathing room
-        #     
-        #     self.mixingProgress.setValue(int((currentWeight/expectedWeight) * 100))
-        # self.mixingProgress.setValue(100)
+    
+        expectedWeightFull = expectedWeight + emptyDrinkWeight
+        
+        currentWeight = sr.getCurrentWeight()
+        while currentWeight not in range(expectedWeightFull - 10, expectedWeightFull + 10):  # a little bit of breathing room
+            self.mixingProgress.setValue(int(((currentWeight - emptyDrinkWeight)/expectedWeight) * 100))
+            currentWeight = sr.getCurrentWeight()
+            time.sleep(0.5)
+        self.mixingProgress.setValue(100)
 
         self.backBtn.setEnabled(True)
         self.startMixingBtn.setEnabled(True)
@@ -225,7 +227,7 @@ class mixingProgressWindow(pyw.QWidget):
             sc.send_msg(0, pico0Cmd)
             sc.send_msg(1, pico1Cmd)
             sc.send_msg(2, pico2Cmd)
-            # print(f"pico0: {pico0Cmd}pico1: {pico1Cmd}pico2: {pico2Cmd}")
+            #print(f"pico0: {pico0Cmd}pico1: {pico1Cmd}pico2: {pico2Cmd}")
             iterCounter += 1
         return expectedWeight
 
