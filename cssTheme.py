@@ -74,11 +74,6 @@ QListView::item:selected:active {
 QListView::item:hover {
     background-color: #c72c41;
 }
-
-QScrollBar:vertical {
-    width: 45px;
-
-}
 """
 
 dialogStyle = """

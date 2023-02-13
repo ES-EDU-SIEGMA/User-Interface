@@ -190,7 +190,6 @@ class welcomeWindow(pyw.QWidget):
             self.progressWindow = spw.mixingProgressWindow(self, None, self.m_runtimeData.getMixedDrinkToId(index))
         else:
             self.progressWindow = spw.mixingProgressWindow(self, self.m_runtimeData.getBeverageToId(index), None)
-        self.hide()
     
     ## opens the editHoppers - Window when the corresponding Button gets clicked
     #
@@ -246,6 +245,7 @@ class errorWindow(pyw.QWidget):
     
 
 if __name__ == '__main__':
+    #return;
     #time.sleep(5) # give the pi enough time to setup the usb ports and everything
     app = pyw.QApplication(sys.argv)
     try:

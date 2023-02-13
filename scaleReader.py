@@ -3,8 +3,7 @@ import sys
 import RPi.GPIO as GPIO
 from hx711 import HX711
 
-
-referenceUnit = 869666
+referenceUnit = 870298
 hx = None
 
 def close():
@@ -13,7 +12,7 @@ def close():
 def __init__():
     global hx
     global referenceUnit
-    
+    GPIO.setwarnings(False)
     hx = HX711(5, 6)
     hx.set_reading_format("MSB", "MSB")
     hx.set_reference_unit(referenceUnit)
@@ -36,6 +35,7 @@ if __name__ == '__main__':
     __init__()
     print("now")
     time.sleep(3)
+    #356825889
     print(getCurrentWeight())
     print(getCurrentWeight())
     close()

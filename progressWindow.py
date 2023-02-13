@@ -35,7 +35,7 @@ class mixingProgressWindow(pyw.QWidget):
 
         self.move(rectSize.topLeft())
         self.initWidgets()
-        self.show()
+        self.showFullScreen()
     
     #initializes all the widgets on the gui, sets their style and position
     def initWidgets(self):
@@ -227,7 +227,7 @@ class mixingProgressWindow(pyw.QWidget):
             sc.send_msg(0, pico0Cmd)
             sc.send_msg(1, pico1Cmd)
             sc.send_msg(2, pico2Cmd)
-            #print(f"pico0: {pico0Cmd}pico1: {pico1Cmd}pico2: {pico2Cmd}")
+            print(f"pico0: {pico0Cmd}pico1: {pico1Cmd}pico2: {pico2Cmd}")
             iterCounter += 1
         return expectedWeight
 

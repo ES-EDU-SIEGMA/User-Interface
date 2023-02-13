@@ -10,7 +10,61 @@ standard_baudrate = 115200
 
 running = False
 
-#initialize all the connections
+# identify all picos
+def identifyPicos(pico0, pico1, pico2):
+    global picoleft
+    global picoright
+    global picorondell
+        
+    for pico in [pico0, pico1, pico2]:
+        n = 0
+        while n < 5:
+            print("sending pico identifying request")
+            pico.write(bytes("i\n", 'utf-8'))
+            
+            print("waiting for identifier")
+            pos = pico.readline()
+            print(f"response was {pos}")
+            if pos == b'LEFT\r\n':
+                print("found left")
+                picoleft = pico
+                break
+            elif pos == b'RIGHT\r\n':
+                print("found right")
+                picoright = pico
+                break
+            elif pos == b'RONDELL\r\n':
+                print("found rondell")
+                picorondell = pico
+                break
+            elif pos == b'F\r\n':
+                print("error, trying again")
+                n += 1
+                time.sleep(5)
+            else:
+                raise Exception("pico sent unknown identifier")
+            
+        if picoleft is None and picoright is None and picorondell is None: # not one was found
+            raise Exception("pico could not be identified")
+    print("was able to identify all picos")
+
+# wait until all picos send their ready signal
+def waitUntilReady():
+    global picoleft
+    global picoright
+    global picorondell
+    
+    readyPicos = 0
+    print("waiting for ready signal")
+    while readyPicos < 3:
+        for pico in [picorondell, picoleft, picoright]:
+            resp = pico.readline()
+            print(resp)
+            if resp == b'CALIBRATED\r\n':
+                readyPicos += 1
+    print("all picos are setup")
+    
+# initialize all the connections
 def __init__():
     global picoleft
     global picoright
@@ -21,22 +75,13 @@ def __init__():
     print("running")
     
     try:
-        pico0 = serial.Serial('/dev/ttyACM0', standard_baudrate) # hopper 1-4 (left side)
-        pico1 = serial.Serial('/dev/ttyACM1', standard_baudrate) # hopper 5-8 (right side)
-        pico2 = serial.Serial('/dev/ttyACM2', standard_baudrate) # hopper 9-12 (rondell)
-        
-        for pico in [pico0, pico1, pico2]:
-            pos = pico.read()
-            print(pos)
-            if pos == "LEFT":
-                picoleft = pico
-            elif pos == "RIGHT":
-                picoright = pico
-            elif pos == "RONDELL":
-                picorondell = pico
-            else:
-                raise Exception("couldnt identify the pico")
+        pico0 = serial.Serial('/dev/ttyACM0', standard_baudrate)
+        pico1 = serial.Serial('/dev/ttyACM1', standard_baudrate)
+        pico2 = serial.Serial('/dev/ttyACM2', standard_baudrate)
 
+        identifyPicos(pico0, pico1, pico2)
+        waitUntilReady()
+        
         running = True
         
     except Exception as error:
@@ -68,11 +113,11 @@ def send_msg(pico, input):
 
     if running:
         try:
-            if pico == 0:
+            if pico == 0 and picoleft is not None:
                 picoleft.write(bytes(input, 'utf-8'))
-            elif pico == 1:
+            elif pico == 1 and picoright is not None:
                 picoright.write(bytes(input, 'utf-8'))
-            elif pico == 2:
+            elif pico == 2 and picorondell is not None:
                 picorondell.write(bytes(input, 'utf-8'))
             else:
                 raise Exception("index of pico is invalid")

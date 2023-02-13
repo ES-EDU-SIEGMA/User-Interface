@@ -39,7 +39,7 @@ def __init__():
         db_con = psycopg2.connect(
             host='localhost',
             database='drinkmixingmachine',
-            user='postgres',
+            user='admin',
             password='admin',
             port = '5432'
         )

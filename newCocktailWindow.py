@@ -9,10 +9,8 @@ import createdCocktailsWindow as ccw
 
 class newCocktailWindow(pyw.QWidget):
     
-    #fixed size for the QListwidgets
     listSize = (450,450)
 
-    #constructor
     def __init__(self, __parentWindow : pyw.QWidget):
         super().__init__()
         self.parentWidget = __parentWindow
@@ -22,7 +20,6 @@ class newCocktailWindow(pyw.QWidget):
         self.initWidgets()
         self.showFullScreen()
     
-    #declares widgets, sets their style, and adds layout to the Window
     def initWidgets(self):
 
         self.setStyleSheet(css.windowStyle)
@@ -105,13 +102,11 @@ class newCocktailWindow(pyw.QWidget):
     #   Functions to handle data   #
     ################################
 
-    #return the beverage of giving name out of a provided list
     def getBeverageByName(self, beverages: list, name: str) -> runtimeData.beverage:
         for beverage in beverages:
             if beverage.m_name == name:
                 return beverage
 
-    #fills a QListwidget whith beverages out of a given list
     def fillList(self, list : pyw.QListWidget, beverages):
         for beverage in beverages:
             list.addItem(beverage.m_name)
@@ -121,8 +116,7 @@ class newCocktailWindow(pyw.QWidget):
     #           Events             #
     ################################
 
-    #This event handles the process of puting an ingredient into the new Recipe by launching an Dialog Window,
-    # that takes the needed remaining informations in
+
     def onAvailableSelect(self, item : pyw.QListWidgetItem):
         
         dialog = EnterIntDialog("Enter Int Dialog Title", "Enter Int Dialog Label")
@@ -143,9 +137,10 @@ class newCocktailWindow(pyw.QWidget):
 
             return
         
-        #item is special pyqt object, so you have to use text()
-        beverage = self.getBeverageByName(self.availableBeverages, item.text())
 
+        #item ist spezielles pyqt5 objekt, deshalb text() darauf aufrufen.
+        beverage = self.getBeverageByName(self.availableBeverages, item.text())
+        #todo: hier die setFillPercentage rausschmeißen
         self.mixDrink.m_neededBeverages.append(beverage)
         self.mixDrink.m_fillpercToBvg.append((beverage.m_id, result))
 
@@ -155,7 +150,7 @@ class newCocktailWindow(pyw.QWidget):
         self.availableBeverageList.clear()
         self.fillList(self.availableBeverageList, self.availableBeverages)
 
-    #An event to remove selected Beverages from the new Recipe
+
     def onSelectedSelect(self, item : pyw.QListWidgetItem):
 
         #get beverage
@@ -174,8 +169,7 @@ class newCocktailWindow(pyw.QWidget):
         self.fillList(self.availableBeverageList, self.availableBeverages)
 
 
-    #The event to be called when the process of selecting beverages is finished.
-    #It checks, if the beverages cover 100% of the proposed mixeddrink and if the entered Name is unique. When the Constains hold, the new Recipe and Mixeddrink are created in the Databank
+
     def onAccept(self):
         res = 0
         print(self.mixDrink.m_fillpercToBvg)
@@ -208,22 +202,21 @@ class newCocktailWindow(pyw.QWidget):
         self.backBtn_onClick()
 
 
-    #An event to cancel the process and Close the Window
+
     def onCancel(self):
+        self.backBtn_onClick()
+
+    def backBtn_onClick(self):
         self.parentWidget.updateQuickSelect()
         self.parentWidget.show()
         self.close()
 
-    #An event to open a Window, that shows the already created Mixeddrinks
     def viewCocktailsBtn_onClick(self):
         self.createdCocktailsWindow = ccw.CreatedCocktailsWindow(self)
         self.hide()
 
-#A helper class, that inherets from the Standard QDialog class, to Implement costom functionality.
-#It asks the user for an integer value, that represents the percantage amount of the beveragwe in the Drink
-class EnterIntDialog(pyw.QDialog):
 
-    #constructor that also setups the Widgets, Layout and stylesheet of the dialog
+class EnterIntDialog(pyw.QDialog):
     def __init__(self, title = "", label = ""):
         super().__init__()
         self.cancel = False
@@ -250,8 +243,6 @@ class EnterIntDialog(pyw.QDialog):
 
         layout.addWidget(self.buttonBox)
 
-    #An event, that checks if the input of the QLineEdit is valid.
-    #If valid it saves the Integer and closes the itself with a success status, else it closes itself whith an unsuccessful status
     def exit(self):
         text = self.enterInt.text()
         if text.isdigit()==True:
@@ -260,3 +251,10 @@ class EnterIntDialog(pyw.QDialog):
             self.accept()
         else:
             super().reject()
+
+    def reject(self):
+        self.cancel = True
+        super().reject()
+            
+    def setLable(self, text = ""):
+        self.label.setText(text)
