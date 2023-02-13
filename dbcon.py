@@ -65,7 +65,6 @@ def close_connection():
         try:
             txn.close()
             db_con.close()
-            print("connection closed successfully")
         except Exception as error:
             raise error
     else:

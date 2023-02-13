@@ -8,6 +8,8 @@ import scaleReader as sr
 import globals as go
 import time
 
+## window to start and view the mixing progress
+#
 class mixingProgressWindow(pyw.QWidget):
     m_beverageToMix : rtd.beverage
     m_mixedDrinkToMix : rtd.mixDrinkInformation
@@ -20,20 +22,11 @@ class mixingProgressWindow(pyw.QWidget):
         self.parentWidget = __parentWindow
         self.setWindowTitle("Mixing Progress")
         self.setStyleSheet(f"background-color: {css.m_mainBackgroundColor};")
-        self.m_mixing = False
-        #center the window
-        self.resize(800, 600)
-        rectSize = self.frameGeometry()
-        center = pyw.QDesktopWidget().availableGeometry().center()
-        rectSize.moveCenter(center)
-        
+        self.m_mixing = False     
         self.m_beverageToMix = __bvg
         self.m_mixedDrinkToMix = __md
-        self.m_mixedDrinkMode = (self.m_beverageToMix is None)
-        
+        self.m_mixedDrinkMode = (self.m_beverageToMix is None)    
         self.standardActivationTime = go.standardActivationTime
-
-        self.move(rectSize.topLeft())
         self.initWidgets()
         self.showFullScreen()
     
@@ -147,7 +140,6 @@ class mixingProgressWindow(pyw.QWidget):
         hopperSize = 30
         picoid = 0
         strToSend = ""
-        #strToSendRest = ""
 
         if __bvgToMix.m_hopperid > 8:
             hopperSize = 40
@@ -161,7 +153,6 @@ class mixingProgressWindow(pyw.QWidget):
         for i in range(len(res) - 1):
             hopperTimings[__bvgToMix.m_hopperid % 4] = res[i+1]
             strToSend = f"{hopperTimings[0]};{hopperTimings[1]};{hopperTimings[2]};{hopperTimings[3]};\n"
-            #print(strToSend)
             sc.send_msg(picoid, strToSend)
         return (len(res) - 1) * hopperSize
     
@@ -202,13 +193,13 @@ class mixingProgressWindow(pyw.QWidget):
 
         cmdList = [[0,0,0,0], [0,0,0,0], [0,0,0,0]]
 
-        #finished = False
         iterCounter = 1
         timings = self.getTimingsToPico(timeList)
         longestListLen = self.getLongestListLength(timings)
 
         expectedWeight = self.getEstimatedWeight(timeList)
 
+        # runs through the list and puts the timings into the corresponding hopper cmdS
         while not (iterCounter == longestListLen):
             for picoid in range(3): # run through each pico entry
                 for i in range(len(timings[picoid])): # run through each timing and place in the corresponding list entry
@@ -227,7 +218,6 @@ class mixingProgressWindow(pyw.QWidget):
             sc.send_msg(0, pico0Cmd)
             sc.send_msg(1, pico1Cmd)
             sc.send_msg(2, pico2Cmd)
-            print(f"pico0: {pico0Cmd}pico1: {pico1Cmd}pico2: {pico2Cmd}")
             iterCounter += 1
         return expectedWeight
 

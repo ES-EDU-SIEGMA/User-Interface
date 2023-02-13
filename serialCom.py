@@ -46,7 +46,6 @@ def identifyPicos(pico0, pico1, pico2):
             
         if picoleft is None and picoright is None and picorondell is None: # not one was found
             raise Exception("pico could not be identified")
-    print("was able to identify all picos")
 
 # wait until all picos send their ready signal
 def waitUntilReady():
@@ -57,7 +56,7 @@ def waitUntilReady():
     readyPicos = 0
     print("waiting for ready signal")
     while readyPicos < 3:
-        for pico in [picorondell, picoleft, picoright]:
+        for pico in [picoright, picoleft, picorondell]:
             resp = pico.readline()
             print(resp)
             if resp == b'CALIBRATED\r\n':
@@ -72,8 +71,6 @@ def __init__():
     global running
     global standard_baudrate
     
-    print("running")
-    
     try:
         pico0 = serial.Serial('/dev/ttyACM0', standard_baudrate)
         pico1 = serial.Serial('/dev/ttyACM1', standard_baudrate)
@@ -86,7 +83,7 @@ def __init__():
         
     except Exception as error:
         raise error
-    
+
 def close_connection():
     global picoleft
     global picoright

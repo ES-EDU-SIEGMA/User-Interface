@@ -197,7 +197,7 @@ class welcomeWindow(pyw.QWidget):
         self.editHopperWindow = ehw.editHoppers(self, self.m_runtimeData)
         self.hide()
 
-    ## integration test, emptys each hopper once and compares the actual weight with the expected
+    ## integration test, emptys each hopper once and compares the actual weight with the expected one
     #
     def integrationTest(self):
         fullWeight = 0
@@ -232,11 +232,13 @@ class welcomeWindow(pyw.QWidget):
             fullWeight = currentWeight
         return correctHoppers == len(self.m_runtimeData.m_beverageList)     
 
+
+## window to display any occuring error and exception
+#
 class errorWindow(pyw.QWidget):
     def __init__(self, __errorMsg):
         super().__init__()
         self.setWindowTitle('ERROR')
-        #self.showMaximized()
         self.error = pyw.QLabel(__errorMsg.__str__(), self)
         self.error.setStyleSheet("font-size: 20pt; color: red; font-family: Arial;")
         self.error.setAlignment(pyc.Qt.AlignCenter)
