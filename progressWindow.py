@@ -95,8 +95,6 @@ class mixingProgressWindow(pyw.QWidget):
     # gets triggered when the start mixing button gets clicked
     # starts either the beverage or the mixdrink mixing progress
     def startMixingBtn_onClick(self):
-        self.m_mixing = True
-
         self.backBtn.setEnabled(False)
         self.startMixingBtn.setEnabled(False)
         self.drinkSizeSelect.setEnabled(False)
@@ -113,26 +111,39 @@ class mixingProgressWindow(pyw.QWidget):
             currentDrinkName = self.m_beverageToMix.m_name
 
         self.informationLabel.setText(f"Mixing {currentDrinkName}, {multip} L. Please do not touch the display or the machine!")      
-
+        self.m_mixing = True # set mixing to true
+        
         if self.m_mixedDrinkMode:
             expectedWeight = self.mixMixDrink(self.m_mixedDrinkToMix, multip)
         else:
             expectedWeight = self.mixBeverage(self.m_beverageToMix, multip)
-    
-        expectedWeightFull = expectedWeight + emptyDrinkWeight
         
+        expectedWeightFull = expectedWeight + emptyDrinkWeight
+        self.waitForDrinkFinish(expectedWeight, expectedWeightFull, emptyDrinkWeight)
+        self.m_mixing = False
+    
+        self.backBtn.setEnabled(True)
+        self.startMixingBtn.setEnabled(True)
+        self.drinkSizeSelect.setEnabled(True)
+        self.informationLabel.setText("The Drink is finished. Please remove your drink from the machine.")
+    
+    # reads out the scale and sets the value of the progressbar accordingly - if the value hasnt changed in 8 secs -> quit
+    def waitForDrinkFinish(self, expectedWeight : int, expectedWeightFull : int, emptyDrinkWeight : int):
         currentWeight = sr.getCurrentWeight()
-        while currentWeight not in range(expectedWeightFull - 10, expectedWeightFull + 10):  # a little bit of breathing room
+        timeval = time.time()
+        currentWeightComp = currentWeight
+        while currentWeight not in range(expectedWeightFull - 5, expectedWeightFull + 5) and self.m_mixing:  # a little bit of breathing room
+            if time.time() - timeval >= 8: # check each 8 seconds if the value has changed
+                if currentWeightComp == currentWeight: # value is the same -> quit
+                    self.mixing = False
+                    break
+                else:
+                    timeval = time.time()
+                    currentWeightComp = currentWeight
             self.mixingProgress.setValue(int(((currentWeight - emptyDrinkWeight)/expectedWeight) * 100))
             currentWeight = sr.getCurrentWeight()
             time.sleep(0.5)
         self.mixingProgress.setValue(100)
-
-        self.backBtn.setEnabled(True)
-        self.startMixingBtn.setEnabled(True)
-        self.drinkSizeSelect.setEnabled(True)
-        self.m_mixing = False
-        self.informationLabel.setText("The Drink is finished. Please remove your drink from the machine.")
 
     # calculates and sends the timings which are needed to mix the given beverage for the given drinksize
     def mixBeverage(self, __bvgToMix : rtd.beverage, _multi : int):
@@ -218,6 +229,7 @@ class mixingProgressWindow(pyw.QWidget):
             sc.send_msg(0, pico0Cmd)
             sc.send_msg(1, pico1Cmd)
             sc.send_msg(2, pico2Cmd)
+            print(f"left {pico0Cmd}right {pico1Cmd}rondell {pico2Cmd}")
             iterCounter += 1
         return expectedWeight
 

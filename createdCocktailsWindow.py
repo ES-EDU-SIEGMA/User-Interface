@@ -5,6 +5,8 @@ import dbcon as db
 import runtimeData
 import cssTheme as css
 
+#This class implements the view to see which Mixeddrinks were already created, and what contents they hold on selection.
+#Created by Jan Haase
 class CreatedCocktailsWindow(pyw.QWidget):
 
     def __init__(self, __parentWindow : pyw.QWidget):
@@ -15,6 +17,7 @@ class CreatedCocktailsWindow(pyw.QWidget):
         self.initWidgets()
         self.showFullScreen()
 
+    #declares widgets, sets their style, and adds layout to the Window
     def initWidgets(self):
         self.setStyleSheet(css.windowStyle)
 
@@ -22,7 +25,7 @@ class CreatedCocktailsWindow(pyw.QWidget):
         self.backBtn.clicked.connect(self.backBtn_onClick)
 
         self.mixDrinkList = pyw.QListWidget(self)
-        self.mixDrinkList.itemDoubleClicked.connect(self.showMixedDrinkContents)
+        self.mixDrinkList.itemDoubleClicked.connect(lambda item : self.showMixedDrinkContents(item.text()))
         self.contentsList = pyw.QListWidget(self)
 
         self.mixDrinkList.setFont(pyg.QFont("Arial", 15))
@@ -48,8 +51,9 @@ class CreatedCocktailsWindow(pyw.QWidget):
         
         self.setLayout(self.gridLayout)
 
-    def showMixedDrinkContents(self, item : pyw.QListWidgetItem):
-        index = self.mixedDrinksNames.index(item.text())
+    #function to fill the contentsList with the contents of a mixeddrink, given the name of the drink
+    def showMixedDrinkContents(self, drinkName):
+        index = self.mixedDrinksNames.index(drinkName)
         drink = self.mixedDrinks[index]
 
         self.contentsList.clear()
@@ -57,8 +61,7 @@ class CreatedCocktailsWindow(pyw.QWidget):
         for beverage in drink.m_neededBeverages:
             self.contentsList.addItem(f"{beverage.m_name} - {drink.getFillPercToId(beverage.m_id)}%")
 
+    #An event to close the window
     def backBtn_onClick(self):
-        #self.parentWidget.updateQuickSelect()
         self.parentWidget.show()
         self.close()
-        

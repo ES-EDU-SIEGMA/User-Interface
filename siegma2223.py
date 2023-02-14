@@ -247,13 +247,11 @@ class errorWindow(pyw.QWidget):
     
 
 if __name__ == '__main__':
-    #return;
-    #time.sleep(5) # give the pi enough time to setup the usb ports and everything
     app = pyw.QApplication(sys.argv)
     try:
-        sc.__init__()
         dbcon.__init__()
         sr.__init__()
+        sc.__init__()
         m_startPage = welcomeWindow()
         sys.exit(app.exec())
     except Exception as error:

@@ -186,6 +186,8 @@ def getAllAvailableMixedDrinks():
         
         allGivenBeverages = getAllAvailableBeverages()
         allMixedDrinksRes = send_query('select m.id, m.name, r.beverageid, r.fillingamount from mixeddrink as m, recipe as r where m.id = r.mixeddrinkid;')
+        if len(allMixedDrinksRes) == 0:
+            return result
         
         needed = []
         fillamounts = []
