@@ -1,14 +1,14 @@
 font = "Arial"
 borderRadius = "10"
-#"#1e1c23" old
+# "#1e1c23" old
 m_mainBackgroundColor = "#303030"
-#"#2b2b2b" old 
+# "#2b2b2b" old
 m_buttonBackgroundColor = "#801336"
 # "801336" old
 m_sndButtonBackgroundColor = "#c72c41"
-#"#ffffff" old
+# "#ffffff" old
 m_borderColor = "#610a32"
-#"#ffffff" old
+# "#ffffff" old
 m_standardTextColor = "#ffffff"
 
 #############################

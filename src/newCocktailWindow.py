@@ -8,23 +8,21 @@ import createdCocktailsWindow as ccw
 
 
 class newCocktailWindow(pyw.QWidget):
-    
-    listSize = (450,450)
+    listSize = (450, 450)
 
-    def __init__(self, __parentWindow : pyw.QWidget):
+    def __init__(self, __parentWindow: pyw.QWidget):
         super().__init__()
         self.parentWidget = __parentWindow
         self.setWindowTitle("New Cocktail Recipe")
         self.resize(1280, 800)
-        self.mixDrink = runtimeData.mixDrinkInformation( 0, "", [],[])
+        self.mixDrink = runtimeData.mixDrinkInformation(0, "", [], [])
         self.initWidgets()
         self.showFullScreen()
-    
-    def initWidgets(self):
 
+    def initWidgets(self):
         self.setStyleSheet(css.windowStyle)
 
-        # set up Lists and ListWidgets        
+        # set up Lists and ListWidgets
         self.availableBeverages = []
         self.availableBeverageList = pyw.QListWidget(self)
         self.availableBeverageList.setFixedSize(self.listSize[0], self.listSize[1])
@@ -38,47 +36,51 @@ class newCocktailWindow(pyw.QWidget):
         self.availableBeverageList.setFont(pyg.QFont("Arial", 15))
         self.selectedBeverageList.setFont(pyg.QFont("Arial", 15))
 
-        
-
-        #set up Buttons
+        # set up Buttons
         self.acceptBtn = pyw.QPushButton("Accept")
         self.acceptBtn.setText("Accept")
         self.acceptBtn.clicked.connect(self.onAccept)
-        
+
         self.cancelBtn = pyw.QPushButton("Cancel")
         self.cancelBtn.clicked.connect(self.onCancel)
-        
+
         self.viewCocktailsBtn = pyw.QPushButton("Cocktails")
         self.viewCocktailsBtn.clicked.connect(self.viewCocktailsBtn_onClick)
 
-        #set up Labels
+        # set up Labels
         self.availableListLable = pyw.QLabel("Available beverages")
         self.availableListLable.setAlignment(pyc.Qt.AlignCenter)
-        
+
         self.selectedListLable = pyw.QLabel("Selected beverages")
         self.selectedListLable.setAlignment(pyc.Qt.AlignCenter)
-        
+
         self.recipeLabel = pyw.QLabel("Name of recipe:")
-        self.recipeLabel.setStyleSheet(f"color: {css.m_standardTextColor}; font-size: 15pt; font-family: {css.font};")
+        self.recipeLabel.setStyleSheet(
+            f"color: {css.m_standardTextColor}; font-size: 15pt; font-family: {css.font};"
+        )
 
-
-        #set up LineEdit
+        # set up LineEdit
         self.enterRecipeName = pyw.QLineEdit()
-        self.enterRecipeName.setStyleSheet(f"color: {css.m_standardTextColor}; font-size: 10pt;")
+        self.enterRecipeName.setStyleSheet(
+            f"color: {css.m_standardTextColor}; font-size: 10pt;"
+        )
 
-
-        #set up Layouts
+        # set up Layouts
         self.gridLayout = pyw.QGridLayout(self)
-        
+
         self.gridLayout.setRowStretch(0, 1)
         self.gridLayout.setRowStretch(3, 1)
         self.gridLayout.setColumnStretch(1, 1)
         self.gridLayout.setColumnStretch(3, 1)
 
-        self.gridLayout.addWidget(self.availableListLable, 0, 0,)
+        self.gridLayout.addWidget(
+            self.availableListLable,
+            0,
+            0,
+        )
         self.gridLayout.addWidget(self.selectedListLable, 0, 2)
         self.gridLayout.addWidget(self.availableBeverageList, 2, 0)
-        self.gridLayout.addWidget(self.selectedBeverageList , 2, 2)
+        self.gridLayout.addWidget(self.selectedBeverageList, 2, 2)
 
         wrapper = pyw.QWidget()
         wrapperLayout = pyw.QVBoxLayout()
@@ -89,14 +91,13 @@ class newCocktailWindow(pyw.QWidget):
         wrapperLayout.addWidget(self.viewCocktailsBtn)
         wrapper.setLayout(wrapperLayout)
 
-        self.gridLayout.addWidget(wrapper, 2 ,4)
+        self.gridLayout.addWidget(wrapper, 2, 4)
 
         self.setLayout(self.gridLayout)
 
         self.availableBeverages = db.getAllAvailableBeverages()
         self.availableBeverages += db.getAllOtherBeverages()
         self.fillList(self.availableBeverageList, self.availableBeverages)
-
 
     ################################
     #   Functions to handle data   #
@@ -107,18 +108,15 @@ class newCocktailWindow(pyw.QWidget):
             if beverage.m_name == name:
                 return beverage
 
-    def fillList(self, list : pyw.QListWidget, beverages):
+    def fillList(self, list: pyw.QListWidget, beverages):
         for beverage in beverages:
             list.addItem(beverage.m_name)
-
 
     ################################
     #           Events             #
     ################################
 
-
-    def onAvailableSelect(self, item : pyw.QListWidgetItem):
-        
+    def onAvailableSelect(self, item: pyw.QListWidgetItem):
         dialog = EnterIntDialog("Enter Int Dialog Title", "Enter Int Dialog Label")
 
         if dialog.exec_():
@@ -131,16 +129,15 @@ class newCocktailWindow(pyw.QWidget):
                 self,
                 "Error",
                 "Please enter an integer value.",
-                buttons= pyw.QMessageBox.Discard,
-                defaultButton= pyw.QMessageBox.Discard,
+                buttons=pyw.QMessageBox.Discard,
+                defaultButton=pyw.QMessageBox.Discard,
             )
 
             return
-        
 
-        #item ist spezielles pyqt5 objekt, deshalb text() darauf aufrufen.
+        # item ist spezielles pyqt5 objekt, deshalb text() darauf aufrufen.
         beverage = self.getBeverageByName(self.availableBeverages, item.text())
-        #todo: hier die setFillPercentage rausschmeißen
+        # todo: hier die setFillPercentage rausschmeißen
         self.mixDrink.m_neededBeverages.append(beverage)
         self.mixDrink.m_fillpercToBvg.append((beverage.m_id, result))
 
@@ -150,25 +147,21 @@ class newCocktailWindow(pyw.QWidget):
         self.availableBeverageList.clear()
         self.fillList(self.availableBeverageList, self.availableBeverages)
 
-
-    def onSelectedSelect(self, item : pyw.QListWidgetItem):
-
-        #get beverage
+    def onSelectedSelect(self, item: pyw.QListWidgetItem):
+        # get beverage
         name = item.text().split()[0]
         beverage = self.getBeverageByName(self.mixDrink.m_neededBeverages, name)
         index = self.mixDrink.m_neededBeverages.index(beverage)
 
-        #remove beverage from selectedBeveregesList
+        # remove beverage from selectedBeveregesList
         self.selectedBeverageList.takeItem(index)
         self.mixDrink.m_neededBeverages.remove(beverage)
         fillPerc = self.mixDrink.getFillPercToId(beverage.m_id)
         self.mixDrink.m_fillpercToBvg.remove((beverage.m_id, fillPerc))
 
-        #add beverage back to availableList
+        # add beverage back to availableList
         self.availableBeverages.append(beverage)
         self.fillList(self.availableBeverageList, self.availableBeverages)
-
-
 
     def onAccept(self):
         res = 0
@@ -181,8 +174,8 @@ class newCocktailWindow(pyw.QWidget):
                 self,
                 "Error",
                 "Your Drink holds an insuffitioned amount.",
-                buttons= pyw.QMessageBox.Discard,
-                defaultButton= pyw.QMessageBox.Discard,
+                buttons=pyw.QMessageBox.Discard,
+                defaultButton=pyw.QMessageBox.Discard,
             )
             return
 
@@ -191,17 +184,15 @@ class newCocktailWindow(pyw.QWidget):
 
         if not db.saveCocktails(self.mixDrink):
             errorMessage = pyw.QMessageBox.critical(
-               self,
-               "Error",
-               "Name for Mixed Drink is already in use.",
-               buttons= pyw.QMessageBox.Discard,
-               defaultButton= pyw.QMessageBox.Discard,
-               )
+                self,
+                "Error",
+                "Name for Mixed Drink is already in use.",
+                buttons=pyw.QMessageBox.Discard,
+                defaultButton=pyw.QMessageBox.Discard,
+            )
             return
-        
+
         self.backBtn_onClick()
-
-
 
     def onCancel(self):
         self.backBtn_onClick()
@@ -217,7 +208,7 @@ class newCocktailWindow(pyw.QWidget):
 
 
 class EnterIntDialog(pyw.QDialog):
-    def __init__(self, title = "", label = ""):
+    def __init__(self, title="", label=""):
         super().__init__()
         self.cancel = False
 
@@ -245,7 +236,7 @@ class EnterIntDialog(pyw.QDialog):
 
     def exit(self):
         text = self.enterInt.text()
-        if text.isdigit()==True:
+        if text.isdigit() == True:
             self.int = int(text)
             print(self.int)
             self.accept()
@@ -255,6 +246,6 @@ class EnterIntDialog(pyw.QDialog):
     def reject(self):
         self.cancel = True
         super().reject()
-            
-    def setLable(self, text = ""):
+
+    def setLable(self, text=""):
         self.label.setText(text)
