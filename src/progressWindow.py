@@ -8,6 +8,8 @@ import scaleReader as sr
 import globals as go
 import time
 
+CF_LITER_ML 	= 1000
+CF_SEC_MILLISEC = 1000
 
 ## window to start and view the mixing progress
 #
@@ -180,7 +182,7 @@ class mixingProgressWindow(pyw.QWidget):
 
     # calculates and sends the timings which are needed to mix the given beverage for the given drinksize
     def mixBeverage(self, __bvgToMix: rtd.beverage, _multi: int):
-        cupSize = _multi * 1000
+        cupSize = _multi * CF_LITER_ML
         hopperSize = 30
         picoid = 0
         strToSend = ""
@@ -206,8 +208,8 @@ class mixingProgressWindow(pyw.QWidget):
     ):
         activationAmountFull = int((cupSize * (__fillperc / 100)) // hoppersize)
         # activationAmountRest = ((cupSize * (__fillperc / 100)) % hoppersize) / hoppersize
-        activationTimeFull = int(self.standardActivationTime * __bvg.m_flowspeed * 1000)
-        # activationTimeRest = int(self.standardActivationTime * __bvg.m_flowspeed * activationAmountRest * 1000)
+        activationTimeFull = int(self.standardActivationTime * __bvg.m_flowspeed * CF_SEC_MILLISEC)
+        # activationTimeRest = int(self.standardActivationTime * __bvg.m_flowspeed * activationAmountRest * CF_SEC_MILLISEC)
         temp = []
 
         if activationAmountFull == 0:
@@ -225,7 +227,7 @@ class mixingProgressWindow(pyw.QWidget):
 
     # calculates all the information needed to mix the given mixdrink and sends them to the corresponding picos
     def mixMixDrink(self, __mixDrinkToMix: rtd.mixDrinkInformation, __multip: int):
-        cupSize = __multip * 1000
+        cupSize = __multip * CF_LITER_ML
         hoppersize = 30
         timeList = []
         picoid = 0
