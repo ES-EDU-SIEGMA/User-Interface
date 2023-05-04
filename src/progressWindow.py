@@ -77,12 +77,16 @@ class mixingProgressWindow(pyw.QWidget):
         ##############################################################################
         #       COMBOBOX
         ##############################################################################
+        """
+        	These elementes represent the available drink sizes guest can select,
+        	but should not used further - have changed it for now ...
+        """
+        sizes: List[str] = ["0.1 L", "0.2 L", "0.3 L", "0.4 L", "0.5 L"]
         self.drinkSizeSelect = pyw.QComboBox(self)
-        self.drinkSizeSelect.insertItem(0, "0.1 L")
-        self.drinkSizeSelect.insertItem(1, "0.2 L")
-        self.drinkSizeSelect.insertItem(2, "0.3 L")
-        self.drinkSizeSelect.insertItem(3, "0.4 L")
-        self.drinkSizeSelect.insertItem(4, "0.5 L")
+        for index, size in enumerate(sizes):
+        	self.drinkSizeSelect.instertItem(index, size)
+        	
+       
         self.drinkSizeSelect.setStyleSheet(
             f"color: {css.m_standardTextColor}; background-color: {css.m_buttonBackgroundColor}; border: 1px solid {css.m_borderColor}; padding-top: 25%; padding-bottom: 25%; padding-left: 40%; padding-right: 40%; font-size: 14pt;"
         )
