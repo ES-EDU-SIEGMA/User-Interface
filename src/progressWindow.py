@@ -10,6 +10,9 @@ import time
 
 CF_LITER_ML 	= 1000
 CF_SEC_MILLISEC = 1000
+PERODIC_WEIGHT_CHECK_IN_SECONDS = 8
+HOPPER_SIZE_SMALL   = 30   
+HOPPER_SIZE_LARGE   = 40   
 
 ## window to start and view the mixing progress
 #
@@ -165,7 +168,7 @@ class mixingProgressWindow(pyw.QWidget):
             and self.m_mixing
         ):  # a little bit of breathing room
             if (
-                time.time() - timeval >= 8
+                time.time() - timeval >= PERODIC_WEIGHT_CHECK_IN_SECONDS
             ):  # check each 8 seconds if the value has changed
                 if currentWeightComp == currentWeight:  # value is the same -> quit
                     self.mixing = False
@@ -183,12 +186,12 @@ class mixingProgressWindow(pyw.QWidget):
     # calculates and sends the timings which are needed to mix the given beverage for the given drinksize
     def mixBeverage(self, __bvgToMix: rtd.beverage, _multi: int):
         cupSize = _multi * CF_LITER_ML
-        hopperSize = 30
+        hopperSize = HOPPER_SIZE_SMALL
         picoid = 0
         strToSend = ""
 
         if __bvgToMix.m_hopperid > 8:
-            hopperSize = 40
+            hopperSize = HOPPER_SIZE_LARGE
 
         hopperTimings = [0, 0, 0, 0]
 
@@ -228,14 +231,14 @@ class mixingProgressWindow(pyw.QWidget):
     # calculates all the information needed to mix the given mixdrink and sends them to the corresponding picos
     def mixMixDrink(self, __mixDrinkToMix: rtd.mixDrinkInformation, __multip: int):
         cupSize = __multip * CF_LITER_ML
-        hoppersize = 30
+        hoppersize = HOPPER_SIZE_SMALL
         timeList = []
         picoid = 0
 
         # calculate the time, each bvg needs and add them to the list
         for i in range(len(__mixDrinkToMix.m_neededBeverages)):
             if __mixDrinkToMix.m_neededBeverages[i].m_hopperid > 8:
-                hoppersize = 40
+                hoppersize = HOPPER_SIZE_LARGE
             timeList.append(
                 self.calcTimeForActivation(
                     __mixDrinkToMix.m_neededBeverages[i],
@@ -246,7 +249,7 @@ class mixingProgressWindow(pyw.QWidget):
                     hoppersize,
                 )
             )
-            hoppersize = 30
+            hoppersize = HOPPER_SIZE_SMALL
 
         cmdList = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
 
@@ -320,9 +323,9 @@ class mixingProgressWindow(pyw.QWidget):
     def getEstimatedWeight(self, __timeList):
         res = 0
         for i in range(len(__timeList)):
-            hoppersize = 30
+            hoppersize = HOPPER_SIZE_SMALL
             if __timeList[i][0] > 8:
-                hoppersize = 40
+                hoppersize = HOPPER_SIZE_LARGE
             for y in range(len(__timeList[i]) - 1):
                 res += hoppersize
         return res
