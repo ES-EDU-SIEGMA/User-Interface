@@ -1,6 +1,6 @@
 import time
 import RPi.GPIO as GPIO
-from libs import hx711 as HX711
+from libs.hx711 import HX711
 
 referenceUnit = 870298
 hx = None
