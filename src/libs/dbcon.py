@@ -1,5 +1,5 @@
 import psycopg2
-import runtimeData as rtd
+from libs import runtimeData as rtd
 
 
 # connection to databse which is running locally on the pi
