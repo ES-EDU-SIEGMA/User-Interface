@@ -1,8 +1,10 @@
 import PyQt5.QtWidgets as pyw
 import PyQt5.QtCore as pyc
-import cssTheme as css
-import runtimeData as rtd
-import dbcon as dbcon
+from libs import (
+    cssTheme as css,
+    runtimeData as rtd,
+    dbcon as dbcon,
+)
 
 
 # this button is used in the hopper overview
