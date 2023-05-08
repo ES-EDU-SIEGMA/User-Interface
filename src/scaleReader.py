@@ -1,9 +1,20 @@
+import os
 import time
 import RPi.GPIO as GPIO
-from src.hx711 import HX711
+
+USE_MOCK_HX711 = os.environ.get("USE_MOCK_HX711", False)
+
+if USE_MOCK_HX711:
+	import HX711_Mock
+	hx = HX711_Mock(5,6)
+else:
+	from src.hx711 import HX711
+	hx = None
+
+
 
 referenceUnit = 870298
-hx = None
+
 
 
 def close():
