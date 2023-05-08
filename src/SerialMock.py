@@ -48,9 +48,3 @@ class SerialMock:
 	def close(self) -> None:
 		pass
 		
-#from serialCom.py
-
-picoleft = None
-picoright = None
-picorondell = None
-
