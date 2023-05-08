@@ -1,6 +1,16 @@
-import serial
 import time
 import sys
+import os
+
+#set the environment variable USE_MOCK=True before executing the coe
+#export USE_MOCK=True (Linux)
+
+USE_MOCK = os.environ.get("USE_MOCK", False)
+
+if USE_MOCK:
+	import SerialMock
+else:
+	import serial
 
 picoleft = None
 picoright = None
@@ -96,6 +106,17 @@ def close_connection():
     global picorondell
     global running
 
+	#acm = usb
+	try:
+		if MOCK:
+			pico0 = SerialMock('/dev/ttyACM0_LEFT', standard_baudrate)
+			pico1 = SerialMock('/dev/ttyACM2_RIGHT', standard_baudrate)
+			pico2 = SerialMock('/dev/ttyACM3_RONDELL', standard_baudrate)
+		else:
+			pico0 = SerialMock('/dev/ttyACM0', standard_baudrate)
+			pico1 = SerialMock('/dev/ttyACM2', standard_baudrate)
+			pico2 = SerialMock('/dev/ttyACM3', standard_baudrate)
+			
     if running:
         try:
             picoleft.close()
