@@ -1,12 +1,14 @@
 import PyQt5.QtWidgets as pyw
 import PyQt5.QtCore as pyc
 import PyQt5.QtGui as pyg
-import runtimeData as rtd
-import cssTheme as css
-import serialCom as sc
-import scaleReader as sr
-import globals as go
 import time
+from libs import (
+    runtimeData as rtd,
+    cssTheme as css,
+    serialCom as sc,
+    scaleReader as sr,
+    globals as go,
+)
 
 
 ## window to start and view the mixing progress

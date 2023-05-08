@@ -1,9 +1,11 @@
 import PyQt5.QtWidgets as pyw
 import PyQt5.QtCore as pyc
 import PyQt5.QtGui as pyg
-import dbcon as db
-import runtimeData
-import cssTheme as css
+from libs import (
+    dbcon as db,
+    runtimeData,
+    cssTheme as css,
+)
 
 
 # This class implements the view to see which Mixeddrinks were already created, and what contents they hold on selection.

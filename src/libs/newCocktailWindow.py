@@ -1,10 +1,12 @@
 import PyQt5.QtWidgets as pyw
 import PyQt5.QtCore as pyc
 import PyQt5.QtGui as pyg
-import dbcon as db
-import runtimeData
-import cssTheme as css
-import createdCocktailsWindow as ccw
+from libs import (
+    dbcon as db,
+    runtimeData,
+    cssTheme as css,
+    createdCocktailsWindow as ccw,
+)
 
 
 class newCocktailWindow(pyw.QWidget):
