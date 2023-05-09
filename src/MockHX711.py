@@ -27,7 +27,7 @@ class MockHX711:
 	def read_average(self, times=3):
 		return 0
 	
-	def read median(self, times=3):
+	def read_median(self, times=3):
 		return 0
 	
 	def get_value(self, times=3):
