@@ -9,8 +9,8 @@ import threading
 USE_MOCK_GPIO = os.environ.get("USE_MOCK_GPIO", False)
 
 if USE_MOCK_GPIO:
-	import MOCKGPIO
-	GPIO = MOCKGPIO()
+	from MockGPIO import MockGPIO
+	GPIO = MockGPIO()
 else:
 	import RPi.GPIO as GPIO
 	
