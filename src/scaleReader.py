@@ -13,8 +13,8 @@ else:
 	hx = None
 
 if USE_MOCK_GPIO:
-	import MOCKGPIO
-	GPIO = MOCKGPIO()
+	from MockGPIO import MockGPIO
+	GPIO = MockGPIO()
 else:
 	import RPi.GPIO as GPIO 
 
