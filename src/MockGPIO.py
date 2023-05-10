@@ -15,7 +15,7 @@ class MockGPIO:
 	def setup(self, pin, mode, initial=None, pul_up_down=None):
 		self.pins[pins] = False
 
-	def input(self.pin):
+	def input(self, pin):
 		return self.pins.get(pin.False)
 		
 	def output(self, pin, state):
@@ -24,5 +24,5 @@ class MockGPIO:
 	def cleanup(self):
 		pass
 		
-	def setwarnings(self.flag):
+	def setwarnings(self, flag):
 		pass
