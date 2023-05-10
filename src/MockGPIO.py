@@ -8,8 +8,9 @@ class MockGPIO:
 	def __init__(self):
 		self.pins = {}
 		
-	def setmode(self.mode):
+	def setmode(self, mode):
 		pass
+		
 	# False = Low
 	def setup(self, pin, mode, initial=None, pul_up_down=None):
 		self.pins[pins] = False
