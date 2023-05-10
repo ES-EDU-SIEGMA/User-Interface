@@ -10,7 +10,7 @@ if USE_MOCK_HX711:
 	hx = MockHX711(5,6)
 else:
 	from hx711 import hx711
-	hx = None
+	hx = hx711(5,6)
 
 if USE_MOCK_GPIO:
 	from MockGPIO import MockGPIO
@@ -31,7 +31,7 @@ def __init__():
     global hx
     global referenceUnit
     GPIO.setwarnings(False)
-    hx = hx711(5, 6)
+    #hx = hx711(5, 6)
     hx.set_reading_format("MSB", "MSB")
     hx.set_reference_unit(referenceUnit)
     hx.reset()
