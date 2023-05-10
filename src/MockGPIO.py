@@ -16,7 +16,7 @@ class MockGPIO:
 		self.pins[pins] = False
 
 	def input(self, pin):
-		return self.pins.get(pin.False)
+		return self.pins.get(pin, False)
 		
 	def output(self, pin, state):
 		self.pins[pin] = state
