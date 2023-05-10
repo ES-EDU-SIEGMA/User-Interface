@@ -88,7 +88,7 @@ def __init__():
 
     try:
 		#acm = usb
-        if MOCK:
+        if USE_MOCK:
             pico0 = SerialMock('/dev/ttyACM0_LEFT', standard_baudrate)
             pico1 = SerialMock('/dev/ttyACM2_RIGHT', standard_baudrate)
             pico2 = SerialMock('/dev/ttyACM3_RONDELL', standard_baudrate)
