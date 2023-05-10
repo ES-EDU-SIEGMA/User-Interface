@@ -9,7 +9,7 @@ if USE_MOCK_HX711:
 	from MockHX711 import MockHX711
 	hx = MockHX711(5,6)
 else:
-	from hx711 import HX711
+	from hx711 import hx711
 	hx = None
 
 if USE_MOCK_GPIO:
