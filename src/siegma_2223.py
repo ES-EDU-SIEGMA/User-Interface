@@ -2,7 +2,6 @@ import PyQt5.QtWidgets as PyQtWidgets
 import PyQt5.QtCore as PyQtCore
 import sys
 import time
-import json
 import libs.json_data as JsonData
 import libs.progress as ProgressWindow
 import libs.new_cocktail as NewCocktailWindow

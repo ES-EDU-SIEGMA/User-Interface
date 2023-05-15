@@ -34,7 +34,7 @@ def get_drinks_on_hopper() -> list[int]:
 
     for drink_item in drink_list:
         if drink_list[drink_item]["hopper"] is not None:
-            result_hopper_ids.append(drink_item["id"])
+            result_hopper_ids.append(drink_list[drink_item]["id"])
 
     return result_hopper_ids
 
@@ -49,13 +49,18 @@ def determine_dispensable_drinks():
     for drink_item in drink_list:
 
         drink_list[drink_item]["dispensable"] = False
-        list_required_beverage_ids = list(list(zip(*drink_list[drink_item]["requiredDrinks"]))[0])
-        # list_required_drink_id is a list of all required drinkIDs for a drink
 
-        if all(drink_id in drink_ids_on_hopper for drink_id in list_required_beverage_ids):
-            # tests whether the list of required drinkIDs is a subset of the list of drinkIDs on the hopper
+        if drink_list[drink_item]["mix_drink"] is False:
+            if drink_list[drink_item]["hopper"] is not None:
+                drink_list[drink_item]["dispensable"] = True
 
-            drink_list[drink_item]["dispensable"] = True  # type:ignore
+        else:
+            list_required_beverage_ids = list(list(zip(*drink_list[drink_item]["requiredDrinks"]))[0])
+            # list_required_drink_id is a list of all required drinkIDs for a drink
+
+            if all(drink_id in drink_ids_on_hopper for drink_id in list_required_beverage_ids):
+                # tests whether the list of required drinkIDs is a subset of the list of drinkIDs on the hopper
+                drink_list[drink_item]["dispensable"] = True
 
     write_drink_list(drink_list)
     # updates the dispensable value for all drinks
@@ -81,7 +86,7 @@ def change_drink_id_on_hopper(hopper_id: int, new_drink_on_hopper_id: int):
         changes the hopper_id for the previous drink on the hopper to None and
         determines which drinks are dispensable """
 
-    drink_list = get_drink_list()
+    drink_list: dict = get_drink_list()
 
     for drink_item in drink_list:
 
