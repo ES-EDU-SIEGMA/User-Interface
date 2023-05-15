@@ -1,0 +1,356 @@
+{
+    "2": {
+        "id": 2,
+        "name": "Apple juice",
+        "hopper": 0,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "3": {
+        "id": 3,
+        "name": "Orange juice",
+        "hopper": 1,
+        "dispensable": true,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "4": {
+        "id": 4,
+        "name": "Mineral water",
+        "hopper": 2,
+        "dispensable": true,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "6": {
+        "id": 6,
+        "name": "Jaegermeister",
+        "hopper": 3,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "7": {
+        "id": 7,
+        "name": "Fanta",
+        "hopper": 4,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "8": {
+        "id": 8,
+        "name": "Coca Cola",
+        "hopper": 5,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "9": {
+        "id": 9,
+        "name": "Sprite",
+        "hopper": 6,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "10": {
+        "id": 10,
+        "name": "RedBull",
+        "hopper": 7,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "11": {
+        "id": 11,
+        "name": "Strawberry liqueur",
+        "hopper": 8,
+        "dispensable": false,
+        "flow_speed": 3,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "13": {
+        "id": 13,
+        "name": "Sugar syrup",
+        "hopper": 9,
+        "dispensable": false,
+        "flow_speed": 10,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "14": {
+        "id": 14,
+        "name": "Lime juice",
+        "hopper": 10,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "16": {
+        "id": 16,
+        "name": "Peach tea",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "17": {
+        "id": 17,
+        "name": "Citrus tea",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "18": {
+        "id": 18,
+        "name": "Bombay",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "19": {
+        "id": 19,
+        "name": "Jim Beam",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "20": {
+        "id": 20,
+        "name": "Jack Daniels",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "21": {
+        "id": 21,
+        "name": "Korn",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "22": {
+        "id": 22,
+        "name": "Gin",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "23": {
+        "id": 23,
+        "name": "Peppermint liqueur",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "24": {
+        "id": 24,
+        "name": "Woodruff liqueur",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "25": {
+        "id": 25,
+        "name": "Advocaat",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 7,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "26": {
+        "id": 26,
+        "name": "42er",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 3,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "27": {
+        "id": 27,
+        "name": "Milk",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 2,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "28": {
+        "id": 28,
+        "name": "Rum",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "30": {
+        "id": 30,
+        "name": "Banana juice",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 2,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "31": {
+        "id": 31,
+        "name": "Multivitamin juice",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 2,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "32": {
+        "id": 32,
+        "name": "Tequila",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 2,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "33": {
+        "id": 33,
+        "name": "Cointreau",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 2,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "5": {
+        "id": 5,
+        "name": "Vodka",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "29": {
+        "id": 29,
+        "name": "Cherry juice",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "100": {
+        "id": 100,
+        "name": "Cherry banana juice",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": null,
+        "mix_drink": true,
+        "requiredDrinks": [
+            [29,50],
+            [30,50]
+        ]
+    },
+    "101": {
+        "id": 101,
+        "name": "Apple spritzer",
+        "hopper": null,
+        "dispensable": true,
+        "flow_speed": null,
+        "mix_drink": true,
+        "requiredDrinks": [
+            [2,60],
+            [4,40]
+        ]
+    }
+}

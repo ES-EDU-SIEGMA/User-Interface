@@ -1,10 +1,9 @@
-import serial
+#import serial
 import time
-import sys
 
-picoleft = None
-picoright = None
-picorondell = None
+pico_left = None
+pico_right = None
+pico_rondell = None
 
 standard_baudrate = 115200
 
@@ -12,10 +11,10 @@ running = False
 
 
 # identify all picos
-def identifyPicos(pico0, pico1, pico2):
-    global picoleft
-    global picoright
-    global picorondell
+def identify_picos(pico0, pico1, pico2):
+    global pico_left
+    global pico_right
+    global pico_rondell
 
     for pico in [pico0, pico1, pico2]:
         n = 0
@@ -28,15 +27,15 @@ def identifyPicos(pico0, pico1, pico2):
             print(f"response was {pos}")
             if pos == b"LEFT\r\n":
                 print("found left")
-                picoleft = pico
+                pico_left = pico
                 break
             elif pos == b"RIGHT\r\n":
                 print("found right")
-                picoright = pico
+                pico_right = pico
                 break
             elif pos == b"RONDELL\r\n":
                 print("found rondell")
-                picorondell = pico
+                pico_rondell = pico
                 break
             elif pos == b"F\r\n":
                 print("error, trying again")
@@ -46,33 +45,33 @@ def identifyPicos(pico0, pico1, pico2):
                 raise Exception("pico sent unknown identifier")
 
         if (
-            picoleft is None and picoright is None and picorondell is None
+            pico_left is None and pico_right is None and pico_rondell is None
         ):  # not one was found
             raise Exception("pico could not be identified")
 
 
 # wait until all picos send their ready signal
-def waitUntilReady():
-    global picoleft
-    global picoright
-    global picorondell
+def wait_until_ready():
+    global pico_left
+    global pico_right
+    global pico_rondell
 
-    readyPicos = 0
+    ready_picos = 0
     print("waiting for ready signal")
-    while readyPicos < 3:
-        for pico in [picoright, picoleft, picorondell]:
+    while ready_picos < 3:
+        for pico in [pico_right, pico_left, pico_rondell]:
             resp = pico.readline()
             print(resp)
             if resp == b"CALIBRATED\r\n":
-                readyPicos += 1
+                ready_picos += 1
     print("all picos are setup")
 
 
 # initialize all the connections
 def __init__():
-    global picoleft
-    global picoright
-    global picorondell
+    global pico_left
+    global pico_right
+    global pico_rondell
     global running
     global standard_baudrate
 
@@ -81,8 +80,8 @@ def __init__():
         pico1 = serial.Serial("/dev/ttyACM1", standard_baudrate)
         pico2 = serial.Serial("/dev/ttyACM2", standard_baudrate)
 
-        identifyPicos(pico0, pico1, pico2)
-        waitUntilReady()
+        identify_picos(pico0, pico1, pico2)
+        wait_until_ready()
 
         running = True
 
@@ -91,40 +90,40 @@ def __init__():
 
 
 def close_connection():
-    global picoleft
-    global picoright
-    global picorondell
+    global pico_left
+    global pico_right
+    global pico_rondell
     global running
 
     if running:
         try:
-            picoleft.close()
-            picoright.close()
-            picorondell.close()
+            pico_left.close()
+            pico_right.close()
+            pico_rondell.close()
         except Exception as error:
             raise error
     else:
-        raise Exception("connection wasnt setup correctly")
+        raise Exception("connection wasn't setup correctly")
 
 
-# send the input to the pico with the correct id
-def send_msg(pico, input):
-    global picoleft
-    global picoright
-    global picorondell
+# send the input to the pico with the correct drink_to_add_id
+def send_msg(pico: int, input_msg: str):
+    global pico_left
+    global pico_right
+    global pico_rondell
     global running
 
     if running:
         try:
-            if pico == 0 and picoleft is not None:
-                picoleft.write(bytes(input, "utf-8"))
-            elif pico == 1 and picoright is not None:
-                picoright.write(bytes(input, "utf-8"))
-            elif pico == 2 and picorondell is not None:
-                picorondell.write(bytes(input, "utf-8"))
+            if pico == 0 and pico_left is not None:
+                pico_left.write(bytes(input_msg, "utf-8"))
+            elif pico == 1 and pico_right is not None:
+                pico_right.write(bytes(input_msg, "utf-8"))
+            elif pico == 2 and pico_rondell is not None:
+                pico_rondell.write(bytes(input_msg, "utf-8"))
             else:
                 raise Exception("index of pico is invalid")
         except Exception as error:
             raise error
     else:
-        raise Exception("connection wasnt setup correctly")
+        raise Exception("connection wasn't setup correctly")

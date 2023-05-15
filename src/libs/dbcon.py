@@ -1,32 +1,32 @@
 import psycopg2
-from libs import runtimeData as rtd
+from . import runtime_data as RuntimeData
 
 
-# connection to databse which is running locally on the pi
+# connection to database which is running locally on the pi
 # error handling is made via exceptions
 
 
 # finds the element in _list
 def find(element, _list):
     for i in range(len(_list)):
-        if element == _list[i].m_id:
+        if element == _list[i].beverage_id:
             return _list[i]
     return None
 
 
 # returns true if _element is in _list
-def isInList(_element, _list):
+def is_in_list(_element, _list):
     for i in range(len(_list)):
-        if _element == _list[i].m_id:
+        if _element == _list[i].beverage_id:
             return True
     return False
 
 
-# returns true if the beverage _needed is mixable with the current hopper configuration
+# returns true if the Beverage _needed is mixable with the current hopper configuration
 # false if not
 def mixable(_needed, _beverages):
     for i in range(len(_needed)):
-        if not isInList(_needed[i], _beverages):
+        if not is_in_list(_needed[i], _beverages):
             return False
     return True
 
@@ -36,7 +36,7 @@ txn = None
 connected = False
 
 
-## sets up the connection to the database
+# sets up the connection to the database
 def __init__():
     global db_con
     global txn
@@ -137,11 +137,11 @@ def changeBeverageOnHopper(currentID: int, toChangeID: int, hopperid: int):
     try:
         if currentID != -1:
             send_update(
-                f"update beverage set hopperid = NULL where id = {currentID} and hopperid = {hopperid};"
+                f"update Beverage set hopper_id = NULL where drink_to_add_id = {currentID} and hopper_id = {hopperid};"
             )
         if toChangeID != -1:
             send_update(
-                f"update beverage set hopperid = {hopperid} where id = {toChangeID}"
+                f"update Beverage set hopper_id = {hopperid} where drink_to_add_id = {toChangeID}"
             )
         commit()
     except Exception as error:
@@ -155,12 +155,12 @@ def getAllOtherBeverages():
 
     try:
         result = []
-        # return send_query('(select distinct name from mixeddrink as m, recipe as r where m.id = r.mixeddrinkid and r.beverageid in (select id from beverage where hopperid is not null)) union (select name from beverage where hopperid is not null) order by name asc;')
+        # return send_query('(select distinct name from is_mix_drink as m, recipe as r where m.drink_to_add_id = r.mixeddrinkid and r.beverageid in (select drink_to_add_id from Beverage where hopper_id is not null)) union (select name from Beverage where hopper_id is not null) order by name asc;')
         beveragesRes = send_query(
-            "select id, hopperid, name, flowspeed from beverage where hopperid is null;"
+            "select drink_to_add_id, hopper_id, name, flow_speed from Beverage where hopper_id is null;"
         )
         for i in range(len(beveragesRes)):
-            temp = rtd.beverage(
+            temp = RuntimeData.Beverage(
                 beveragesRes[i][0],
                 beveragesRes[i][1],
                 beveragesRes[i][2],
@@ -180,12 +180,12 @@ def getAllAvailableBeverages():
 
     try:
         result = []
-        # return send_query('(select distinct name from mixeddrink as m, recipe as r where m.id = r.mixeddrinkid and r.beverageid in (select id from beverage where hopperid is not null)) union (select name from beverage where hopperid is not null) order by name asc;')
+        # return send_query('(select distinct name from is_mix_drink as m, recipe as r where m.drink_to_add_id = r.mixeddrinkid and r.beverageid in (select drink_to_add_id from Beverage where hopper_id is not null)) union (select name from Beverage where hopper_id is not null) order by name asc;')
         beveragesRes = send_query(
-            "select id, hopperid, name, flowspeed from beverage where hopperid is not null order by hopperid asc;"
+            "select drink_to_add_id, hopper_id, name, flow_speed from Beverage where hopper_id is not null order by hopper_id asc;"
         )
         for i in range(len(beveragesRes)):
-            temp = rtd.beverage(
+            temp = RuntimeData.Beverage(
                 beveragesRes[i][0],
                 beveragesRes[i][1],
                 beveragesRes[i][2],
@@ -198,7 +198,7 @@ def getAllAvailableBeverages():
         raise error
 
 
-# returns a list of all the needed beverages for a mixdrink
+# returns a list of all the needed beverages for a mix_drink
 def getNeededBeverages(needed, allbeverages):
     # there are only ids in needed
     res = []
@@ -220,7 +220,7 @@ def getAllAvailableMixedDrinks():
 
         allGivenBeverages = getAllAvailableBeverages()
         allMixedDrinksRes = send_query(
-            "select m.id, m.name, r.beverageid, r.fillingamount from mixeddrink as m, recipe as r where m.id = r.mixeddrinkid;"
+            "select m.drink_to_add_id, m.name, r.beverageid, r.fillingamount from is_mix_drink as m, recipe as r where m.drink_to_add_id = r.mixeddrinkid;"
         )
         if len(allMixedDrinksRes) == 0:
             return result
@@ -237,7 +237,7 @@ def getAllAvailableMixedDrinks():
                 temp = getNeededBeverages(needed, allGivenBeverages)
                 if temp != []:  # drink is mixable
                     result.append(
-                        rtd.mixDrinkInformation(
+                        RuntimeData.MixDrinkInformation(
                             currentID, currentName, temp, fillamounts
                         )
                     )
@@ -253,7 +253,7 @@ def getAllAvailableMixedDrinks():
         tempLast = getNeededBeverages(needed, allGivenBeverages)
         if tempLast != []:
             result.append(
-                rtd.mixDrinkInformation(currentID, currentName, tempLast, fillamounts)
+                RuntimeData.MixDrinkInformation(currentID, currentName, tempLast, fillamounts)
             )
         return result
 
@@ -261,29 +261,29 @@ def getAllAvailableMixedDrinks():
         raise error
 
 
-# returns a list of all mixeddrinks stored in the database as a list of mixDrinkInformation objects
-def getAllMixedDrinks() -> list[rtd.mixDrinkInformation]:
+# returns a list of all mixeddrinks stored in the database as a list of mix_drink_information objects
+def getAllMixedDrinks() -> list[RuntimeData.MixDrinkInformation]:
     global connected
     global txn
 
     try:
         result = []
-        mixeddrinks = send_query("select id, name from mixeddrink")
+        mixeddrinks = send_query("select drink_to_add_id, name from is_mix_drink")
 
         for mixeddrink in mixeddrinks:
-            drink = rtd.mixDrinkInformation(mixeddrink[0], mixeddrink[1], [], [])
+            drink = RuntimeData.MixDrinkInformation(mixeddrink[0], mixeddrink[1], [], [])
             res = send_query(
                 f"select beverageid, fillingamount from recipe where mixeddrinkid = {mixeddrink[0]}"
             )
             for r in res:
                 b = send_query(
-                    f"select id, hopperid, name, flowspeed from beverage where id = {r[0]}"
+                    f"select drink_to_add_id, hopper_id, name, flow_speed from Beverage where drink_to_add_id = {r[0]}"
                 )
                 beverage = b[0]
-                drink.m_neededBeverages.append(
-                    rtd.beverage(beverage[0], beverage[1], beverage[2], beverage[3])
+                drink.mix_drink_needed_beverages.append(
+                    RuntimeData.Beverage(beverage[0], beverage[1], beverage[2], beverage[3])
                 )
-                drink.m_fillpercToBvg.append((beverage[0], r[1]))
+                drink.mix_drink_fill_perc_beverages.append((beverage[0], r[1]))
             result.append(drink)
 
         return result
@@ -292,28 +292,28 @@ def getAllMixedDrinks() -> list[rtd.mixDrinkInformation]:
         raise error
 
 
-# checks if a mixdrink with the given already exists in the database
+# checks if a mix_drink with the given already exists in the database
 def isNameAvailable(__name: str):
-    res = send_query(f"select name from mixeddrink where name = '{__name}';")
+    res = send_query(f"select name from is_mix_drink where name = '{__name}';")
     return len(res) == 0
 
 
 # inserts the given cocktail into the database
-def saveCocktails(toSave: rtd.mixDrinkInformation):
+def saveCocktails(toSave: RuntimeData.MixDrinkInformation):
     global connected
     global txn
 
     try:
-        # insert new mixdrink into mixeddrinks table
-        if isNameAvailable(toSave.m_name):
-            # insert new mixdrink and get the given id
+        # insert new mix_drink into mixeddrinks table
+        if isNameAvailable(toSave.mix_drink_name):
+            # insert new mix_drink and get the given drink_to_add_id
             res = send_query(
-                f"insert into mixeddrink(name) values('{toSave.m_name}') returning id;"
+                f"insert into is_mix_drink(name) values('{toSave.mix_drink_name}') returning drink_to_add_id;"
             )
             # insert recipe
-            for i in range(len(toSave.m_neededBeverages)):
+            for i in range(len(toSave.mix_drink_needed_beverages)):
                 send_update(
-                    f"insert into recipe(beverageid, mixeddrinkid, fillingamount) values({toSave.m_neededBeverages[i].m_id}, {res[0][0]}, {toSave.getFillPercToId(toSave.m_neededBeverages[i].m_id)});"
+                    f"insert into recipe(beverageid, mixeddrinkid, fillingamount) values({toSave.mix_drink_needed_beverages[i].beverage_id}, {res[0][0]}, {toSave.get_fill_perc(toSave.mix_drink_needed_beverages[i].beverage_id)});"
                 )
             # commit the changes
             commit()
