@@ -1,5 +1,5 @@
 import psycopg2
-import runtimeData as rtd
+from libs import runtimeData as rtd
 
 
 # connection to databse which is running locally on the pi
@@ -45,7 +45,7 @@ def __init__():
     try:
         db_con = psycopg2.connect(
             host="localhost",
-            database="drinkmixingmachine",
+            database="siegmadb",
             user="admin",
             password="admin",
             port="5432",

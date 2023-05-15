@@ -1,23 +1,7 @@
 import os
 import time
-
-
-USE_MOCK_HX711 = os.environ.get("USE_MOCK_HX711", False)
-USE_MOCK_GPIO = os.environ.get("USE_MOCK_GPIO", False)
-
-if USE_MOCK_HX711:
-	from MockHX711 import MockHX711
-	hx = MockHX711(5,6)
-else:
-	from hx711 import hx711
-	hx = hx711(5,6)
-
-if USE_MOCK_GPIO:
-	from MockGPIO import MockGPIO
-	GPIO = MockGPIO()
-else:
-	import RPi.GPIO as GPIO 
-
+import RPi.GPIO as GPIO
+from libs.hx711 import HX711
 
 referenceUnit = 870298
 

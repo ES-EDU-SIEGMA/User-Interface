@@ -1,25 +1,19 @@
 
 import PyQt5.QtWidgets as pyw
 import PyQt5.QtCore as pyc
-import runtimeData as rtd
-import serialCom as sc
-#from src import (
-#    dbcon as dbcon,
-#    cssTheme as css,
-#    editHoppersWindow as ehw,
-#    progressWindow as spw,
-#    globals as go,
-#    newCocktailWindow as ncw,
-#)
-import dbcon as dbcon
-import cssTheme as css
-import editHoppersWindow as ehw
-import progressWindow as spw
-import globals as go
-import newCocktailWindow as ncw
-import scaleReader as sr
 import sys
 import time
+from libs import (
+    dbcon as dbcon,
+    progressWindow as spw,
+    newCocktailWindow as ncw,
+    editHoppersWindow as ehw,
+    cssTheme as css,
+    globals as go,
+    runtimeData as rtd,
+    serialCom as sc,
+    scaleReader as sr,
+)
 
 
 ## @package siegma2223
