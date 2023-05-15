@@ -1,6 +1,16 @@
-import serial
 import time
 import sys
+import os
+
+#set the environment variable USE_MOCK=True before executing the coe
+#export USE_MOCK=True (Linux)
+
+USE_MOCK = os.environ.get("USE_MOCK", False)
+
+if USE_MOCK:
+	import SerialMock
+else:
+	import serial
 
 picoleft = None
 picoright = None
