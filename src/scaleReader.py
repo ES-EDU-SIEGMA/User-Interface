@@ -1,6 +1,6 @@
 import time
 import sys
-
+import os
 
 
 USE_MOCK_GPIO = os.environ.get("USE_MOCK_GPIO", False)
