@@ -10,4 +10,7 @@ __all__ = [
     "editHoppersWindow",
     "newCocktailWindow",
     "progressWindow",
+    "SerialMock",
+    "MockHX711",
+    "MockGPIO",
 ]
