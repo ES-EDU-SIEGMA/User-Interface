@@ -60,7 +60,7 @@ class WelcomeWindow(PyQtWidgets.QWidget):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("SIEGMA_2223 - Test")
+        self.setWindowTitle("SIEGMA_2223 - Test")  # I don't think u can see the title maybe remove title
         self.resize(1200, 800)
         self.showFullScreen()
 
@@ -159,7 +159,7 @@ class WelcomeWindow(PyQtWidgets.QWidget):
         for drink_button_position in reversed(range(self.scrollAreaVBox.count())):
             self.scrollAreaVBox.takeAt(drink_button_position).widget().setParent(None)
 
-    # Fills the allDrinksFrame with the mixable beverages and mix_drinks
+    # Fills the all_drinks_frame with the mixable beverages and mix_drinks
     #
     #  uses a database call to get the current available beverages and mix_drinks
     def update_quick_select(self):

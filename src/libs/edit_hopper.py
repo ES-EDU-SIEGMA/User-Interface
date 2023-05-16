@@ -250,7 +250,7 @@ class EditHoppers(PyQtWidgets.QWidget):
         self.m_change_drink_window: ChangeDrinkWindow
         self.parentWidget: PyQtWidgets.QWidget = __parent
         self.setWindowTitle("Edit Hopper Occupancy")
-        self.runtime_data: RuntimeData.RuntimeData = __runtime_data
+        self.runtime_data: RuntimeData.RuntimeData = __runtime_data  # important
         self.resize(1200, 800)
         self.showFullScreen()
 

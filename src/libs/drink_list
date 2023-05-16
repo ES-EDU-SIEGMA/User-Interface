@@ -1,9 +1,20 @@
 {
-    "2": {
-        "id": 2,
-        "name": "Apple juice",
+    "1": {
+        "id": 1,
+        "name": "Apple_juice",
         "hopper": null,
         "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "2": {
+        "id": 2,
+        "name": "Orange_juice",
+        "hopper": 3,
+        "dispensable": true,
         "flow_speed": 1,
         "mix_drink": false,
         "requiredDrinks": [
@@ -12,9 +23,9 @@
     },
     "3": {
         "id": 3,
-        "name": "Orange juice",
-        "hopper": null,
-        "dispensable": false,
+        "name": "Mineral_water",
+        "hopper": 2,
+        "dispensable": true,
         "flow_speed": 1,
         "mix_drink": false,
         "requiredDrinks": [
@@ -23,8 +34,19 @@
     },
     "4": {
         "id": 4,
-        "name": "Mineral water",
-        "hopper": 2,
+        "name": "Jaegermeister",
+        "hopper": 4,
+        "dispensable": true,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "5": {
+        "id": 5,
+        "name": "Fanta",
+        "hopper": 5,
         "dispensable": true,
         "flow_speed": 1,
         "mix_drink": false,
@@ -34,9 +56,9 @@
     },
     "6": {
         "id": 6,
-        "name": "Jaegermeister",
-        "hopper": null,
-        "dispensable": false,
+        "name": "Coca_Cola",
+        "hopper": 6,
+        "dispensable": true,
         "flow_speed": 1,
         "mix_drink": false,
         "requiredDrinks": [
@@ -45,9 +67,9 @@
     },
     "7": {
         "id": 7,
-        "name": "Fanta",
-        "hopper": null,
-        "dispensable": false,
+        "name": "Sprite",
+        "hopper": 7,
+        "dispensable": true,
         "flow_speed": 1,
         "mix_drink": false,
         "requiredDrinks": [
@@ -56,9 +78,9 @@
     },
     "8": {
         "id": 8,
-        "name": "Coca Cola",
-        "hopper": null,
-        "dispensable": false,
+        "name": "RedBull",
+        "hopper": 8,
+        "dispensable": true,
         "flow_speed": 1,
         "mix_drink": false,
         "requiredDrinks": [
@@ -67,10 +89,10 @@
     },
     "9": {
         "id": 9,
-        "name": "Sprite",
-        "hopper": null,
-        "dispensable": false,
-        "flow_speed": 1,
+        "name": "Strawberry_liqueur",
+        "hopper": 9,
+        "dispensable": true,
+        "flow_speed": 3,
         "mix_drink": false,
         "requiredDrinks": [
             []
@@ -78,7 +100,29 @@
     },
     "10": {
         "id": 10,
-        "name": "RedBull",
+        "name": "Sugar_syrup",
+        "hopper": 10,
+        "dispensable": true,
+        "flow_speed": 10,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "11": {
+        "id": 11,
+        "name": "Lime_juice",
+        "hopper": 11,
+        "dispensable": true,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "12": {
+        "id": 12,
+        "name": "Peach_tea",
         "hopper": null,
         "dispensable": false,
         "flow_speed": 1,
@@ -87,23 +131,12 @@
             []
         ]
     },
-    "11": {
-        "id": 11,
-        "name": "Strawberry liqueur",
-        "hopper": null,
-        "dispensable": false,
-        "flow_speed": 3,
-        "mix_drink": false,
-        "requiredDrinks": [
-            []
-        ]
-    },
     "13": {
         "id": 13,
-        "name": "Sugar syrup",
+        "name": "Citrus_tea",
         "hopper": null,
         "dispensable": false,
-        "flow_speed": 10,
+        "flow_speed": 1,
         "mix_drink": false,
         "requiredDrinks": [
             []
@@ -111,7 +144,18 @@
     },
     "14": {
         "id": 14,
-        "name": "Lime juice",
+        "name": "Bombay",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 1,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "15": {
+        "id": 15,
+        "name": "Jim_Beam",
         "hopper": null,
         "dispensable": false,
         "flow_speed": 1,
@@ -122,7 +166,7 @@
     },
     "16": {
         "id": 16,
-        "name": "Peach tea",
+        "name": "Jack_Daniels",
         "hopper": null,
         "dispensable": false,
         "flow_speed": 1,
@@ -133,7 +177,7 @@
     },
     "17": {
         "id": 17,
-        "name": "Citrus tea",
+        "name": "Korn",
         "hopper": null,
         "dispensable": false,
         "flow_speed": 1,
@@ -144,7 +188,7 @@
     },
     "18": {
         "id": 18,
-        "name": "Bombay",
+        "name": "Gin",
         "hopper": null,
         "dispensable": false,
         "flow_speed": 1,
@@ -155,7 +199,7 @@
     },
     "19": {
         "id": 19,
-        "name": "Jim Beam",
+        "name": "Peppermint_liqueur",
         "hopper": null,
         "dispensable": false,
         "flow_speed": 1,
@@ -166,7 +210,7 @@
     },
     "20": {
         "id": 20,
-        "name": "Jack Daniels",
+        "name": "Woodruff_liqueur",
         "hopper": null,
         "dispensable": false,
         "flow_speed": 1,
@@ -177,10 +221,10 @@
     },
     "21": {
         "id": 21,
-        "name": "Korn",
+        "name": "Advocaat",
         "hopper": null,
         "dispensable": false,
-        "flow_speed": 1,
+        "flow_speed": 7,
         "mix_drink": false,
         "requiredDrinks": [
             []
@@ -188,10 +232,10 @@
     },
     "22": {
         "id": 22,
-        "name": "Gin",
+        "name": "42er",
         "hopper": null,
         "dispensable": false,
-        "flow_speed": 1,
+        "flow_speed": 3,
         "mix_drink": false,
         "requiredDrinks": [
             []
@@ -199,10 +243,10 @@
     },
     "23": {
         "id": 23,
-        "name": "Peppermint liqueur",
+        "name": "Milk",
         "hopper": null,
         "dispensable": false,
-        "flow_speed": 1,
+        "flow_speed": 2,
         "mix_drink": false,
         "requiredDrinks": [
             []
@@ -210,7 +254,7 @@
     },
     "24": {
         "id": 24,
-        "name": "Woodruff liqueur",
+        "name": "Rum",
         "hopper": null,
         "dispensable": false,
         "flow_speed": 1,
@@ -221,10 +265,10 @@
     },
     "25": {
         "id": 25,
-        "name": "Advocaat",
+        "name": "Banana_juice",
         "hopper": null,
         "dispensable": false,
-        "flow_speed": 7,
+        "flow_speed": 2,
         "mix_drink": false,
         "requiredDrinks": [
             []
@@ -232,10 +276,10 @@
     },
     "26": {
         "id": 26,
-        "name": "42er",
+        "name": "Multivitamin_juice",
         "hopper": null,
         "dispensable": false,
-        "flow_speed": 3,
+        "flow_speed": 2,
         "mix_drink": false,
         "requiredDrinks": [
             []
@@ -243,7 +287,7 @@
     },
     "27": {
         "id": 27,
-        "name": "Milk",
+        "name": "Tequila",
         "hopper": null,
         "dispensable": false,
         "flow_speed": 2,
@@ -254,7 +298,18 @@
     },
     "28": {
         "id": 28,
-        "name": "Rum",
+        "name": "Cointreau",
+        "hopper": null,
+        "dispensable": false,
+        "flow_speed": 2,
+        "mix_drink": false,
+        "requiredDrinks": [
+            []
+        ]
+    },
+    "29": {
+        "id": 29,
+        "name": "Vodka",
         "hopper": null,
         "dispensable": false,
         "flow_speed": 1,
@@ -265,10 +320,10 @@
     },
     "30": {
         "id": 30,
-        "name": "Banana juice",
+        "name": "Cherry_juice",
         "hopper": null,
         "dispensable": false,
-        "flow_speed": 2,
+        "flow_speed": 1,
         "mix_drink": false,
         "requiredDrinks": [
             []
@@ -276,69 +331,14 @@
     },
     "31": {
         "id": 31,
-        "name": "Multivitamin juice",
-        "hopper": null,
-        "dispensable": false,
-        "flow_speed": 2,
-        "mix_drink": false,
-        "requiredDrinks": [
-            []
-        ]
-    },
-    "32": {
-        "id": 32,
-        "name": "Tequila",
-        "hopper": null,
-        "dispensable": false,
-        "flow_speed": 2,
-        "mix_drink": false,
-        "requiredDrinks": [
-            []
-        ]
-    },
-    "33": {
-        "id": 33,
-        "name": "Cointreau",
-        "hopper": null,
-        "dispensable": false,
-        "flow_speed": 2,
-        "mix_drink": false,
-        "requiredDrinks": [
-            []
-        ]
-    },
-    "5": {
-        "id": 5,
-        "name": "Vodka",
-        "hopper": null,
-        "dispensable": false,
-        "flow_speed": 1,
-        "mix_drink": false,
-        "requiredDrinks": [
-            []
-        ]
-    },
-    "29": {
-        "id": 29,
-        "name": "Cherry juice",
-        "hopper": null,
-        "dispensable": false,
-        "flow_speed": 1,
-        "mix_drink": false,
-        "requiredDrinks": [
-            []
-        ]
-    },
-    "100": {
-        "id": 100,
-        "name": "Cherry banana juice",
+        "name": "Cherry_banana_juice",
         "hopper": null,
         "dispensable": false,
         "flow_speed": null,
         "mix_drink": true,
         "requiredDrinks": [
             [
-                29,
+                25,
                 50
             ],
             [
@@ -347,20 +347,20 @@
             ]
         ]
     },
-    "101": {
+    "32": {
         "id": 101,
-        "name": "Apple spritzer",
+        "name": "Apple_spritzer",
         "hopper": null,
         "dispensable": false,
         "flow_speed": null,
         "mix_drink": true,
         "requiredDrinks": [
             [
-                2,
+                1,
                 60
             ],
             [
-                4,
+                3,
                 40
             ]
         ]

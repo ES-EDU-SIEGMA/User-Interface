@@ -102,6 +102,18 @@ def change_drink_id_on_hopper(hopper_id: int, new_drink_on_hopper_id: int):
     determine_dispensable_drinks()
 
 
+def get_highest_id() -> int:
+    drink_list: dict = get_drink_list()
+    highest_id: int = 0
+    # assumes that the drink_list isn't empty
+
+    for drink_id in drink_list:
+        if drink_list[drink_id]["id"] > highest_id:
+            highest_id = drink_list[drink_id]["id"]
+
+    return highest_id
+
+
 def reformat_json():
     """ reformat the jsonfile after manually changing it for aesthetic purposes """
 
