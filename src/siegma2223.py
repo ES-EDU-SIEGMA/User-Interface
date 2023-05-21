@@ -11,6 +11,10 @@ import scaleReader as sr
 import sys
 import globals as go
 import time
+import logging
+import traceback
+
+logging.basicConfig(filename="error_log.txt", level=logging.ERROR)
 
 ## @package siegma2223
 #   This Code implements the main landing page of the application
@@ -255,6 +259,8 @@ if __name__ == '__main__':
         m_startPage = welcomeWindow()
         sys.exit(app.exec())
     except Exception as error:
+        logging.error("Error", exc_info=True)
         m_error = errorWindow(error)
         sys.exit(app.exec())
+        
         
