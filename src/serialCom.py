@@ -8,7 +8,7 @@ import os
 USE_MOCK = os.environ.get("USE_MOCK", False)
 
 if USE_MOCK:
-	import SerialMock
+	from SerialMock import SerialMock
 else:
 	import serial
 
