@@ -7,7 +7,7 @@ This class is to simulate the communication with the picos
 STANDARD_BAUDRATE = 115200
 
 class SerialMock:
-	def __init__(serf, port: str, baudrate: int):
+	def __init__(self, port: str, baudrate: int):
 		self.port = port
 		self.baudrate = baudrate 
 		self.responses = {
