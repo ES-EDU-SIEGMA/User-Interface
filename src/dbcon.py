@@ -31,7 +31,7 @@ connected = False
 
 ## sets up the connection to the database
 #def __init__():
-def init_db_connection()
+def init_db_connection():
     global db_con
     global txn
     global connected
