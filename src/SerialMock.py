@@ -38,12 +38,15 @@ class SerialMock:
 	def write(self, input_data) -> None: 
 		if input_data == b'i\n':
 			if "LEFT" in self.port:
-				self.buffer.append(self.responses["LEFT", "CALIBRATED"])				
+				self.buffer.append(self.responses["LEFT"])
+				self.buffer.append(self.responses["CALIBRATED"])
 			elif "RIGHT" in self.port:
-				self.buffer.append(self.responses["RIGHT", "CALIBRATED"])				
+				self.buffer.append(self.responses["RIGHT"])
+				self.buffer.append(self.responses["CALIBRATED"])
 			elif "RONDELL" in self.port:
-				self.buffer.append(self.responses["RONDELL", "CALIBRATED"])
-					
+				self.buffer.append(self.responses["RONDELL"])
+				self.buffer.append(self.responses["CALIBRATED"])
+
 	
 	def close(self) -> None:
 		pass
