@@ -1,10 +1,11 @@
 from json_data import data_storage as Data
-
+# todo add remaining amount to beverage and remember those changes
 
 class Beverage:
+    """ Beverage represents a drink that can be put on the hopper. Recipe is only used by RuntimeData"""
     __id: int
     __name: str
-    __hopper_id: int
+    __hopper_id: int | None
     __flow_speed: int
 
     def __init__(self, __id: int, __name: str, __hopper_id: int, __flow_speed: int):
@@ -30,6 +31,7 @@ class Beverage:
 
 
 class Recipe:
+    """ Recipe represents a drink that is mixed with multiple beverages. Recipe is only used by RuntimeData """
     __id: int
     __name: str
     __needed_beverages_id: list[Beverage]
@@ -63,6 +65,7 @@ class Recipe:
 
 
 class RuntimeData:
+    """RuntimeData is an aggregation of beverages and recipes"""
     __beverages: list[Beverage] = None
     __recipes: list[Recipe] = None
     __beverages_on_hopper: list[Beverage] = None
@@ -79,6 +82,7 @@ class RuntimeData:
         self.__update_recipes_dispensable()
 
     def __update_beverages(self):
+        """ __update_beverages() is """
         __return_list: list[Beverage] = []
         __beverage_data: list[list[str]] = self.__data_storage.get_beverages()
         for __beverage in __beverage_data:
@@ -141,7 +145,6 @@ class RuntimeData:
 
             __reult.append(Beverage())
             # todo fix that
-
 
     def get_recipes(self) -> list[Recipe]:
         return self.__recipes

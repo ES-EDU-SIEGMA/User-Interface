@@ -102,9 +102,46 @@ class EditHopper(PyQtWidgets.QWidget):
             # todo add name to Create...button and change that class
 
 
+class CurrentBeverageButton(PyQtWidgets.QPushButton):
+    # todo need to finish this
+    button_beverage_name: str
+
+    def __init__(self, __parent, __some_kind_of_name):
+        super().__init__(__some_kind_of_name, __parent)
+        self.parentWidget = __parent
+        self.button_beverage_name = __some_kind_of_name
+        self.clicked.connect(lambda: __parent.do_something_click_hopper)
+        self.setStyleSheet()  # setSomeStyle
+        self.setText(self.button_beverage_name)
+
+class BeveragePushButton(PyQtWidgets.QPushButton):
+    beverage: RuntimeData.Beverage
+    beverage_id = -1
+
+    def __init__(
+            self,
+            __parent: PyQtWidgets.QWidget,  # parent is main
+            __beverage: RuntimeData.Beverage,
+            __current_beverage: int,
+            hopper_id: int, ):
+        super().__init__()
+        self.parentWidget = __parent
+        self.setStyleSheet(
+            f"background-color: {Css.m_second_button_background_color};"
+            f"padding-top: 70%; padding-bottom: 70%; color: {Css.m_standard_text_color}; margin: 5%;")
+
+        self.clicked.connect(
+            lambda: __parent.drink_button_on_click(
+                __current_beverage, __beverage.beverage_id, hopper_id))
+
+        self.beverage = __beverage
+        self.setText(self.beverage.beverage_name)
+        self.beverage_id = self.beverage.beverage_id
+
+
+
 
 class CurrentBeverageButton(PyQtWidgets.QPushButton):
-    current_beverage_on_hopper: RuntimeData.Beverage
 
     def __init__(
             self, __parent: PyQtWidgets.QWidget, __current_beverage_on_hopper: RuntimeData.Beverage, __hopper_id: int
