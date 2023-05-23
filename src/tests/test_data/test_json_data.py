@@ -1,5 +1,5 @@
 import unittest
-from ..libs import json_data as JsonData
+from libs import json_data as JsonData
 
 
 def test_correct_json_dict():

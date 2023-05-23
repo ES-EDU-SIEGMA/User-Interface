@@ -118,7 +118,7 @@ selection_window_button_mix_drink_font_size = "11pt"
 selection_window_button_mix_drink_font = "Arial"
 selection_window_button_mix_drink_margin = "5%"
 
-style_sw_beverage_button: str = \
+style_selection_window_drink_button: str = \
     f"background-color: {selection_window_button_beverage_background_color};"\
     f"color: {selection_window_button_beverage_text_color};" \
     f"padding-top: {selection_window_button_beverage_padding_top};" \

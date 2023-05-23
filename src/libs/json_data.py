@@ -1,6 +1,6 @@
 import json
-#from . import runtime_data as RuntimeData
 import runtime_data as RuntimeData
+#import runtime_data as RuntimeData
 
 
 def get_drink_list() -> dict:
