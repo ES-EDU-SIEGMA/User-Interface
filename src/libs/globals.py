@@ -1,1 +1,0 @@
-standardActivationTime = 5

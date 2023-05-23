@@ -40,10 +40,10 @@ window which lets you change the occupation of the hoppers and the
 highest one will let you create new cocktails.
 
 Adding new beverages:  
-Sadly there is no easy way to add a new beverage via the GUI. So you have to add them manually to the database. The
+Sadly there is no easy way to add a new Beverage via the GUI. So you have to add them manually to the database. The
 beverages are stored the table "drinkmixingmachine.beverages".
-There you have to manually insert them, the information needed are the name of the beverage you are adding and the
-flowspeed of the beverage. The flowspeed tells
+There you have to manually insert them, the information needed are the name of the Beverage you are adding and the
+flowspeed of the Beverage. The flowspeed tells
 the application how viscous the beverages is you are currently adding. This is a very important information, because if
 the multiplier is too low, you are going to have
 way less mixed into your drink then you wanted. A flowspeed of 1 corresponses to the flowspeed of tapwater. This value
