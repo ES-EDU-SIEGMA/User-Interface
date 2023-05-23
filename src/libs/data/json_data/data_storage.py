@@ -9,15 +9,15 @@ class DataStorage:
 
     def __update_drink_dict(self):
         try:
-            with open("drink_list", "r") as jsonFile:
+            with open("drink_list.json", "r") as jsonFile:
                 self.__json_drink_dict = json.load(jsonFile)
         except Exception as error:
             print(error)
             return {}
 
-########################################################################################################################
-#       The following methods are used to return data to the caller
-########################################################################################################################
+    ########################################################################################################################
+    #       The following methods are used to return data to the caller
+    ########################################################################################################################
     def get_beverages(self) -> list[list[str]]:
         __result_list: list[list[str]] = []
         for __drink_id in self.__json_drink_dict:
@@ -59,19 +59,25 @@ class DataStorage:
         return __result_list
 
     def __create_beverage_as_list(self, __drink_id: str) -> list[str]:
-        __result_beverage: list[str] = [self.__json_drink_dict[__drink_id]["id"],
-                                        self.__json_drink_dict[__drink_id]["name"],
-                                        self.__json_drink_dict[__drink_id]["hopper_id"],
-                                        self.__json_drink_dict[__drink_id]["flow_speed"]]
+        __result_beverage: list[str] = [
+            self.__json_drink_dict[__drink_id]["id"],
+            self.__json_drink_dict[__drink_id]["name"],
+            self.__json_drink_dict[__drink_id]["hopper_id"],
+            self.__json_drink_dict[__drink_id]["flow_speed"],
+        ]
         return __result_beverage
 
     def __create_recipe_as_list(self, __drink_id: str) -> list[str]:
-        __result_recipe: list[str] = [self.__json_drink_dict[__drink_id]["id"],
-                                      self.__json_drink_dict[__drink_id]["name"],
-                                      self.__needed_beverages_id_to_string(
-                                            self.__json_drink_dict[__drink_id]["needed_beverages"]),
-                                      self.__fill_perc_beverages_to_string(
-                                            self.__json_drink_dict[__drink_id]["fill_perc"])]
+        __result_recipe: list[str] = [
+            self.__json_drink_dict[__drink_id]["id"],
+            self.__json_drink_dict[__drink_id]["name"],
+            self.__needed_beverages_id_to_string(
+                self.__json_drink_dict[__drink_id]["needed_beverages"]
+            ),
+            self.__fill_perc_beverages_to_string(
+                self.__json_drink_dict[__drink_id]["fill_perc"]
+            ),
+        ]
         return __result_recipe
 
     @staticmethod
@@ -93,6 +99,7 @@ class DataStorage:
 ########################################################################################################################
 #       the following methods are used to change data
 ########################################################################################################################
+
 
 def write_drink_list(new_drink_list: dict):
     try:

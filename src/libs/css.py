@@ -1,30 +1,19 @@
 font = "Arial"
-border_radius = "10"
-# "#1e1c23" old
-m_main_background_color = "#303030"
-# "#2b2b2b" old
-m_button_background_color = "#801336"
+borderRadius = "10"
+#"#1e1c23" old
+m_mainBackgroundColor = "#303030"
+#"#2b2b2b" old 
+m_buttonBackgroundColor = "#801336"
 # "801336" old
-m_second_button_background_color = "#c72c41"
-# "#ffffff" old
-m_border_color = "#610a32"
-# "#ffffff" old
-m_standard_text_color = "#ffffff"
+m_sndButtonBackgroundColor = "#c72c41"
+#"#ffffff" old
+m_borderColor = "#610a32"
+#"#ffffff" old
+m_standardTextColor = "#ffffff"
 
 #############################
 # New CocktailWindow Styles #
 #############################
-
-
-css_style = {
-    "font": font,
-    "border_radius": border_radius,
-    "main_background_color": m_main_background_color,
-    "button_background_color": m_button_background_color,
-    "second_button_background_color": m_second_button_background_color,
-    "border_color": m_border_color,
-    "standard_text_color": m_standard_text_color
-}
 
 windowStyle = """
 QWidget{
