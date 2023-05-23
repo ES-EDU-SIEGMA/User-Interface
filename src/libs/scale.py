@@ -1,5 +1,6 @@
 import time
-#import RPi.GPIO as GPIO
+
+# import RPi.GPIO as GPIO
 import mock_gpio as GPIO
 import mock_hx711 as HX711
 
@@ -27,7 +28,7 @@ def get_current_weight() -> int:
     if HX711 is None:
         return -1
 
-    current: int = int(round(hx.get_weight(5)*1000))
+    current: int = int(round(hx.get_weight(5) * 1000))
     hx.reset()
     return current
 
