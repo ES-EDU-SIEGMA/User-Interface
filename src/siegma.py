@@ -2,14 +2,17 @@ import PyQt5.QtWidgets as PyQtWidgets
 import PyQt5.QtCore as PyQtCore
 import sys
 import time
-import libs.json_data as JsonData
-import libs.progress as ProgressWindow
-import libs.new_cocktail as NewCocktailWindow
-import libs.edit_hopper as EditHopperWindow
-import libs.css as Css
-import libs.runtime_data as RuntimeData
-import libs.mock_serial as SerialCommunication
-import libs.scale as Scale
+from src.libs import (
+    globals as go,
+    progress as ProgressWindow,
+    new_cocktail as NewCocktailWindow,
+    edit_hopper as EditHopperWindow,
+    css as Css,
+    runtime_data as RuntimeData,
+    mock_serial as SerialCommunication,
+    scale as Scale,
+)
+import libs.data.json_data as JsonData
 
 
 class BeveragePushButton(PyQtWidgets.QPushButton):
@@ -37,7 +40,11 @@ class MixedDrinkPushButton(PyQtWidgets.QPushButton):
     # constructor
     mix_drink_id = -1
 
-    def __init__(self, __parent: PyQtWidgets.QWidget, __mix_drink: RuntimeData.MixDrinkInformation):
+    def __init__(
+        self,
+        __parent: PyQtWidgets.QWidget,
+        __mix_drink: RuntimeData.MixDrinkInformation,
+    ):
         super().__init__()
         self.parentWidget = __parent
         self.setStyleSheet(
@@ -76,14 +83,17 @@ class WelcomeWindow(PyQtWidgets.QWidget):
         self.headerLabel = PyQtWidgets.QLabel("Drink Mixing Machine", self)
         self.headerLabel.setAlignment(PyQtCore.Qt.AlignCenter)
         self.headerLabel.setStyleSheet(
-            f"color: {Css.m_standard_text_color}; font-size: 30pt; font-family: {Css.font}; margin-top: 25%;")
+            f"color: {Css.m_standard_text_color}; font-size: 30pt; font-family: {Css.font}; margin-top: 25%;"
+        )
         self.subHeaderLabel = PyQtWidgets.QLabel("SIEGMA-WS2223", self)
         self.subHeaderLabel.setAlignment(PyQtCore.Qt.AlignCenter)
         self.subHeaderLabel.setStyleSheet(
-            f"color: {Css.m_button_background_color}; font-size: 15pt; font-family: {Css.font};")
+            f"color: {Css.m_button_background_color}; font-size: 15pt; font-family: {Css.font};"
+        )
         self.descriptionLabel = PyQtWidgets.QLabel("Quick select for drinks:", self)
         self.descriptionLabel.setStyleSheet(
-            f"color: {Css.m_standard_text_color}; font-size: 12pt; font-family: {Css.font};")
+            f"color: {Css.m_standard_text_color}; font-size: 12pt; font-family: {Css.font};"
+        )
 
         ##############################################################################
         #       BUTTONS
@@ -93,21 +103,28 @@ class WelcomeWindow(PyQtWidgets.QWidget):
         self.exitBtn.setStyleSheet(
             f"background-color: {Css.m_button_background_color}; color: {Css.m_standard_text_color};"
             f"padding: 60%; font-size: 11pt; border: 2px solid {Css.m_border_color};"
-            f"border-radius: {Css.border_radius}px; margin-left: 20%;")
+            f"border-radius: {Css.border_radius}px; margin-left: 20%;"
+        )
         self.exitBtn.clicked.connect(lambda: self.exit_button_on_click())
 
         self.addNewCocktailBtn = PyQtWidgets.QPushButton("New Cocktail", self)
         self.addNewCocktailBtn.setStyleSheet(
             f"background-color: {Css.m_button_background_color}; color: {Css.m_standard_text_color};"
             f"padding: 60%; font-size: 11pt;border: 2px solid {Css.m_border_color};"
-            f"border-radius: {Css.border_radius}px; margin-left: 20%;")
-        self.addNewCocktailBtn.clicked.connect(lambda: self.new_cocktail_button_on_click())
+            f"border-radius: {Css.border_radius}px; margin-left: 20%;"
+        )
+        self.addNewCocktailBtn.clicked.connect(
+            lambda: self.new_cocktail_button_on_click()
+        )
 
-        self.editHopperOccupancyBtn = PyQtWidgets.QPushButton("Change Drinks on Hopper", self)
+        self.editHopperOccupancyBtn = PyQtWidgets.QPushButton(
+            "Change Drinks on Hopper", self
+        )
         self.editHopperOccupancyBtn.setStyleSheet(
             f"background-color: {Css.m_button_background_color}; color: {Css.m_standard_text_color};"
             f"padding: 60%; font-size: 11pt;border: 2px solid {Css.m_border_color};"
-            f"border-radius: {Css.border_radius}px; margin-left: 20%;")
+            f"border-radius: {Css.border_radius}px; margin-left: 20%;"
+        )
         self.editHopperOccupancyBtn.clicked.connect(
             lambda: self.edit_hopper_occupancy_btn_on_click()
         )
@@ -168,18 +185,26 @@ class WelcomeWindow(PyQtWidgets.QWidget):
     def update_quick_select(self):
         self.delete_drink_buttons()
         print("testUpdateQuickSelectBefore")
-        all_available_beverages: list[RuntimeData.Beverage] = JsonData.get_all_available_beverages()
-        all_available_mix_drinks: list[RuntimeData.MixDrinkInformation] = JsonData.get_all_available_mixed_drinks()
+        all_available_beverages: list[
+            RuntimeData.Beverage
+        ] = JsonData.get_all_available_beverages()
+        all_available_mix_drinks: list[
+            RuntimeData.MixDrinkInformation
+        ] = JsonData.get_all_available_mixed_drinks()
         print("testUpdateQuickSelectAfter")
-        self.m_runtimeData = RuntimeData.RuntimeData(all_available_beverages, all_available_mix_drinks)
+        self.m_runtimeData = RuntimeData.RuntimeData(
+            all_available_beverages, all_available_mix_drinks
+        )
 
         for i in range(len(self.m_runtimeData.beverages_on_hopper)):
             self.scrollAreaVBox.addWidget(
-                BeveragePushButton(self, all_available_beverages[i]))
+                BeveragePushButton(self, all_available_beverages[i])
+            )
 
         for i in range(len(self.m_runtimeData.mix_drinks_dispensable)):
             self.scrollAreaVBox.addWidget(
-                MixedDrinkPushButton(self, all_available_mix_drinks[i]))
+                MixedDrinkPushButton(self, all_available_mix_drinks[i])
+            )
 
     def exit_button_on_click(self):
         SerialCommunication.close_connection()
@@ -241,7 +266,9 @@ class WelcomeWindow(PyQtWidgets.QWidget):
                 hopper_size = 40
             current_weight = 0
             current_weight = Scale.get_current_weight()
-            if (current_weight - full_weight) in range(hopper_size - 5, hopper_size + 5):
+            if (current_weight - full_weight) in range(
+                hopper_size - 5, hopper_size + 5
+            ):
                 correct_hoppers += 1
             full_weight = current_weight
         return correct_hoppers == len(self.m_runtimeData.beverages_on_hopper)
