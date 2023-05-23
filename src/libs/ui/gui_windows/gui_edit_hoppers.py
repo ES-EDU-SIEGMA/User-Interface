@@ -12,6 +12,8 @@ class EditHopper(PyQtWidgets.QWidget):
     __header_label: PyQtWidgets.QLabel
     __monitor_label: PyQtWidgets.QLabel
 
+    __hopper_button_list: list
+
     def __init__(self, __parent):
         super().__init__()
         self.parentWidget = __parent
@@ -77,7 +79,9 @@ class EditHopper(PyQtWidgets.QWidget):
         self.main_layout.addWidget(self.back_button, 8, 4)
 
     def activate(self):
-        pass
+
+        self.__update_hopper_list()
+        self.__update_hopper_layout()
 
     def reactivate(self):
         pass
@@ -86,7 +90,17 @@ class EditHopper(PyQtWidgets.QWidget):
         pass
 
     def __update_hopper_layout(self):
-        pass
+        # todo make deletion simpler
+        for i in reversed(range(self.hopper_display_layout.count())):
+            self.hopper_display_layout.takeAt(i).widget().setParent(None)
+        for __beverage_button in self.__hopper_button_list:
+            self.hopper_display_layout.addWidget(__beverage_button)
+
+    def __update_hopper_list(self):
+        for __index in range(len(self.__hopper_button_list)):
+            self.__hopper_button_list[__index].name = self.__data_hopper_names[__index]
+            # todo add name to Create...button and change that class
+
 
 
 class CurrentBeverageButton(PyQtWidgets.QPushButton):
