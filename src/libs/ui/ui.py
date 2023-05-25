@@ -1,25 +1,36 @@
-import gui_console as GuiComponent
+import PyQt5.QtWidgets as PyQtWidgets
+import gui_console as GuiConsole
+import gui_windows as GuiWindows
 import controller as Controller
+import sys
 
 
 # todo change gui to ui in the code
 
 class Ui:
     """ the class Ui creates view objects and activates each view with the command activate()"""
-    __ui_drink_selection: GuiComponent.ui_drink_selection = None
-    __ui_edit_hoppers: GuiComponent.ui_edit_hoppers = None
-    __ui_new_recipe: GuiComponent.ui_new_recipe = None
-    __ui_current: (GuiComponent.ui_drink_selection |
-                   GuiComponent.ui_edit_hoppers |
-                   GuiComponent.ui_new_recipe) = None
-    __ui_running: bool = None
-    __ui_menu_string: (str | list[str]) = None
+    __ui_drink_selection: GuiConsole.ui_drink_selection | GuiWindows.ui_drink_selection
+    __ui_edit_hoppers: GuiConsole.ui_edit_hoppers | GuiWindows.ui_edit_hoppers
+    __ui_new_recipe: GuiConsole.ui_new_recipe | GuiWindows.ui_new_recipe
+    __ui_current: (GuiConsole.ui_drink_selection | GuiWindows.ui_drink_selection |
+                   GuiConsole.ui_edit_hoppers | GuiWindows.ui_edit_hoppers |
+                   GuiConsole.ui_new_recipe | GuiWindows.ui_new_recipe)
+    __ui_running: bool
+    __ui_menu_string: (str | list[str])
 
-    def __init__(self):
+    def __init__(self, __ui_type: str):
         # todo add __parent to class __init__ call and create console __parent mock
-        self.__ui_drink_selection = GuiComponent.ui_drink_selection.Selection()
-        self.__ui_edit_hoppers = GuiComponent.ui_edit_hoppers.EditHoppers()
-        self.__ui_new_recipe = GuiComponent.ui_new_recipe.NewRecipe()
+        if __ui_type == "gui_console":
+            self.__ui_drink_selection = GuiConsole.ui_drink_selection.Selection()
+            self.__ui_edit_hoppers = GuiConsole.ui_edit_hoppers.EditHoppers()
+            self.__ui_new_recipe = GuiConsole.ui_new_recipe.NewRecipe()
+
+        """elif __ui_type == "gui_windows":
+            __app = PyQtWidgets.QApplication(sys.argv)
+            self.__ui_drink_selection = GuiWindows.ui_drink_selection.Selection(__app)
+            self.__ui_edit_hoppers = GuiWindows.ui_edit_hoppers.EditHoppers(__app)
+            self.__ui_new_recipe = GuiWindows.ui_new_recipe.NewRecipe(__app)
+            sys.exit(__app.exec())"""
 
         self.__ui_loop()
 

@@ -1,6 +1,8 @@
+import sys
+
 import PyQt5.QtWidgets as PyQtWidgets
 import PyQt5.QtCore as PyQtCore
-import css as Css
+import css.css_edit_hoper_window as Css
 
 
 class EditHopper(PyQtWidgets.QWidget):
@@ -20,19 +22,19 @@ class EditHopper(PyQtWidgets.QWidget):
         self.__init_widgets()
 
     def __init_widgets(self):
-        self.setWindowTitle("Edit hopper window")
         self.resize(1200, 800)
         self.showFullScreen()
-        # self.setStyleSheet(f"background-color: {Css.m_main_background_color};") # todo add css style
+        self.setWindowTitle("Edit hopper window")
+        self.setStyleSheet(Css.window_style)  # todo add css style
 
         # Labels
 
         self.__header_label = PyQtWidgets.QLabel("Edit Hopper Occupancy", self)
-        self.__header_label.setStyleSheet(
-            f"color: {Css.m_standard_text_color}; font-size: 24pt; font-family: {Css.font};")
+        self.__header_label.setStyleSheet(Css.style_ew_header_label)
         self.__header_label.setAlignment(PyQtCore.Qt.AlignCenter)
+
         self.__monitor_label = PyQtWidgets.QLabel("Monitor is here", self)
-        self.__monitor_label.setStyleSheet(f"color: {Css.m_standard_text_color};")
+        self.__monitor_label.setStyleSheet(Css.style_ew_monitor_label)
         self.__monitor_label.setAlignment(PyQtCore.Qt.AlignCenter)
 
         # Buttons
@@ -55,11 +57,8 @@ class EditHopper(PyQtWidgets.QWidget):
                     self.hopperList.insert(hopper_id, temp)
 
         self.back_button = PyQtWidgets.QPushButton("Back to Main menu", self)
-        self.back_button.clicked.connect(lambda: self.back_button_on_click())
-        self.back_button.setStyleSheet(
-            f"background-color: {Css.m_button_background_color};"
-            f"color: {Css.m_standard_text_color};border: 1px solid {Css.m_border_color};"
-            f"padding-top: 30%;padding-bottom: 30%;padding-left: 50%;padding-right: 50%;")
+        self.back_button.clicked.connect(lambda: self.back_button_on_click())  # todo change function
+        self.back_button.setStyleSheet(Css.style_ew_button_back)
 
         # Hopper Layout
 
@@ -114,6 +113,7 @@ class CurrentBeverageButton(PyQtWidgets.QPushButton):
         self.setStyleSheet()  # setSomeStyle
         self.setText(self.button_beverage_name)
 
+
 class BeveragePushButton(PyQtWidgets.QPushButton):
     beverage: RuntimeData.Beverage
     beverage_id = -1
@@ -137,8 +137,6 @@ class BeveragePushButton(PyQtWidgets.QPushButton):
         self.beverage = __beverage
         self.setText(self.beverage.beverage_name)
         self.beverage_id = self.beverage.beverage_id
-
-
 
 
 class CurrentBeverageButton(PyQtWidgets.QPushButton):

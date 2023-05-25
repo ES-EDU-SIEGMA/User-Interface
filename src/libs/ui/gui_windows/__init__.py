@@ -1,1 +1,1 @@
-__all__ = ["gui_drink_selection", "gui_edit_hoppers", "gui_new_recipe"]
+__all__ = ["ui_drink_selection", "ui_edit_hoppers", "ui_new_recipe"]

@@ -1,4 +1,4 @@
-import PyQt5.QtWidgets as PyQtWidgets
+ PyQt5.QtWidgets as PyQtWidgets
 import PyQt5.QtCore as PyQtCore
 import sys
 import time
