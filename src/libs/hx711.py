@@ -1,17 +1,13 @@
-import RPi.GPIO as GPIO
 import time
 import threading
+import globals
 
-
-USE_MOCK_GPIO = os.environ.get("USE_MOCK_GPIO", False)
-
-if USE_MOCK_GPIO:
-	from MockGPIO import MockGPIO
-	GPIO = MockGPIO()
+if globals.USE_SCALE_MOCK:
+    from src.libs.mock_gpio import GPIO as GPIO
 else:
-	import RPi.GPIO as GPIO
-	
-	
+    import RPi.GPIO as GPIO
+
+
 class HX711:
     def __init__(self, dout, pd_sck, gain=128):
         self.PD_SCK = pd_sck
