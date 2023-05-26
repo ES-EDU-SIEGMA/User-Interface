@@ -7,23 +7,25 @@ This class is to simulate the communication with the picos
 STANDARD_BAUDRATE = 115200
 
 
-class SerialMock:
-    def __init__(self, port: str, baudrate: int):
-        self.port = port
-        self.baudrate = baudrate
-        self.responses = {
-            "LEFT": b"LEFT\r\n",
-            "RIGHT": b"RIGHT\r\n",
-            "RONDELL": b"RONDELL\r\n",
-            "CALIBRATED": b"CALIBRATED\r\n",
-        }
+class Serial:
+    PORT: str
+    BAUDRATE: int
+    RESPONSES: dict[str, str] = {
+        "LEFT": b"LEFT\n",
+        "RIGHT": b"RIGHT\n",
+        "RONDELL": b"RONDELL\n",
+        "CALIBRATED": b"CALIBRATED\n",
+    }
+    RESPONSE_BUFFER: [str]
 
-        # use list as queue to simulate serial byte transfer
-        self.buffer = []
+    def __init__(self, port: str, baudrate: int):
+        self.PORT = port
+        self.BAUDRATE = baudrate
+        self.RESPONSE_BUFFER = []
 
     def readline(self) -> bytes:
-        if self.buffer:
-            return self.buffer.pop(0)
+        if self.RESPONSE_BUFFER:
+            return self.RESPONSE_BUFFER.pop(0)
         else:
             return b""
 
@@ -37,15 +39,15 @@ class SerialMock:
 
     def write(self, input_data) -> None:
         if input_data == b"i\n":
-            if "LEFT" in self.port:
-                self.buffer.append(self.responses["LEFT"])
-                self.buffer.append(self.responses["CALIBRATED"])
-            elif "RIGHT" in self.port:
-                self.buffer.append(self.responses["RIGHT"])
-                self.buffer.append(self.responses["CALIBRATED"])
-            elif "RONDELL" in self.port:
-                self.buffer.append(self.responses["RONDELL"])
-                self.buffer.append(self.responses["CALIBRATED"])
+            if "/dev/ttyACM0" in self.PORT:
+                self.RESPONSE_BUFFER.append(self.RESPONSES["LEFT"])
+                self.RESPONSE_BUFFER.append(self.RESPONSES["CALIBRATED"])
+            elif "/dev/ttyACM1" in self.PORT:
+                self.RESPONSE_BUFFER.append(self.RESPONSES["RIGHT"])
+                self.RESPONSE_BUFFER.append(self.RESPONSES["CALIBRATED"])
+            elif "/dev/ttyACM2" in self.PORT:
+                self.RESPONSE_BUFFER.append(self.RESPONSES["RONDELL"])
+                self.RESPONSE_BUFFER.append(self.RESPONSES["CALIBRATED"])
 
     def close(self) -> None:
         pass

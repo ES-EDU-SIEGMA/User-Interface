@@ -1,6 +1,7 @@
 import psycopg2
 from . import runtime_data as rtd
 
+
 # connection to databse which is running locally on the pi
 # error handling is made via exceptions
 
@@ -14,7 +15,7 @@ def find(element, _list):
 
 
 # returns true if _element is in _list
-def isInList(_element, _list):
+def is_in_list(_element, _list):
     for i in range(len(_list)):
         if _element == _list[i].m_id:
             return True
@@ -25,7 +26,7 @@ def isInList(_element, _list):
 # false if not
 def mixable(_needed, _beverages):
     for i in range(len(_needed)):
-        if not isInList(_needed[i], _beverages):
+        if not is_in_list(_needed[i], _beverages):
             return False
     return True
 
@@ -35,7 +36,7 @@ txn = None
 connected = False
 
 
-## sets up the connection to the database
+# sets up the connection to the database
 def __init__():
     global db_con
     global txn
@@ -129,18 +130,18 @@ def send_update(query: str):
 
 
 # exchanges the beverages in the database
-def changeBeverageOnHopper(currentID: int, toChangeID: int, hopperid: int):
+def change_beverage_on_hopper(current_id: int, to_change_id: int, hopper_id: int):
     global connected
     global txn
 
     try:
-        if currentID != -1:
+        if current_id != -1:
             send_update(
-                f"update beverage set hopperid = NULL where id = {currentID} and hopperid = {hopperid};"
+                f"update beverage set hopperid = NULL where id = {current_id} and hopperid = {hopper_id};"
             )
-        if toChangeID != -1:
+        if to_change_id != -1:
             send_update(
-                f"update beverage set hopperid = {hopperid} where id = {toChangeID}"
+                f"update beverage set hopperid = {hopper_id} where id = {to_change_id}"
             )
         commit()
     except Exception as error:
@@ -148,7 +149,7 @@ def changeBeverageOnHopper(currentID: int, toChangeID: int, hopperid: int):
 
 
 # returns all beverages which are currently not on a hopper
-def getAllOtherBeverages():
+def get_all_other_beverages():
     global connected
     global txn
 
@@ -173,7 +174,7 @@ def getAllOtherBeverages():
 
 
 # returns all beverages which are currently on a hopper
-def getAllAvailableBeverages():
+def get_all_available_beverages():
     global connected
     global txn
 
@@ -198,26 +199,26 @@ def getAllAvailableBeverages():
 
 
 # returns a list of all the needed beverages for a mixdrink
-def getNeededBeverages(needed, allbeverages):
+def get_needed_beverages(needed, all_beverages):
     # there are only ids in needed
     res = []
-    if not mixable(needed, allbeverages):
+    if not mixable(needed, all_beverages):
         return []
     for i in range(len(needed)):
-        temp = find(needed[i], allbeverages)
+        temp = find(needed[i], all_beverages)
         res.append(temp)
     return res
 
 
 # returns a list of all mixable mixdrinks with the current hopper configuration
-def getAllAvailableMixedDrinks():
+def get_all_available_mixed_drinks():
     global connected
     global txn
 
     try:
         result = []
 
-        allGivenBeverages = getAllAvailableBeverages()
+        allGivenBeverages = get_all_available_beverages()
         allMixedDrinksRes = send_query(
             "select m.id, m.name, r.beverageid, r.fillingamount from mixeddrink as m, recipe as r where m.id = r.mixeddrinkid;"
         )
@@ -233,7 +234,7 @@ def getAllAvailableMixedDrinks():
             # get all the needed beverages
             if currentID != allMixedDrinksRes[i][0]:  # new mixed drink
                 # we got all the ids for the needed drinks
-                temp = getNeededBeverages(needed, allGivenBeverages)
+                temp = get_needed_beverages(needed, allGivenBeverages)
                 if temp != []:  # drink is mixable
                     result.append(
                         rtd.mixDrinkInformation(
@@ -249,7 +250,7 @@ def getAllAvailableMixedDrinks():
             currentName = allMixedDrinksRes[i][1]
 
         # one last time so everything gets checked
-        tempLast = getNeededBeverages(needed, allGivenBeverages)
+        tempLast = get_needed_beverages(needed, allGivenBeverages)
         if tempLast != []:
             result.append(
                 rtd.mixDrinkInformation(currentID, currentName, tempLast, fillamounts)
@@ -261,7 +262,7 @@ def getAllAvailableMixedDrinks():
 
 
 # returns a list of all mixeddrinks stored in the database as a list of mixDrinkInformation objects
-def getAllMixedDrinks() -> list[rtd.MixDrinkInformation]:
+def get_all_mixed_drinks() -> list[rtd.MixDrinkInformation]:
     global connected
     global txn
 
@@ -279,10 +280,10 @@ def getAllMixedDrinks() -> list[rtd.MixDrinkInformation]:
                     f"select id, hopperid, name, flowspeed from beverage where id = {r[0]}"
                 )
                 beverage = b[0]
-                drink.m_neededBeverages.append(
+                drink.m_needed_beverages.append(
                     rtd.beverage(beverage[0], beverage[1], beverage[2], beverage[3])
                 )
-                drink.m_fillpercToBvg.append((beverage[0], r[1]))
+                drink.m_fill_percentage_to_beverage.append((beverage[0], r[1]))
             result.append(drink)
 
         return result
@@ -292,27 +293,27 @@ def getAllMixedDrinks() -> list[rtd.MixDrinkInformation]:
 
 
 # checks if a mixdrink with the given already exists in the database
-def isNameAvailable(__name: str):
+def is_name_available(__name: str):
     res = send_query(f"select name from mixeddrink where name = '{__name}';")
     return len(res) == 0
 
 
 # inserts the given cocktail into the database
-def saveCocktails(toSave: rtd.MixDrinkInformation):
+def save_cocktails(to_save: rtd.MixDrinkInformation):
     global connected
     global txn
 
     try:
         # insert new mixdrink into mixeddrinks table
-        if isNameAvailable(toSave.m_name):
+        if is_name_available(to_save.m_name):
             # insert new mixdrink and get the given id
             res = send_query(
-                f"insert into mixeddrink(name) values('{toSave.m_name}') returning id;"
+                f"insert into mixeddrink(name) values('{to_save.m_name}') returning id;"
             )
             # insert recipe
-            for i in range(len(toSave.m_neededBeverages)):
+            for i in range(len(to_save.m_needed_beverages)):
                 send_update(
-                    f"insert into recipe(beverageid, mixeddrinkid, fillingamount) values({toSave.m_neededBeverages[i].m_id}, {res[0][0]}, {toSave.getFillPercToId(toSave.m_neededBeverages[i].m_id)});"
+                    f"insert into recipe(beverageid, mixeddrinkid, fillingamount) values({to_save.m_needed_beverages[i].m_id}, {res[0][0]}, {to_save.get_fill_percentage_to_id(to_save.m_needed_beverages[i].m_id)});"
                 )
             # commit the changes
             commit()

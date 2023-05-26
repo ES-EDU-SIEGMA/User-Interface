@@ -29,7 +29,7 @@ class MixingProgressWindow(pyw.QWidget):
         super().__init__()
         self.parentWidget = __parentWindow
         self.setWindowTitle("Mixing Progress")
-        self.setStyleSheet(f"background-color: {css.m_mainBackgroundColor};")
+        self.setStyleSheet(f"background-color: {css.m_main_background_color};")
         self.m_mixing = False
         self.m_beverageToMix = __bvg
         self.m_mixedDrinkToMix = __md
@@ -45,7 +45,7 @@ class MixingProgressWindow(pyw.QWidget):
         ##############################################################################
         self.drinkSizeLabel = pyw.QLabel("Select the Size of your Drink:", self)
         self.drinkSizeLabel.setStyleSheet(
-            f"color: {css.m_standardTextColor}; font-size: 11pt;"
+            f"color: {css.m_standard_text_color}; font-size: 11pt;"
         )
 
         self.headerLabel = pyw.QLabel(f"", self)
@@ -54,12 +54,12 @@ class MixingProgressWindow(pyw.QWidget):
         else:
             self.headerLabel.setText(f"Mixing {self.m_beverageToMix.m_name}")
         self.headerLabel.setStyleSheet(
-            f"color: {css.m_standardTextColor}; font-size: 14pt;"
+            f"color: {css.m_standard_text_color}; font-size: 14pt;"
         )
         self.headerLabel.setAlignment(pyc.Qt.AlignCenter)
 
         self.informationLabel = pyw.QLabel("", self)
-        self.informationLabel.setStyleSheet(f"color: {css.m_standardTextColor};")
+        self.informationLabel.setStyleSheet(f"color: {css.m_standard_text_color};")
 
         ##############################################################################
         #       BUTTONS
@@ -67,13 +67,13 @@ class MixingProgressWindow(pyw.QWidget):
         self.backBtn = pyw.QPushButton("Back to Main Menu", self)
         self.backBtn.clicked.connect(lambda: self.backBtn_onClick())
         self.backBtn.setStyleSheet(
-            f"background-color: {css.m_buttonBackgroundColor}; padding-top: 30%; padding-bottom: 30%; padding-left: 40%; padding-right: 40%; color: {css.m_standardTextColor}; margin: 5%; border: 1px solid #ffffff;"
+            f"background-color: {css.m_button_background_color}; padding-top: 30%; padding-bottom: 30%; padding-left: 40%; padding-right: 40%; color: {css.m_standard_text_color}; margin: 5%; border: 1px solid #ffffff;"
         )
 
         self.startMixingBtn = pyw.QPushButton("Start Mixing", self)
         self.startMixingBtn.clicked.connect(lambda: self.startMixingBtn_onClick())
         self.startMixingBtn.setStyleSheet(
-            f"background-color: {css.m_buttonBackgroundColor}; padding-top: 30%; padding-bottom: 30%; padding-left: 40%; padding-right: 40%; color: {css.m_standardTextColor}; margin: 5%; border: 1px solid #ffffff;"
+            f"background-color: {css.m_button_background_color}; padding-top: 30%; padding-bottom: 30%; padding-left: 40%; padding-right: 40%; color: {css.m_standard_text_color}; margin: 5%; border: 1px solid #ffffff;"
         )
 
         ##############################################################################
@@ -86,14 +86,14 @@ class MixingProgressWindow(pyw.QWidget):
         self.drinkSizeSelect.insertItem(3, "0.4 L")
         self.drinkSizeSelect.insertItem(4, "0.5 L")
         self.drinkSizeSelect.setStyleSheet(
-            f"color: {css.m_standardTextColor}; background-color: {css.m_buttonBackgroundColor}; border: 1px solid {css.m_borderColor}; padding-top: 25%; padding-bottom: 25%; padding-left: 40%; padding-right: 40%; font-size: 14pt;"
+            f"color: {css.m_standard_text_color}; background-color: {css.m_button_background_color}; border: 1px solid {css.m_border_color}; padding-top: 25%; padding-bottom: 25%; padding-left: 40%; padding-right: 40%; font-size: 14pt;"
         )
 
         ##############################################################################
         #       PROGRESSBAR
         ##############################################################################
         self.mixingProgress = pyw.QProgressBar(self)
-        self.mixingProgress.setStyleSheet(f"color: {css.m_standardTextColor};")
+        self.mixingProgress.setStyleSheet(f"color: {css.m_standard_text_color};")
         self.mixingProgress.setMinimum(0)
         self.mixingProgress.setMaximum(100)
         self.mixingProgress.setValue(0)
@@ -117,7 +117,7 @@ class MixingProgressWindow(pyw.QWidget):
         self.startMixingBtn.setEnabled(False)
         self.drinkSizeSelect.setEnabled(False)
         expectedWeight = 0
-        emptyDrinkWeight = sr.getCurrentWeight()
+        emptyDrinkWeight = sr.get_current_weight()
 
         currentDrinkSizeIndex = self.drinkSizeSelect.currentIndex()
         multip = (1 + currentDrinkSizeIndex) / 10
@@ -153,7 +153,7 @@ class MixingProgressWindow(pyw.QWidget):
     def waitForDrinkFinish(
         self, expectedWeight: int, expectedWeightFull: int, emptyDrinkWeight: int
     ):
-        currentWeight = sr.getCurrentWeight()
+        currentWeight = sr.get_current_weight()
         timeval = time.time()
         currentWeightComp = currentWeight
         while (
@@ -172,7 +172,7 @@ class MixingProgressWindow(pyw.QWidget):
             self.mixingProgress.setValue(
                 int(((currentWeight - emptyDrinkWeight) / expectedWeight) * 100)
             )
-            currentWeight = sr.getCurrentWeight()
+            currentWeight = sr.get_current_weight()
             time.sleep(0.5)
         self.mixingProgress.setValue(100)
 
@@ -183,17 +183,17 @@ class MixingProgressWindow(pyw.QWidget):
         picoid = 0
         strToSend = ""
 
-        if __bvgToMix.m_hopperid > 8:
+        if __bvgToMix.m_hopper_id > 8:
             hopperSize = 40
 
         hopperTimings = [0, 0, 0, 0]
 
-        picoid = self.getPicoIdToHopperId(__bvgToMix.m_hopperid)
+        picoid = self.getPicoIdToHopperId(__bvgToMix.m_hopper_id)
 
         res = self.calcTimeForActivation(__bvgToMix, cupSize, 100, hopperSize)
 
         for i in range(len(res) - 1):
-            hopperTimings[__bvgToMix.m_hopperid % 4] = res[i + 1]
+            hopperTimings[__bvgToMix.m_hopper_id % 4] = res[i + 1]
             strToSend = f"{hopperTimings[0]};{hopperTimings[1]};{hopperTimings[2]};{hopperTimings[3]};\n"
             sc.send_msg(picoid, strToSend)
         return (len(res) - 1) * hopperSize
@@ -204,7 +204,9 @@ class MixingProgressWindow(pyw.QWidget):
     ):
         activationAmountFull = int((cupSize * (__fillperc / 100)) // hoppersize)
         # activationAmountRest = ((cupSize * (__fillperc / 100)) % hoppersize) / hoppersize
-        activationTimeFull = int(self.standardActivationTime * __bvg.m_flowspeed * 1000)
+        activationTimeFull = int(
+            self.standardActivationTime * __bvg.m_flow_speed * 1000
+        )
         # activationTimeRest = int(self.standardActivationTime * __bvg.m_flowspeed * activationAmountRest * 1000)
         temp = []
 
@@ -213,7 +215,7 @@ class MixingProgressWindow(pyw.QWidget):
         # if activationAmountRest > 0:
         #     activationAmountRest = 1
 
-        temp.append(__bvg.m_hopperid)
+        temp.append(__bvg.m_hopper_id)
         for _ in range(activationAmountFull):
             temp.append(activationTimeFull)
 
@@ -229,15 +231,15 @@ class MixingProgressWindow(pyw.QWidget):
         picoid = 0
 
         # calculate the time, each bvg needs and add them to the list
-        for i in range(len(__mixDrinkToMix.m_neededBeverages)):
-            if __mixDrinkToMix.m_neededBeverages[i].m_hopperid > 8:
+        for i in range(len(__mixDrinkToMix.m_needed_beverages)):
+            if __mixDrinkToMix.m_needed_beverages[i].m_hopper_id > 8:
                 hoppersize = 40
             timeList.append(
                 self.calcTimeForActivation(
-                    __mixDrinkToMix.m_neededBeverages[i],
+                    __mixDrinkToMix.m_needed_beverages[i],
                     cupSize,
-                    __mixDrinkToMix.getFillPercToId(
-                        __mixDrinkToMix.m_neededBeverages[i].m_id
+                    __mixDrinkToMix.get_fill_percentage_to_id(
+                        __mixDrinkToMix.m_needed_beverages[i].m_id
                     ),
                     hoppersize,
                 )

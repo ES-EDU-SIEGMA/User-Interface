@@ -1,15 +1,15 @@
 font = "Arial"
-borderRadius = "10"
+border_radius = "10"
 # "#1e1c23" old
-m_mainBackgroundColor = "#303030"
+m_main_background_color = "#303030"
 # "#2b2b2b" old
-m_buttonBackgroundColor = "#801336"
+m_button_background_color = "#801336"
 # "801336" old
-m_sndButtonBackgroundColor = "#c72c41"
+m_second_button_background_color = "#c72c41"
 # "#ffffff" old
-m_borderColor = "#610a32"
+m_border_color = "#610a32"
 # "#ffffff" old
-m_standardTextColor = "#ffffff"
+m_standard_text_color = "#ffffff"
 
 #############################
 # New CocktailWindow Styles #

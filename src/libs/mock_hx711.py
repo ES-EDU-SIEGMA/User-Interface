@@ -3,7 +3,7 @@ simulates HX711
 """
 
 
-class MockHX711:
+class HX711:
     def __init__(self, dout, pd_sck, gain=128):
         self.dout = dout
         self.pd_sck = pd_sck

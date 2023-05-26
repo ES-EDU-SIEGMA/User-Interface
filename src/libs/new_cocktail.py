@@ -1,11 +1,11 @@
 import PyQt5.QtWidgets as pyw
 import PyQt5.QtCore as pyc
 import PyQt5.QtGui as pyg
-from . import (
+from src.libs import (
     runtime_data as runtimeData,
     css as css,
     created_cocktail as ccw,
-    dbcon as db,
+    json_data as db,
 )
 
 
@@ -17,7 +17,7 @@ class NewCocktailWindow(pyw.QWidget):
         self.parentWidget = __parentWindow
         self.setWindowTitle("New Cocktail Recipe")
         self.resize(1280, 800)
-        self.mixDrink = runtimeData.mixDrinkInformation(0, "", [], [])
+        self.mixDrink = runtimeData.MixDrinkInformation(0, "", [])
         self.initWidgets()
         self.showFullScreen()
 
@@ -58,13 +58,13 @@ class NewCocktailWindow(pyw.QWidget):
 
         self.recipeLabel = pyw.QLabel("Name of recipe:")
         self.recipeLabel.setStyleSheet(
-            f"color: {css.m_standardTextColor}; font-size: 15pt; font-family: {css.font};"
+            f"color: {css.m_standard_text_color}; font-size: 15pt; font-family: {css.font};"
         )
 
         # set up LineEdit
         self.enterRecipeName = pyw.QLineEdit()
         self.enterRecipeName.setStyleSheet(
-            f"color: {css.m_standardTextColor}; font-size: 10pt;"
+            f"color: {css.m_standard_text_color}; font-size: 10pt;"
         )
 
         # set up Layouts
@@ -97,9 +97,10 @@ class NewCocktailWindow(pyw.QWidget):
 
         self.setLayout(self.gridLayout)
 
-        self.availableBeverages = db.getAllAvailableBeverages()
-        self.availableBeverages += db.getAllOtherBeverages()
+        self.availableBeverages = db.get_all_available_beverages()
+        self.availableBeverages += db.get_all_other_beverages()
         self.fillList(self.availableBeverageList, self.availableBeverages)
+        self.selectedBeverages: [runtimeData.Beverage] = []
 
     ################################
     #   Functions to handle data   #
@@ -140,11 +141,11 @@ class NewCocktailWindow(pyw.QWidget):
         # item ist spezielles pyqt5 objekt, deshalb text() darauf aufrufen.
         beverage = self.getBeverageByName(self.availableBeverages, item.text())
         # todo: hier die setFillPercentage rausschmeißen
-        self.mixDrink.m_neededBeverages.append(beverage)
-        self.mixDrink.m_fillpercToBvg.append((beverage.m_id, result))
+        self.mixDrink.m_fill_percentage_to_beverage.append((beverage.m_id, result))
 
         self.selectedBeverageList.addItem(f"{beverage.m_name} - {result}%")
         self.availableBeverages.remove(beverage)
+        self.selectedBeverages.append(beverage)
 
         self.availableBeverageList.clear()
         self.fillList(self.availableBeverageList, self.availableBeverages)
@@ -152,14 +153,21 @@ class NewCocktailWindow(pyw.QWidget):
     def onSelectedSelect(self, item: pyw.QListWidgetItem):
         # get beverage
         name = item.text().split()[0]
-        beverage = self.getBeverageByName(self.mixDrink.m_neededBeverages, name)
-        index = self.mixDrink.m_neededBeverages.index(beverage)
+        beverage = self.getBeverageByName(self.selectedBeverages, name)
 
         # remove beverage from selectedBeveregesList
+        index = self.selectedBeverageList.indexFromItem(item).row()
         self.selectedBeverageList.takeItem(index)
-        self.mixDrink.m_neededBeverages.remove(beverage)
-        fillPerc = self.mixDrink.getFillPercToId(beverage.m_id)
-        self.mixDrink.m_fillpercToBvg.remove((beverage.m_id, fillPerc))
+        self.selectedBeverages.remove(beverage)
+
+        fillPerc = self.mixDrink.get_fill_percentage_to_id(beverage.m_id)
+        for ingredient_index in range(len(self.mixDrink.m_fill_percentage_to_beverage)):
+            if (
+                beverage.m_id
+                == self.mixDrink.m_fill_percentage_to_beverage[ingredient_index][0]
+            ):
+                del self.mixDrink.m_fill_percentage_to_beverage[ingredient_index]
+                break
 
         # add beverage back to availableList
         self.availableBeverages.append(beverage)
@@ -167,9 +175,9 @@ class NewCocktailWindow(pyw.QWidget):
 
     def onAccept(self):
         res = 0
-        print(self.mixDrink.m_fillpercToBvg)
-        for beverage in self.mixDrink.m_neededBeverages:
-            res += self.mixDrink.getFillPercToId(beverage.m_id)
+        print(self.mixDrink.m_fill_percentage_to_beverage)
+        for ingredient in self.mixDrink.m_fill_percentage_to_beverage:
+            res += ingredient[1]
 
         if res != 100:
             errorMessage = pyw.QMessageBox.critical(
@@ -184,7 +192,7 @@ class NewCocktailWindow(pyw.QWidget):
         self.mixDrink.m_name = self.enterRecipeName.text()
         print(self.mixDrink)
 
-        if not db.saveCocktails(self.mixDrink):
+        if not db.save_cocktails(self.mixDrink):
             errorMessage = pyw.QMessageBox.critical(
                 self,
                 "Error",
@@ -200,7 +208,7 @@ class NewCocktailWindow(pyw.QWidget):
         self.backBtn_onClick()
 
     def backBtn_onClick(self):
-        self.parentWidget.updateQuickSelect()
+        self.parentWidget.update_quick_select()
         self.parentWidget.show()
         self.close()
 

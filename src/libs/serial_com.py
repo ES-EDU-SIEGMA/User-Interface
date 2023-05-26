@@ -1,20 +1,15 @@
 import time
-import sys
-import os
+from src.libs import globals as local_globals
 
-# set the environment variable USE_MOCK=True before executing the coe
-# export USE_MOCK=True (Linux)
-
-USE_MOCK = os.environ.get("USE_MOCK", False)
-
-if USE_MOCK:
-    from . import SerialMock as SerialMock
+if local_globals.USE_SERIAL_MOCK:
+    print("COM USING MOCK!")
+    from . import mock_serial as serial
 else:
     import serial
 
-picoleft = None
-picoright = None
-picorondell = None
+picoleft: serial.Serial = None
+picoright: serial.Serial = None
+picorondell: serial.Serial = None
 
 standard_baudrate = 115200
 
@@ -22,7 +17,7 @@ running = False
 
 
 # identify all picos
-def identifyPicos(pico0, pico1, pico2):
+def identify_picos(pico0, pico1, pico2):
     global picoleft
     global picoright
     global picorondell
@@ -36,19 +31,19 @@ def identifyPicos(pico0, pico1, pico2):
             print("waiting for identifier")
             pos = pico.readline()
             print(f"response was {pos}")
-            if pos == b"LEFT\r\n":
+            if pos == b"LEFT\n":
                 print("found left")
                 picoleft = pico
                 break
-            elif pos == b"RIGHT\r\n":
+            elif pos == b"RIGHT\n":
                 print("found right")
                 picoright = pico
                 break
-            elif pos == b"RONDELL\r\n":
+            elif pos == b"RONDELL\n":
                 print("found rondell")
                 picorondell = pico
                 break
-            elif pos == b"F\r\n":
+            elif pos == b"F\n":
                 print("error, trying again")
                 n += 1
                 time.sleep(5)
@@ -62,7 +57,7 @@ def identifyPicos(pico0, pico1, pico2):
 
 
 # wait until all picos send their ready signal
-def waitUntilReady():
+def wait_until_ready():
     global picoleft
     global picoright
     global picorondell
@@ -73,7 +68,7 @@ def waitUntilReady():
         for pico in [picoright, picoleft, picorondell]:
             resp = pico.readline()
             print(resp)
-            if resp == b"CALIBRATED\r\n":
+            if resp == b"CALIBRATED\n":
                 readyPicos += 1
     print("all picos are setup")
 
@@ -87,18 +82,12 @@ def __init__():
     global standard_baudrate
 
     try:
-        # acm = usb
-        if USE_MOCK:
-            pico0 = SerialMock("/dev/ttyACM0_LEFT", standard_baudrate)
-            pico1 = SerialMock("/dev/ttyACM2_RIGHT", standard_baudrate)
-            pico2 = SerialMock("/dev/ttyACM3_RONDELL", standard_baudrate)
-        else:
-            pico0 = serial.Serial("/dev/ttyACM0", standard_baudrate)
-            pico1 = serial.Serial("/dev/ttyACM1", standard_baudrate)
-            pico2 = serial.Serial("/dev/ttyACM2", standard_baudrate)
+        pico0 = serial.Serial("/dev/ttyACM0", standard_baudrate)
+        pico1 = serial.Serial("/dev/ttyACM1", standard_baudrate)
+        pico2 = serial.Serial("/dev/ttyACM2", standard_baudrate)
 
-        identifyPicos(pico0, pico1, pico2)
-        waitUntilReady()
+        identify_picos(pico0, pico1, pico2)
+        wait_until_ready()
 
         running = True
 
@@ -120,11 +109,11 @@ def close_connection():
         except Exception as error:
             raise error
     else:
-        raise Exception("connection wasnt setup correctly")
+        raise Exception("connection wasn't setup correctly")
 
 
 # send the input to the pico with the correct id
-def send_msg(pico, input):
+def send_msg(pico, message_to_send):
     global picoleft
     global picoright
     global picorondell
@@ -133,11 +122,11 @@ def send_msg(pico, input):
     if running:
         try:
             if pico == 0 and picoleft is not None:
-                picoleft.write(bytes(input, "utf-8"))
+                picoleft.write(bytes(message_to_send, "utf-8"))
             elif pico == 1 and picoright is not None:
-                picoright.write(bytes(input, "utf-8"))
+                picoright.write(bytes(message_to_send, "utf-8"))
             elif pico == 2 and picorondell is not None:
-                picorondell.write(bytes(input, "utf-8"))
+                picorondell.write(bytes(message_to_send, "utf-8"))
             else:
                 raise Exception("index of pico is invalid")
         except Exception as error:

@@ -1,48 +1,31 @@
-import time
-import sys
-import os
+from src.libs import globals as local_globals
 
-USE_MOCK_GPIO = os.environ.get("USE_MOCK_GPIO", False)
-USE_MOCK_HX711 = os.environ.get("USE_MOCK_HX711", False)
-
-if USE_MOCK_HX711:
-    from . import MockHX711 as MockHX711
-
-    hx = MockHX711(5, 6)
+if local_globals.USE_SCALE_MOCK:
+    print("SCALE USING MOCK")
+    from src.libs.mock_hx711 import HX711
+    from src.libs import mock_gpio as GPIO
 else:
-    from . import hx711 as hx711
-
-    hx = hx711(5, 6)
-
-if USE_MOCK_GPIO:
-    from . import MockGPIO as MockGPIO
-
-    GPIO = MockGPIO()
-else:
+    from src.libs.hx711 import HX711
     import RPi.GPIO as GPIO
 
 referenceUnit = 870298
-
-
-def close():
-    GPIO.cleanup()
+hx = HX711(5, 6)
 
 
 def __init__():
     global hx
     global referenceUnit
-    GPIO.setwarnings(False)
-    # hx = HX711(5, 6)
+    GPIO.setwarnings(GPIO, None)
     hx.set_reading_format("MSB", "MSB")
     hx.set_reference_unit(referenceUnit)
     hx.reset()
     hx.tare()
 
 
-def getCurrentWeight():
+def get_current_weight():
     global hx
 
-    if hx == None:
+    if hx is None:
         return -1
 
     current = hx.get_weight(5)
@@ -52,11 +35,13 @@ def getCurrentWeight():
     return current
 
 
+def close():
+    GPIO.cleanup(GPIO)
+
+
 if __name__ == "__main__":
     __init__()
     print("now")
-    time.sleep(3)
-    # 356825889
-    print(getCurrentWeight())
-    print(getCurrentWeight())
+    print(get_current_weight())
+    print(get_current_weight())
     close()
