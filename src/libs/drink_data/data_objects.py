@@ -1,4 +1,4 @@
-from json_data import data_storage as Data
+from .json_data import data_storage as Data
 import re as RegularExpression
 
 
@@ -74,7 +74,7 @@ class RuntimeData:
     __beverages_on_hopper: list[Beverage]
     __beverages_dispensable: list[Beverage]
     __recipes_dispensable: list[Recipe]
-    __data_storage: Data  # object that provides data to RuntimeData
+    __data_storage: Data  # object that provides drink_data to RuntimeData
 
     def __init__(self):
         self.__data_storage = Data.DataStorage()
@@ -85,7 +85,7 @@ class RuntimeData:
         self.__update_recipes_dispensable()
 
     ####################################################################################################################
-    # the following methods are used to update the runtime data
+    # the following methods are used to update the runtime drink_data
     ####################################################################################################################
 
     def __update_beverages(self):
@@ -95,7 +95,10 @@ class RuntimeData:
         for __beverage in __beverage_data:
             __id = int(__beverage[0])
             __name = __beverage[1]
-            __hopper_id = int(__beverage[2])
+            if __beverage[2]:
+                __hopper_id = int(__beverage[2])
+            else:
+                __hopper_id = None
             __flow_speed = int(__beverage[3])
             __return_list.append(Beverage(__id, __name, __hopper_id, __flow_speed))
         self.__beverages = __return_list
@@ -150,7 +153,7 @@ class RuntimeData:
 
     def __transform_needed_beverages_str(self, __beverage_ids_str: str) -> list[Beverage]:
         __beverage_ids_list_str: list[str] = __beverage_ids_str.split(";")
-        __beverage_ids_int: list[int] = [eval(__id) for __id in __beverage_ids_str]
+        __beverage_ids_int: list[int] = [eval(__id) for __id in __beverage_ids_list_str]
         __result: list[Beverage] = []
         for __beverage_id_int in __beverage_ids_int:
             for __beverage in self.__beverages:
@@ -164,7 +167,7 @@ class RuntimeData:
         __fill_perc_list_str: list[str] = __fill_perc_beverages_str.split(";")
         __fill_perc_list_int: list[int] = [eval(__string_element) for __string_element in __fill_perc_list_str]
         __result: list[list[int]] = []
-        while len(__fill_perc_list_int) is not 0:
+        while len(__fill_perc_list_int) != 0:
             __id: int = __fill_perc_list_int.pop(0)
             __fill_amount: int = __fill_perc_list_int.pop(0)
             __result.append([__id, __fill_amount])
@@ -175,7 +178,8 @@ class RuntimeData:
     ####################################################################################################################
 
     ####################################################################################################################
-    # The following methods are used by data_functions to provide data to the class DataInterface in data_functions
+    # The following methods are used by data_functions to provide drink_data
+    # to the class DataInterface in data_functions
     ####################################################################################################################
 
     def get_beverage_names(self) -> list[str]:
@@ -218,7 +222,7 @@ class RuntimeData:
         """ transforms the string input into int and list[list[int]] input and calls create_recipe"""
         __name_and_amount_list_str: list[str] = __name_and_amount.split(";")
         __needed_beverages: list[list[int]] = []
-        while len(__name_and_amount_list_str) is not 0:
+        while len(__name_and_amount_list_str) != 0:
             __id = int(__name_and_amount_list_str.pop(0))
             __amount = int(__name_and_amount_list_str.pop(0))
             __needed_beverages.append([__id, __amount])

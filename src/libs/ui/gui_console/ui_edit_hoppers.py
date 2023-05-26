@@ -1,14 +1,15 @@
 def print_help_commands():
     print("input options: \n"
-          "input <help>            to see a list of available commands\n\n"
+          "input <help>                           to see a list of available commands\n\n"
           "edit hopper cmds:\n"
-          "input <beverages>       to see a list of all beverages\n"
-          "input <hopper>          to see a list of the current hopper layout\n"
-          "input [<hopper-position>;<beverage>] to put a beverage onto the hopper-position\n\n"
+          "input <beverages>                      to see a list of all beverages\n"
+          "input <hoppers>                        to see a list of the current hopper layout\n"
+          "input [<hopper-position>;<beverage>]   to put a beverage onto the hopper-position\n"
+          "      example:  1;coca_cola\n\n"
           "change ui cmds:\n"
-          "input <selection>       to dispense a drink\n"
-          "input <new>             to enter a new recipe\n"
-          "input <exit>            to exit the drink  selection")
+          "input <select>                         to dispense a drink\n"
+          "input <new>                            to enter a new recipe\n"
+          "input <exit>                           to exit the application")
 
 
 class EditHopper:
@@ -26,6 +27,8 @@ class EditHopper:
         self.__data_beverage_names = __data_beverage_names
         self.__return_value = ""
         self.__edit_hopper_process = True
+
+        print("you are currently in the edit-hopper window")
         print("enter <help> to see the available commands")
         return self.__edit_hopper_loop()
 
@@ -82,16 +85,16 @@ class EditHopper:
                 print_help_commands()
             case "beverages":
                 self.__print_beverages()
-            case "hopper":
+            case "hoppers":
                 self.__print_hopper_layout()
-            case "selection":
-                self.__return_value = "change_window;selection"
+            case "select":
+                self.__return_value = "change_window;select"
                 self.__edit_hopper_process = False
             case "new":
                 self.__return_value = "change_window;new"
                 self.__edit_hopper_process = False
             case "exit":
-                self.__return_value = "exit;exit"
+                self.__return_value = "exit;pseudo_string"
                 self.__edit_hopper_process = False
             case _:
                 if self.__try_change_hopper(__input):

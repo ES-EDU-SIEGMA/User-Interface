@@ -1,15 +1,15 @@
+import sys
+
 import PyQt5.QtWidgets as PyQtWidgets
 import PyQt5.QtCore as PyQtCore
 import PyQt5.QtGui as PyQtGui
 import time
-from libs import json_data as JsonData
 from libs import runtime_data as RuntimeData
-from libs import create_cocktail as CreateCocktail
 from libs.ui.gui_windows.css import css_new_drink_window as css
 
 
 ########################################################################################################################
-# Functions to handle data
+# Functions to handle drink_data
 ########################################################################################################################
 def get_beverage_by_name(beverages: list[RuntimeData.Beverage], name: str) -> RuntimeData.Beverage:
     for beverage in beverages:
@@ -59,9 +59,67 @@ class NewRecipe(PyQtWidgets.QWidget):
         self.setWindowTitle("New Cocktail Recipe")  # todo I don't think u can see the title maybe remove title?
         self.setStyleSheet(css.window_style)  # todo rework the css
 
+        # new stuff
+
+        self.__header_label = PyQtWidgets.QLabel("Drink Mixing Machine", self)
+        self.__header_label.setAlignment(PyQtCore.Qt.AlignCenter)
+        self.__header_label.setStyleSheet(css.style_sw_header_label)
+
+        self.__sub_header_label = PyQtWidgets.QLabel("SIEGMA-WS2223", self)
+        self.__sub_header_label.setAlignment(PyQtCore.Qt.AlignCenter)
+        self.__sub_header_label.setStyleSheet(css.style_sw_sub_header_label)
+
+        self.__description_label = PyQtWidgets.QLabel("Quick select for drinks:", self)
+        self.__description_label.setStyleSheet(css.style_sw_description_label)
+
+        # Buttons
+
+        self.__exit_btn = PyQtWidgets.QPushButton("Exit Application", self)
+        self.__exit_btn.setStyleSheet(css.style_sw_exit_button)
+        self.__exit_btn.clicked.connect(self.call_back_object.call_back_pyqt("exit"))
+        # todo create a connect function that calls control with the cmd to terminate the application
+
+        self.__new_cocktail_btn = PyQtWidgets.QPushButton("New Cocktail", self)
+        self.__new_cocktail_btn.setStyleSheet(css.style_sw_new_cocktail_button)
+        self.__new_cocktail_btn.clicked.connect(self.call_back_object.call_back_pyqt("change_window;new"))
+        # todo create a connect function that calls control with the cmd to add a new cocktail
+
+        self.__edit_hoppers_btn = PyQtWidgets.QPushButton("Change Drinks on Hopper", self)
+        self.__edit_hoppers_btn.setStyleSheet(css.style_sw_edit_hoppers_button)
+        self.__edit_hoppers_btn.clicked.connect(self.call_back_object.call_back_pyqt("change_window;edit"))
+        # todo create a connect function that calls control with the cmd to change the drinks on the hopper
+
+        # Scroll area widget that holds the available drink buttons
+
+        self.__all_drinks_frame = PyQtWidgets.QScrollArea(self)
+        self.__wrapper_widget = PyQtWidgets.QWidget()
+        self.__scroll_area_drinks = PyQtWidgets.QVBoxLayout()
+
+        # self.update_quick_select()
+
+        self.__wrapper_widget.setLayout(self.__scroll_area_drinks)
+
+        self.__all_drinks_frame.setVerticalScrollBarPolicy(PyQtCore.Qt.ScrollBarAlwaysOn)
+        self.__all_drinks_frame.setHorizontalScrollBarPolicy(PyQtCore.Qt.ScrollBarAlwaysOff)
+        self.__all_drinks_frame.setWidgetResizable(True)
+        self.__all_drinks_frame.setStyleSheet(css.style_sw_all_drinks_frame)
+        self.__all_drinks_frame.setWidget(self.__wrapper_widget)
+
+        # Layout of the widgets inside the window
+
+        self.__window_layout = PyQtWidgets.QGridLayout(self)
+        self.__window_layout.addWidget(self.__header_label, 0, 0, 1, 3)
+        self.__window_layout.addWidget(self.__sub_header_label, 1, 0, 1, 3)
+        self.__window_layout.addWidget(self.__description_label, 2, 0)
+        self.__window_layout.addWidget(self.__new_cocktail_btn, 4, 2)
+        self.__window_layout.addWidget(self.__edit_hoppers_btn, 6, 2)
+        self.__window_layout.addWidget(self.__exit_btn, 8, 2)
+        self.__window_layout.addWidget(self.__all_drinks_frame, 3, 0, 6, 2)
+        self.setLayout(self.__window_layout)
+
         # Labels
 
-        self.__available_list_label = PyQtWidgets.QLabel("Available beverages")
+        """self.__available_list_label = PyQtWidgets.QLabel("Available beverages")
         self.__available_list_label.setAlignment(PyQtCore.Qt.AlignCenter)
 
         self.__selected_list_label = PyQtWidgets.QLabel("Selected beverages")
@@ -73,16 +131,16 @@ class NewRecipe(PyQtWidgets.QWidget):
         # Buttons
 
         self.__accept_button: PyQtWidgets.QPushButton = PyQtWidgets.QPushButton("Accept")
-        self.__accept_button.clicked.connect(self.on_accept)
+        self.__accept_button.clicked.connect(lambda: print("test_accept"))
         # the accept button checks whether the cocktail meets certain criteria
 
         self.__cancel_button: PyQtWidgets.QPushButton = PyQtWidgets.QPushButton("Cancel")
-        self.__cancel_button.clicked.connect(self.on_cancel)
+        self.__cancel_button.clicked.connect(lambda: print("test_cancel"))
         # the cancel button functions like a back button
         # todo the cancel button should call control and change the view or it should change the view automatically
 
         self.__view_cocktails_button: PyQtWidgets.QPushButton = PyQtWidgets.QPushButton("Cocktails")
-        self.__view_cocktails_button.clicked.connect(self.view_cocktails_button_on_click)
+        self.__view_cocktails_button.clicked.connect(lambda: print("test_cocktails"))
         # the view cocktails button opens a new window that shows all available cocktails
         # todo the connect function should call the window directly or redirect to controller
 
@@ -128,7 +186,7 @@ class NewRecipe(PyQtWidgets.QWidget):
         __wrapper_widget.setLayout(__wrapper_widget_layout)
         self.__grid_layout.addWidget(__wrapper_widget, 2, 4)
 
-        self.setLayout(self.__grid_layout)
+        self.setLayout(self.__grid_layout)"""
 
     def activate(self, __data_beverage_names: list[str], __data_recipe_names: list[str]) -> str:
         self.__data_available_beverage_names = __data_beverage_names
@@ -138,18 +196,6 @@ class NewRecipe(PyQtWidgets.QWidget):
         self.__sum_fill_amounts = 0
         self.__update_available_beverages_list()
         self.show()
-        while self.return_value == "":  # that's not rly good code. got to revisit this one later
-            time.sleep(1)
-        return self.return_value
-
-    def reactivate(self):
-        self.__return_value = ""
-        self.__selected_drinks_and_fill_amounts = []
-        self.__sum_fill_amounts = 0
-        self.__update_available_beverages_list()
-        while self.return_value == "":  # that's not rly good code. got to revisit this one later
-            time.sleep(1)
-        return self.return_value
 
     def deactivate(self):
         self.hide()
@@ -249,3 +295,11 @@ class EnterIntDialogWindow(PyQtWidgets.QDialog):
 
     def set_label(self, text=""):
         self.__label.setText(text)
+
+
+if __name__ == "__main__":
+    """ used to test out the pyqt window selection without functionality"""
+    print("main")
+    __app = PyQtWidgets.QApplication(sys.argv)
+    selection = NewRecipe(__app)
+    sys.exit(__app.exec())

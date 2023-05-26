@@ -1,22 +1,27 @@
+import re as RegularExpression
+
+
 def print_help_commands():
     print("input options: \n"
-          "input <help>            to see a list of available commands\n\n"
+          "input <help>                           to see a list of available commands\n\n"
           "new recipe cmds:\n"
-          "input <recipes>         to see a list of all recipes\n"
-          "input <beverage>        to see a list of all available beverages\n"
-          "input <my_recipe>       to see the drinks you have selected for your recipe\n"
-          "input [<beverage-name>;<ml>]   to put a beverage onto the hopper-position\n"
-          "input [<create>;<recipe-name>] to create your recipe with the given name \n\n"
+          "input <recipes>                        to see a list of all recipes\n"
+          "input <beverage>                       to see a list of all available beverages\n"
+          "input <my_recipe>                      to see the drinks you have selected for your recipe\n"
+          "input [<beverage-name>;<ml>]           to put a beverage onto the hopper-position\n"
+          "      example:  coca_cola;100\n"
+          "input [<create>;<recipe-name>]         to create your recipe with the given name\n"
+          "      example:  create;cool_name\n\n"
           "change ui cmds:\n"
-          "input <selection>       to dispense a drink\n"
-          "input <new>             to enter a new recipe\n"
-          "input <exit>            to exit the drink  selection")
+          "input <select>                         to dispense a drink\n"
+          "input <edit>                           to edit the hopper-layout\n"
+          "input <exit>                           to exit the application")
 
 
 class NewRecipe:
     __data_beverage_names: list[str] = None
     __data_recipe_names: list[str] = None
-    __commands: list[str] = ["help", "recipes", "beverage", "my-recipe", "selection", "new", "exit"]
+    __commands: list[str] = ["help", "recipes", "beverage", "my-recipe", "select", "new", "exit"]
     __return_value: str = None
     __new_recipe_process: bool = None
 
@@ -35,6 +40,8 @@ class NewRecipe:
 
         self.__selected_drinks_and_fill_amounts = []
         self.__sum_fill_amounts = 0
+
+        print("you are currently in the new-recipe window")
         print("enter <help> to see the available commands")
         return self.__new_recipe_loop()
 
@@ -66,6 +73,9 @@ class NewRecipe:
             print(__beverage)
 
     def __print_new_recipe_progress(self):
+        print("your recipe:")
+        if not self.__selected_drinks_and_fill_amounts:
+            print("nothing selected so far")
         for __list_item in self.__selected_drinks_and_fill_amounts:
             print(f"beverage  {__list_item[0]}   fill amount {__list_item[1]}ml")
 
@@ -86,7 +96,9 @@ class NewRecipe:
 
     def __create_beverage(self, __recipe_name: str) -> bool:
         if (__recipe_name not in self.__data_recipe_names and
-                __recipe_name not in self.__data_beverage_names):
+                __recipe_name not in self.__data_beverage_names and
+                not RegularExpression.search(";", __recipe_name) and
+                not RegularExpression.search("hopper_", __recipe_name)):
             self.__return_value = f"command;new;{__recipe_name},{self.__selected_drinks_and_fill_amounts}"
             print(f"recipe {__recipe_name} added with the following ingredients:")
             self.__print_new_recipe_progress()
@@ -121,14 +133,14 @@ class NewRecipe:
                 self.__print_beverage_names()
             case "my_recipe":
                 self.__print_new_recipe_progress()
-            case "selection":
-                self.__return_value = "change_window;selection"
+            case "select":
+                self.__return_value = "change_window;select"
                 self.__new_recipe_process = False
-            case "new":
-                self.__return_value = "change_window;new"
+            case "edit":
+                self.__return_value = "change_window;edit"
                 self.__new_recipe_process = False
             case "exit":
-                self.__return_value = "exit;exit"
+                self.__return_value = "exit;pseudo_string"
                 self.__new_recipe_process = False
             case _:
                 if self.__try_split_string_command(__input):

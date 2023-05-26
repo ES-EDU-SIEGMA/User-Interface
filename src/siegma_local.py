@@ -12,7 +12,7 @@ from src.libs import (
     mock_serial as SerialCommunication,
     scale as Scale,
 )
-import src.libs.data.json_data as JsonData
+import src.libs.drink_data.json_data as JsonData
 
 
 # maybe use close() instead of hide()

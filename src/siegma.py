@@ -1,4 +1,4 @@
- PyQt5.QtWidgets as PyQtWidgets
+import PyQt5.QtWidgets as PyQtWidgets
 import PyQt5.QtCore as PyQtCore
 import sys
 import time
@@ -12,7 +12,7 @@ from src.libs import (
     mock_serial as SerialCommunication,
     scale as Scale,
 )
-import libs.data.json_data as JsonData
+import libs.drink_data.json_data as JsonData
 
 
 class BeveragePushButton(PyQtWidgets.QPushButton):
@@ -41,9 +41,9 @@ class MixedDrinkPushButton(PyQtWidgets.QPushButton):
     mix_drink_id = -1
 
     def __init__(
-        self,
-        __parent: PyQtWidgets.QWidget,
-        __mix_drink: RuntimeData.MixDrinkInformation,
+            self,
+            __parent: PyQtWidgets.QWidget,
+            __mix_drink: RuntimeData.MixDrinkInformation,
     ):
         super().__init__()
         self.parentWidget = __parent
@@ -267,7 +267,7 @@ class WelcomeWindow(PyQtWidgets.QWidget):
             current_weight = 0
             current_weight = Scale.get_current_weight()
             if (current_weight - full_weight) in range(
-                hopper_size - 5, hopper_size + 5
+                    hopper_size - 5, hopper_size + 5
             ):
                 correct_hoppers += 1
             full_weight = current_weight

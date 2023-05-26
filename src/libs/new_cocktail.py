@@ -102,7 +102,7 @@ class NewCocktailWindow(pyw.QWidget):
         self.fillList(self.availableBeverageList, self.availableBeverages)
 
     ################################
-    #   Functions to handle data   #
+    #   Functions to handle drink_data   #
     ################################
 
     def getBeverageByName(self, beverages: list, name: str) -> runtimeData.Beverage:

@@ -68,27 +68,27 @@ style_sw_exit_button: str = \
     f"color: {selection_window_button_exit_text_color};"\
     f"padding: {selection_window_button_exit_padding};" \
     f"font-size: {selection_window_button_exit_font_size};" \
-    f"font:{selection_window_button_exit_font}"\
+    f"font:{selection_window_button_exit_font};"\
     f"border: {selection_window_button_exit_border};"\
     f"border-radius: {selection_window_button_exit_border_radius};" \
     f"margin-left: {selection_window_button_exit_margin_left};"
 
 style_sw_new_cocktail_button: str = \
     f"background-color: {selection_window_button_new_cocktail_background_color};" \
-    f"color: {selection_window_button_new_cocktail_text_color};"\
+    f"color: {selection_window_button_new_cocktail_text_color};" \
     f"padding: {selection_window_button_new_cocktail_padding};" \
     f"font-size: {selection_window_button_new_cocktail_font_size};" \
-    f"font{selection_window_button_new_cocktail_font}"\
+    f"font: {selection_window_button_new_cocktail_font};" \
     f"border: {selection_window_button_new_cocktail_border };" \
     f"border-radius: {selection_window_button_new_cocktail_border_radius};" \
     f"margin-left: {selection_window_button_new_cocktail_margin_left};"
 
-style_sw_edit_hoppers_button:str = \
+style_sw_edit_hoppers_button: str = \
     f"background-color: {selection_window_button_edit_hoppers_background_color};" \
     f"color: {selection_window_button_edit_hoppers_text_color};" \
     f"padding: {selection_window_button_edit_hoppers_padding};" \
     f"font-size: {selection_window_button_edit_hoppers_font_size};" \
-    f"font: {selection_window_button_edit_hoppers_font}"\
+    f"font: {selection_window_button_edit_hoppers_font};" \
     f"border: {selection_window_button_edit_hoppers_border };" \
     f"border-radius: {selection_window_button_edit_hoppers_border_radius};" \
     f"margin-left: {selection_window_button_edit_hoppers_margin_left};"

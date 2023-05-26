@@ -1,11 +1,14 @@
+from .. import ui as CallBack
 import PyQt5.QtWidgets as PyQtWidgets
 import PyQt5.QtCore as PyQtCore
 import time
 from libs.ui.gui_windows.css import css_selection_window as css
+import sys
 
 
 class Selection(PyQtWidgets.QWidget):
     __data_drink_names: list[str] = None
+    call_back_object: CallBack.Ui
     return_value: str = None
 
     __header_label: PyQtWidgets.QLabel
@@ -21,11 +24,12 @@ class Selection(PyQtWidgets.QWidget):
     __scroll_area_drinks: PyQtWidgets.QVBoxLayout
     __window_layout: PyQtWidgets.QGridLayout
 
-    def __init__(self, __parent_window: PyQtWidgets.QWidget):
+    def __init__(self, __callback_object, __parent_window: PyQtWidgets.QWidget):
 
         super().__init__()
         self.parentWidget = __parent_window
         self.__init_widgets()
+        print("init")
 
     def __init_widgets(self):
         self.setWindowTitle("SIEGMA_2223")
@@ -50,17 +54,17 @@ class Selection(PyQtWidgets.QWidget):
 
         self.__exit_btn = PyQtWidgets.QPushButton("Exit Application", self)
         self.__exit_btn.setStyleSheet(css.style_sw_exit_button)
-        self.__exit_btn.clicked.connect(lambda: self.exit_button_on_click())
+        self.__exit_btn.clicked.connect(self.call_back_object.call_back_pyqt("exit"))
         # todo create a connect function that calls control with the cmd to terminate the application
 
         self.__new_cocktail_btn = PyQtWidgets.QPushButton("New Cocktail", self)
         self.__new_cocktail_btn.setStyleSheet(css.style_sw_new_cocktail_button)
-        self.__new_cocktail_btn.clicked.connect(lambda: self.new_cocktail_button_on_click())
+        self.__new_cocktail_btn.clicked.connect(self.call_back_object.call_back_pyqt("change_window;new"))
         # todo create a connect function that calls control with the cmd to add a new cocktail
 
         self.__edit_hoppers_btn = PyQtWidgets.QPushButton("Change Drinks on Hopper", self)
         self.__edit_hoppers_btn.setStyleSheet(css.style_sw_edit_hoppers_button)
-        self.__edit_hoppers_btn.clicked.connect(lambda: self.edit_hopper_occupancy_btn_on_click())
+        self.__edit_hoppers_btn.clicked.connect(self.call_back_object.call_back_pyqt("change_window;edit"))
         # todo create a connect function that calls control with the cmd to change the drinks on the hopper
 
         # Scroll area widget that holds the available drink buttons
@@ -71,7 +75,7 @@ class Selection(PyQtWidgets.QWidget):
 
         # self.update_quick_select()
 
-        self.__wrapper_widget.setLayout(self.scroll_area_vbox)
+        self.__wrapper_widget.setLayout(self.__scroll_area_drinks)
 
         self.__all_drinks_frame.setVerticalScrollBarPolicy(PyQtCore.Qt.ScrollBarAlwaysOn)
         self.__all_drinks_frame.setHorizontalScrollBarPolicy(PyQtCore.Qt.ScrollBarAlwaysOff)
@@ -82,13 +86,13 @@ class Selection(PyQtWidgets.QWidget):
         # Layout of the widgets inside the window
 
         self.__window_layout = PyQtWidgets.QGridLayout(self)
-        self.__window_layout.addWidget(self.headerLabel, 0, 0, 1, 3)
-        self.__window_layout.addWidget(self.subHeaderLabel, 1, 0, 1, 3)
+        self.__window_layout.addWidget(self.__header_label, 0, 0, 1, 3)
+        self.__window_layout.addWidget(self.__sub_header_label, 1, 0, 1, 3)
         self.__window_layout.addWidget(self.__description_label, 2, 0)
         self.__window_layout.addWidget(self.__new_cocktail_btn, 4, 2)
         self.__window_layout.addWidget(self.__edit_hoppers_btn, 6, 2)
         self.__window_layout.addWidget(self.__exit_btn, 8, 2)
-        self.__window_layout.addWidget(self.all_drinks_frame, 3, 0, 6, 2)
+        self.__window_layout.addWidget(self.__all_drinks_frame, 3, 0, 6, 2)
         self.setLayout(self.__window_layout)
 
     def activate(self, __data_drink_names: list[str]) -> str:
@@ -138,4 +142,12 @@ class DrinkButton(PyQtWidgets.QPushButton):
         self.clicked.connect(lambda: self.__set_return_value())
 
     def __set_return_value(self):
-        Selection.return_value = f"command;selection;{self.__drink_name}"
+        Selection.call_back_object.call_back_pyqt(f"command;selection;{self.__drink_name}")
+
+
+if __name__ == "__main__":
+    """ used to test out the pyqt window selection without functionality"""
+    print("main")
+    __app = PyQtWidgets.QApplication(sys.argv)
+    selection = Selection(__app)
+    sys.exit(__app.exec())

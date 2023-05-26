@@ -1,8 +1,8 @@
-import data_objects as Data
+from . import data_objects as Data
 
 
 class DataInterface:
-    __runtime_data: Data.RuntimeData  # object to get data from
+    __runtime_data: Data.RuntimeData  # object to get drink_data from
 
     def __init__(self):
         self.__runtime_data = Data.RuntimeData()

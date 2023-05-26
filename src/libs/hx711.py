@@ -113,13 +113,13 @@ class HX711:
         while not self.is_ready():
             pass
 
-        # Read three bytes of data from the HX711.
+        # Read three bytes of drink_data from the HX711.
         firstByte = self.readNextByte()
         secondByte = self.readNextByte()
         thirdByte = self.readNextByte()
 
         # HX711 Channel and gain factor are set by number of bits read
-        # after 24 data bits.
+        # after 24 drink_data bits.
         for i in range(self.GAIN):
             # Clock a bit out of the HX711 and throw it away.
             self.readNextBit()

@@ -188,13 +188,13 @@ class ChangeDrinkWindow(pyw.QWidget):
                         # find new beverage
                         for x in range(len(self.m_allBeverages)):
                             if toChangeID == self.m_allBeverages[x].m_id:
-                                # found it -> now update the runtime data and print an information to the
+                                # found it -> now update the runtime drink_data and print an information to the
                                 self.informationLabel.setText(
                                     f"Changed the drink from {self.parentWidget.rtData.m_beverageList[i].m_name} to {self.m_allBeverages[x].m_name} on hopper {hopperid}"
                                 )
                                 # set new hopperid
                                 self.m_allBeverages[x].m_hopperid = hopperid
-                                # override all the old data
+                                # override all the old drink_data
                                 self.m_currentBvg = self.m_allBeverages[x]
                                 self.parentWidget.rtData.m_beverageList[
                                     i

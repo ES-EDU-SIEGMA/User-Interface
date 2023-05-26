@@ -1,13 +1,13 @@
 def print_help_commands():
     print("input options: \n"
-          "input <help>       to see a list of commands\n\n"
+          "input <help>                           to see a list of commands\n\n"
           "drink selection cmds:\n"
-          "input <drinks>     to see a list of all available drinks\n"
-          "input <drink-name> to dispense the drink\n\n"
+          "input <drinks>                         to see a list of all available drinks\n"
+          "input <drink-name>                     to dispense the drink\n\n"
           "change ui cmds:\n"
-          "input <edit>       to edit the hopper layout\n"
-          "input <new>        to enter a new recipe\n"
-          "input <exit>       to exit the drink  selection")
+          "input <edit>                           to edit the hopper-layout\n"
+          "input <new>                            to enter a new recipe\n"
+          "input <exit>                           to exit the application")
 
 
 class Selection:
@@ -24,6 +24,7 @@ class Selection:
         self.__return_value = ""
         self.__drink_selection_process = True
 
+        print("you are currently in the drink-selection window")
         print("enter <help> to see the available commands")
         return self.__drink_selection_loop()
 
@@ -51,14 +52,14 @@ class Selection:
     def __case_distinction(self, __input: str):
         if (__input in self.__data_drink_names) and (__input not in self.__commands):
             # the test "__input not in self.__commands" isn't necessary if we assume that drinks don't have a cmd name
-            self.__return_value = f"command;selection;{__input}"
+            self.__return_value = f"command;select;{__input}"
             self.__drink_selection_process = False
             print("your drink is being dispensed")
 
         else:
             match __input:
                 case "help":
-                    pass
+                    print_help_commands()
                 case "drinks":
                     self.__print_drink_names()
                 case "edit":
@@ -68,7 +69,7 @@ class Selection:
                     self.__return_value = "change_window;new"
                     self.__drink_selection_process = False
                 case "exit":
-                    self.__return_value = "exit;exit"
+                    self.__return_value = "exit;pseudo_string"
                     self.__drink_selection_process = False
                 case _:
                     print("please enter a valid input")
