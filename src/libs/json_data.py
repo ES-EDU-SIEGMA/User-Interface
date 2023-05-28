@@ -1,5 +1,5 @@
 import json
-from src.libs import runtime_data as runtime_data
+from . import runtime_data as runtime_data
 
 DRINKLIST_FILE_PATH: str = ""
 

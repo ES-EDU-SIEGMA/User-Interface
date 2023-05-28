@@ -1,11 +1,11 @@
 import traceback
-from os.path import abspath as absolute_path
+from os.path import abspath as absolute_path, join, dirname, realpath
 
 import PyQt5.QtWidgets as PyQtWidgets
 import PyQt5.QtCore as PyQtCore
 import sys
 import time
-from src.libs import (
+from libs import (
     globals as local_globals,
     progress as progress_window,
     new_cocktail as new_cocktail_window,
@@ -295,7 +295,9 @@ class ErrorWindow(PyQtWidgets.QWidget):
 if __name__ == "__main__":
     app = PyQtWidgets.QApplication(sys.argv)
     try:
-        local_data_source = absolute_path("../drink_list.json")
+        local_data_source = absolute_path(
+            join(dirname(realpath(__file__)), "../drink_list.json")
+        )
         json_data.__init__(path_to_drinklist_file=local_data_source)
         scale.__init__()
         serial_communication.__init__()

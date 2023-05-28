@@ -2,10 +2,10 @@ import time
 import threading
 import globals
 
-if globals.USE_SCALE_MOCK:
-    from src.libs.mock_gpio import GPIO as GPIO
-else:
+if globals.RUN_ON_PI:
     import RPi.GPIO as GPIO
+else:
+    from mock_gpio import GPIO as GPIO
 
 
 class HX711:

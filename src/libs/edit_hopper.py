@@ -1,6 +1,6 @@
 import PyQt5.QtWidgets as pyw
 import PyQt5.QtCore as pyc
-from src.libs import css as css, runtime_data as rtd, json_data as dbcon
+from . import css as css, runtime_data as rtd, json_data as dbcon
 
 
 # this button is used in the hopper overview
