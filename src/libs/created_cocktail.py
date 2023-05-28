@@ -1,7 +1,7 @@
 import PyQt5.QtWidgets as pyw
 import PyQt5.QtCore as pyc
 import PyQt5.QtGui as pyg
-from src.libs import runtime_data as runtimeData, css as css, json_data as db
+from . import runtime_data as runtimeData, css as css, json_data as db
 
 
 # This class implements the view to see which Mixeddrinks were already created, and what contents they hold on selection.

@@ -1,4 +1,3 @@
-USE_SERIAL_MOCK = False
-USE_SCALE_MOCK = False
+RUN_ON_PI = False
 
 standardActivationTime = 5

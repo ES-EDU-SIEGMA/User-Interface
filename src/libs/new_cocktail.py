@@ -1,7 +1,7 @@
 import PyQt5.QtWidgets as pyw
 import PyQt5.QtCore as pyc
 import PyQt5.QtGui as pyg
-from src.libs import (
+from . import (
     runtime_data as runtimeData,
     css as css,
     created_cocktail as ccw,

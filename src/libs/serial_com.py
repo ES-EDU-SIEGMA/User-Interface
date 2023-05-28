@@ -1,11 +1,11 @@
 import time
-from src.libs import globals as local_globals
+from . import globals as local_globals
 
-if local_globals.USE_SERIAL_MOCK:
+if local_globals.RUN_ON_PI:
+    import serial
+else:
     print("COM USING MOCK!")
     from . import mock_serial as serial
-else:
-    import serial
 
 picoleft: serial.Serial = None
 picoright: serial.Serial = None

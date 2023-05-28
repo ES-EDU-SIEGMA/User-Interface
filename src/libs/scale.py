@@ -1,12 +1,12 @@
-from src.libs import globals as local_globals
+from . import globals as local_globals
 
-if local_globals.USE_SCALE_MOCK:
-    print("SCALE USING MOCK")
-    from src.libs.mock_hx711 import HX711
-    from src.libs import mock_gpio as GPIO
-else:
-    from src.libs.hx711 import HX711
+if local_globals.RUN_ON_PI:
+    from hx711 import HX711
     import RPi.GPIO as GPIO
+else:
+    print("SCALE USING MOCK")
+    from .mock_hx711 import HX711
+    from . import mock_gpio as GPIO
 
 referenceUnit = 870298
 hx = HX711(5, 6)
