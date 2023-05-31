@@ -1,11 +1,11 @@
 import time
 import threading
-import globals
+from . import globals as local_globals
 
-if globals.RUN_ON_PI:
+if local_globals.RUN_ON_PI:
     import RPi.GPIO as GPIO
 else:
-    from mock_gpio import GPIO as GPIO
+    from .mock_gpio import GPIO as GPIO
 
 
 class HX711:
