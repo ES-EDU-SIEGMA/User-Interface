@@ -304,6 +304,6 @@ if __name__ == "__main__":
         m_startPage = WelcomeWindow()
         sys.exit(app.exec())
     except Exception as error:
-        traceback.print_exception(error)
+        traceback.print_exception(None, error, None)
         m_error = ErrorWindow(error)
         sys.exit(app.exec())

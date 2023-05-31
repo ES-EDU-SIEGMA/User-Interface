@@ -5,26 +5,29 @@ simulates RPi.GPIO
 pins: [int] = {}
 
 
-def setmode(self, mode):
+BCM = "BCM"
+
+
+def setmode(mode: bool):
     pass
 
 
 # False = Low
-def setup(self, pin, mode, initial=None, pul_up_down=None):
-    self.pins[pin] = False
+def setup(pin, mode, initial=None, pul_up_down=None):
+    pins[pin] = False
 
 
-def input(self, pin):
-    return self.pins.get(pin, False)
+def input(pin):
+    return pins.get(pin, False)
 
 
-def output(self, pin, state):
-    self.pins[pin] = state
+def output(pin, state):
+    pins[pin] = state
 
 
-def cleanup(self):
+def cleanup():
     pass
 
 
-def setwarnings(self, flag):
+def setwarnings(flag):
     pass
