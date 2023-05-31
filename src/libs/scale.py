@@ -15,7 +15,8 @@ hx = HX711(5, 6)
 def __init__():
     global hx
     global referenceUnit
-    GPIO.setwarnings(GPIO, None)
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BCM)
     hx.set_reading_format("MSB", "MSB")
     hx.set_reference_unit(referenceUnit)
     hx.reset()
