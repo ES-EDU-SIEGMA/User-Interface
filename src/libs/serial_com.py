@@ -68,7 +68,7 @@ def wait_until_ready():
         for pico in [picoright, picoleft, picorondell]:
             resp = pico.readline()
             print(resp)
-            if resp == b"CALIBRATED\n":
+            if resp.startswith(b"CALIBRATED"):
                 readyPicos += 1
     print("all picos are setup")
 
