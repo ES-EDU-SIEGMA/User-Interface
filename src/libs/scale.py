@@ -1,7 +1,7 @@
 from . import globals as local_globals
 
 if local_globals.RUN_ON_PI:
-    from hx711 import HX711
+    from .hx711 import HX711
     import RPi.GPIO as GPIO
 else:
     print("SCALE USING MOCK")
