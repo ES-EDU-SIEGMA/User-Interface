@@ -31,29 +31,29 @@ def identify_picos(pico0, pico1, pico2):
             print("waiting for identifier")
             pos = pico.readline()
             print(f"response was {pos}")
-            if pos == b"LEFT\n":
+            if pos.startswith(b"LEFT"):
                 print("found left")
                 picoleft = pico
                 break
-            elif pos == b"RIGHT\n":
+            elif pos.startswith(b"RIGHT"):
                 print("found right")
                 picoright = pico
                 break
-            elif pos == b"RONDELL\n":
+            elif pos.startswith(b"RONDELL"):
                 print("found rondell")
                 picorondell = pico
                 break
-            elif pos == b"F\n":
+            elif pos.startswith(b"F"):
                 print("error, trying again")
                 n += 1
                 time.sleep(5)
             else:
-                raise Exception("pico sent unknown identifier")
+                raise Exception(f"pico sent unknown identifier: {pos}")
 
         if (
             picoleft is None and picoright is None and picorondell is None
         ):  # not one was found
-            raise Exception("pico could not be identified")
+            raise Exception("No pico could be identified!")
 
 
 # wait until all picos send their ready signal
@@ -109,7 +109,7 @@ def close_connection():
         except Exception as error:
             raise error
     else:
-        raise Exception("connection wasn't setup correctly")
+        raise Exception("Connection was not setup correctly!")
 
 
 # send the input to the pico with the correct id
@@ -132,4 +132,4 @@ def send_msg(pico, message_to_send):
         except Exception as error:
             raise error
     else:
-        raise Exception("connection wasnt setup correctly")
+        raise Exception("Connection was not setup correctly!")
