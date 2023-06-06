@@ -63,7 +63,7 @@ class MixedDrinkPushButton(PyQtWidgets.QPushButton):
 
 
 class WelcomeWindow(PyQtWidgets.QWidget):
-    # stores the current beverages and mix_drinks which are available with the current hopper configuration
+    # stores the current ingredients and mix_drinks which are available with the current hopper configuration
     m_runtimeData: RuntimeData.RuntimeData
 
     cocktail_window: NewCocktailWindow.NewCocktailWindow
@@ -183,9 +183,9 @@ class WelcomeWindow(PyQtWidgets.QWidget):
         for drink_button_position in reversed(range(self.scrollAreaVBox.count())):
             self.scrollAreaVBox.takeAt(drink_button_position).widget().setParent(None)
 
-    # Fills the all_drinks_frame with the mixable beverages and mix_drinks
+    # Fills the all_drinks_frame with the mixable ingredients and mix_drinks
     #
-    #  uses a database call to get the current available beverages and mix_drinks
+    #  uses a database call to get the current available ingredients and mix_drinks
     def update_quick_select(self):
         self.delete_drink_buttons()
         all_available_beverages: list[

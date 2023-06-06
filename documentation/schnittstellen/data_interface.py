@@ -2,7 +2,7 @@ class Data:
     """ Is instantiated by any object that wants to access data.
 
         <beverage>:= any type of liquid that can be dispensed.
-        <recipe>:= a combination of beverages that form a drink.
+        <recipe>:= a combination of ingredients that form a drink.
         not every <beverage> needs to be a <recipe> but it can be.
 
         Questions for implementation:
@@ -11,14 +11,16 @@ class Data:
         (potentially in beverage and recipe data as another data section)
         Where and how should we store data about hopper usage?
         Should the persistent drink-data allways be up-to-date with the runtime data or do we only
-        want to explicitly or periodically update the persistent data?"""
+        want to explicitly or periodically update the persistent data?
+
+        hopper id not in persistent data for the drinks"""
     pass
 
     def __init__(self):
         pass
 
     def get_beverage_names(self) -> list[str]:
-        """ returns a list of all beverages"""
+        """ returns a list of all ingredients"""
         pass
 
     def get_recipe_names(self) -> list[str]:
@@ -30,7 +32,7 @@ class Data:
         pass
 
     def get_beverage_on_hopper_names(self) -> list[str]:
-        """ returns a list of all beverages that are on the hopper"""
+        """ returns a list of all ingredients that are on the hopper"""
         pass
 
     def get_beverage(self, __name: str) -> list[str]:
@@ -62,7 +64,7 @@ class Data:
     ##############################################################################################################
 
     def set_hopper(self):
-        """ changes the hopper-position for beverages.
+        """ changes the hopper-position for ingredients.
             Not sure about input and output right now.
 
             Maybe make the assumption that a new beverage is also a full beverage."""

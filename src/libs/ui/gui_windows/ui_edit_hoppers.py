@@ -343,7 +343,7 @@ class ChangeDrinkWindow(PyQtWidgets.QWidget):
                                     self.parentWidget.runtime_data.beverages_on_hopper[beverage_on_hopper],
                                     hopper_id,
                                 )
-                                # update beverages with hopper_id = null
+                                # update ingredients with hopper_id = null
                                 self.beverages_not_on_hopper = JsonData.get_all_other_beverages()
                                 break
         self.update_quick_select()

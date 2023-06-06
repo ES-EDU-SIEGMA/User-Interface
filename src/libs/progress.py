@@ -198,7 +198,7 @@ class MixingProgressWindow(pyw.QWidget):
             sc.send_msg(picoid, strToSend)
         return (len(res) - 1) * hopperSize
 
-    # calculates the time and iteration amounts needed to mix a given beverages
+    # calculates the time and iteration amounts needed to mix a given ingredients
     def calcTimeForActivation(
         self, __bvg: rtd.Beverage, cupSize: int, __fillperc: int, hoppersize: int
     ):

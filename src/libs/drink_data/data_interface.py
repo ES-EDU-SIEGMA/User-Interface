@@ -24,7 +24,7 @@ class DataInterface:
         return self.__runtime_data.get_dispensable_recipe_names()
 
     def get_beverage_hopper_names(self) -> list[str]:
-        """ returns a list of the names of all beverages that can be dispensed (beverage names are unique)"""
+        """ returns a list of the names of all ingredients that can be dispensed (beverage names are unique)"""
         return self.__runtime_data.get_beverage_hopper_names()
 
     # todo maybe return bool on set cmds
@@ -39,7 +39,7 @@ class DataInterface:
     def set_beverage_hopper(self, __old_beverage_name: str, __new_beverage_name: str):
         pass
 
-    # idea for this is to create functionality that allows to manipulate already existing beverages
+    # idea for this is to create functionality that allows to manipulate already existing ingredients
     def change_beverage(self):
         pass
 

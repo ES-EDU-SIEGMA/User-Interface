@@ -34,7 +34,7 @@ class Beverage:
 
 
 class Recipe:
-    """ Recipe represents a drink that is mixed with multiple beverages. Recipe is only used by RuntimeData """
+    """ Recipe represents a drink that is mixed with multiple ingredients. Recipe is only used by RuntimeData """
     __id: int
     __name: str
     __needed_beverages_id: list[Beverage]
@@ -68,7 +68,7 @@ class Recipe:
 
 
 class RuntimeData:
-    """RuntimeData is an aggregation of beverages and recipes."""
+    """RuntimeData is an aggregation of ingredients and recipes."""
     __beverages: list[Beverage]
     __recipes: list[Recipe]
     __beverages_on_hopper: list[Beverage]
@@ -211,7 +211,7 @@ class RuntimeData:
         return __result
 
     def get_beverage_hopper_names(self) -> list[str]:
-        """ returns a list of the names of all beverages that can be dispensed (beverage names are unique)"""
+        """ returns a list of the names of all ingredients that can be dispensed (beverage names are unique)"""
         __result: list[str] = ["not_used" for i in range(0, 12)]
         for __beverage_on_hopper in self.__beverages_on_hopper:
             __hopper_position: int = __beverage_on_hopper.get_hopper_id()

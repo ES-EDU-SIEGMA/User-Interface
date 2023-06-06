@@ -206,7 +206,7 @@ class ChangeDrinkWindow(pyw.QWidget):
                                     self.parentWidget.rtData.m_beverageList[i],
                                     hopperid,
                                 )
-                                # update beverages with hopperid = null
+                                # update ingredients with hopperid = null
                                 self.m_allBeverages = dbcon.getAllOtherBeverages()
                                 break
         self.updateQuickSelect()

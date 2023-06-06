@@ -119,10 +119,10 @@ class NewRecipe(PyQtWidgets.QWidget):
 
         # Labels
 
-        """self.__available_list_label = PyQtWidgets.QLabel("Available beverages")
+        """self.__available_list_label = PyQtWidgets.QLabel("Available ingredients")
         self.__available_list_label.setAlignment(PyQtCore.Qt.AlignCenter)
 
-        self.__selected_list_label = PyQtWidgets.QLabel("Selected beverages")
+        self.__selected_list_label = PyQtWidgets.QLabel("Selected ingredients")
         self.__selected_list_label.setAlignment(PyQtCore.Qt.AlignCenter)
 
         self.__recipe_label = PyQtWidgets.QLabel("Name of recipe:")
@@ -149,7 +149,7 @@ class NewRecipe(PyQtWidgets.QWidget):
         self.__enter_recipe_name: PyQtWidgets.QLineEdit = PyQtWidgets.QLineEdit()
         self.__enter_recipe_name.setStyleSheet(css.style_ndw_line_edit_recipe_name)
 
-        # QListWidgets to select beverages for the recipe
+        # QListWidgets to select ingredients for the recipe
 
         self.__available_beverage_list = PyQtWidgets.QListWidget(self)
         self.__available_beverage_list.setFixedSize(self.listSize[0], self.listSize[1])

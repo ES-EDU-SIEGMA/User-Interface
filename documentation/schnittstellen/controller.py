@@ -12,7 +12,7 @@ class Controller:
         Should the controller return a status update when the drink is finished?
         The controller should probably take the remaining fill_amount of the bottle into consideration.
         What happens if the controller determines a drink can't be dispensed fully because of
-        empty beverages?"""
+        empty ingredients?"""
 
     def __init__(self):
         pass

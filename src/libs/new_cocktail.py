@@ -50,10 +50,10 @@ class NewCocktailWindow(pyw.QWidget):
         self.viewCocktailsBtn.clicked.connect(self.viewCocktailsBtn_onClick)
 
         # set up Labels
-        self.availableListLable = pyw.QLabel("Available beverages")
+        self.availableListLable = pyw.QLabel("Available ingredients")
         self.availableListLable.setAlignment(pyc.Qt.AlignCenter)
 
-        self.selectedListLable = pyw.QLabel("Selected beverages")
+        self.selectedListLable = pyw.QLabel("Selected ingredients")
         self.selectedListLable.setAlignment(pyc.Qt.AlignCenter)
 
         self.recipeLabel = pyw.QLabel("Name of recipe:")

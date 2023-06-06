@@ -31,7 +31,7 @@ class DataStorage:
     # the following methods are used to return drink_data to the class RuntimeData
     ####################################################################################################################
     def get_beverages(self) -> list[list[str]]:
-        """ returns a list of beverages. Each beverage is a list of strings"""
+        """ returns a list of ingredients. Each beverage is a list of strings"""
         __result_list: list[list[str]] = []
         for __drink_id_str in self.__json_drink_dict:
             if self.__json_drink_dict[__drink_id_str]["mix_drink"] is False:
@@ -49,7 +49,7 @@ class DataStorage:
         return __result_list
 
     def get_beverages_on_hopper(self) -> list[list[str]]:
-        """ returns a list of beverages that are on the hopper. Each beverage is a list of strings"""
+        """ returns a list of ingredients that are on the hopper. Each beverage is a list of strings"""
         __result_list: list[list[str]] = []
         for __drink_id_str in self.__json_drink_dict:
             if self.__json_drink_dict[__drink_id_str]["hopper_id"] is not None:
@@ -58,7 +58,7 @@ class DataStorage:
         return __result_list
 
     def get_beverages_dispensable(self) -> list[list[str]]:
-        """ returns a list of beverages that are dispensable. Each beverage is a list of strings"""
+        """ returns a list of ingredients that are dispensable. Each beverage is a list of strings"""
         __result_list: list[list[str]] = []
         for __drink_id_str in self.__json_drink_dict:
             if self.__json_drink_dict[__drink_id_str]["dispensable"]:

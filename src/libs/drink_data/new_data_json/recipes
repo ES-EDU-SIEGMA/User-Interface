@@ -1,0 +1,10 @@
+{
+  "Cherry_banana_juice": {
+    "Banana_juice": {fill_amount: 100},
+    "Cherry_juice": {fill_amount: 100}
+  },
+  "Apple_spritzer": {
+    "Apple_juice": {fill_amount: 120},
+    "Mineral_water": {fill_amount: 80}
+  }
+}

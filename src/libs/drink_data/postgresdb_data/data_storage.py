@@ -129,7 +129,7 @@ def send_update(query: str):
         raise error
 
 
-# exchanges the beverages in the database
+# exchanges the ingredients in the database
 def changeBeverageOnHopper(currentID: int, toChangeID: int, hopperid: int):
     global connected
     global txn
@@ -148,7 +148,7 @@ def changeBeverageOnHopper(currentID: int, toChangeID: int, hopperid: int):
         raise error
 
 
-# returns all beverages which are currently not on a hopper
+# returns all ingredients which are currently not on a hopper
 def getAllOtherBeverages():
     global connected
     global txn
@@ -173,7 +173,7 @@ def getAllOtherBeverages():
         raise error
 
 
-# returns all beverages which are currently on a hopper
+# returns all ingredients which are currently on a hopper
 def getAllAvailableBeverages():
     global connected
     global txn
@@ -198,7 +198,7 @@ def getAllAvailableBeverages():
         raise error
 
 
-# returns a list of all the needed beverages for a mix_drink
+# returns a list of all the needed ingredients for a mix_drink
 def getNeededBeverages(needed, allbeverages):
     # there are only ids in needed
     res = []
@@ -231,7 +231,7 @@ def getAllAvailableMixedDrinks():
         currentName = allMixedDrinksRes[0][1]
         # loop through all possible mixed drinks
         for i in range(len(allMixedDrinksRes)):
-            # get all the needed beverages
+            # get all the needed ingredients
             if currentID != allMixedDrinksRes[i][0]:  # new mixed drink
                 # we got all the ids for the needed drinks
                 temp = getNeededBeverages(needed, allGivenBeverages)

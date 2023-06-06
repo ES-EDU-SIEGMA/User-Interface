@@ -26,7 +26,7 @@ class Beverage:
 #   represents the mixdrink
 #   it stores the bevereages needed to mix the drink and all the other necessarry information
 class MixDrinkInformation:
-    ## list of all the needed beverages (stores objects of the datatype beverage)
+    ## list of all the needed ingredients (stores objects of the datatype beverage)
     m_neededBeverages = []  # type: beverage
     ## list of the corresponding fillpercenteges, its a list in the list e.g. [[1,23], [2, 77]] where [x][0] is the id of the beverage and [x][1] is the fillpercentage
     m_fillpercToBvg = []  # type: int
@@ -61,7 +61,7 @@ class MixDrinkInformation:
 ## runtimeData
 #   combines everything into one object
 class RuntimeData:
-    ## list of all beverages currently on the machine
+    ## list of all ingredients currently on the machine
     m_beverageList = None
     ## list of all mixdrinks which are currently mixable
     m_mixeddrinkList = None
