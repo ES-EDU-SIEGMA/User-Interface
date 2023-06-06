@@ -23,11 +23,11 @@ class DataStorage:
     # Datastructures that hold all relevant data at runtime
     ####################################################################################################################
 
-    __ingredients: dict
-    __recipes: dict
-    __ingredient_on_hopper_names: list[str]
+    __ingredients: dict = {}
+    __recipes: dict = {}
+    __ingredient_on_hopper_names: list[str] = []
     # the hopper position is encoded into the list position of __ingredient_on_hopper_names
-    __dispensable_recipe_names: list[str]
+    __dispensable_recipe_names: list[str] = []
     __hopper_count: int = 12
 
     ####################################################################################################################
@@ -114,7 +114,7 @@ class DataStorage:
             adds the fill_amounts and hopper_positions from the input to each ingredient
             __ingredient_hopper_position_and_amount:= dict {<ingredient-name>: {hopper_position: int, amount: int}}"""
         try:
-            with open(file="libs/drink_data/json_data/ingredients.json", mode="r") as __json_ingredients:
+            with open("libs/drink_data/new_data_json/ingredients.json", "r") as __json_ingredients:
                 self.__ingredients = json.load(__json_ingredients)
 
             # adds the keys hopper_position and amount to every ingredient and fills in the correct values
@@ -136,7 +136,7 @@ class DataStorage:
     def __read_recipes(self):
         """ gets the recipes from the corresponding json file and determines whether a recipe is dispensable"""
         try:
-            with open(file="libs/drink_data/json_data/recipes.json", mode="r") as __json_recipes:
+            with open(file="libs/drink_data/new_data_json/recipes.json", mode="r") as __json_recipes:
                 self.__recipes = json.load(__json_recipes)
         except Exception as error:
             print(error)
@@ -146,10 +146,11 @@ class DataStorage:
         """ updates __ingredient_on_hopper_names by checking if hopper_position has an int value for every ingredient.
             __ingredient_on_hopper_names[i] <=> <ingredient-name> on hopper position i
             the hopper position is encoded into the list position"""
+        print("test ingredient on hopper call")
         __result: list[str] = [None] * self.__hopper_count  # type: ignore
         for __ingredient_name in self.__ingredients:
             # in regard to the if statement: hopper_position is int or None
-            if self.__ingredients[__ingredient_name]["hopper_position"]:
+            if self.__ingredients[__ingredient_name]["hopper_position"] is not None:
                 __hopper_position = self.__ingredients[__ingredient_name]["hopper_position"]
                 __result[__hopper_position] = __ingredient_name
         self.__ingredient_on_hopper_names = __result

@@ -4,8 +4,9 @@ from .new_data_json import data_storage as Data
 class DataInterface:
     __data_storage: Data.DataStorage
 
-    def __init__(self, __data_storage_object: Data.DataStorage):
-        __data_storage = __data_storage_object
+    def __init__(self, __hopper_position_and_amount: dict):
+        self.__data_storage = Data.DataStorage(__hopper_position_and_amount)
+        print("initializing DataInterface")
 
     ####################################################################################################################
     # Methods to access data

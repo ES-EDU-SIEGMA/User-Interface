@@ -1,0 +1,11 @@
+{
+  "Apple_juice": {"hopper_position":  0, "amount": 500},
+  "Orange_juice": {"hopper_position":  1, "amount": 500},
+  "Mineral_water": {"hopper_position":  2, "amount": 500},
+  "Jaegermeister": {"hopper_position":  3, "amount": 500},
+  "Fanta": {"hopper_position":  4, "amount": 500},
+  "Coca_Cola": {"hopper_position":  5, "amount": 500},
+  "Sprite": {"hopper_position":  6, "amount": 500},
+  "RedBull": {"hopper_position":  7, "amount": 500},
+  "Strawberry_liqueur": {"hopper_position":  8, "amount": 500}
+}
