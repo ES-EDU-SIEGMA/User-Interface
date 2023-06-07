@@ -20,8 +20,8 @@ class HopperInterface:
 
     def dispense_drink(self, __placeholder_name: list[list[int]]):
         # todo change the parameter input
-        """ This method activates multiple hoppers at once.
-            Activating multiple hoppers at once helps us optimise the time it takes to dispense a drink.
+        """ This method activates multiple hopper at once.
+            Activating multiple hopper at once helps us optimise the time it takes to dispense a drink.
             __placeholder_name:= list[list[<hopper-position>, <amount>, <flow-speed>]]"""
         pass
 
@@ -40,13 +40,13 @@ class DataInterface:
 class Communication:
 
     def activate_hoppers(self, __hopper_positions: list[int], __timings: list[int]):
-        """ sends communication to the hoppers to activate them
+        """ sends communication to the hopper to activate them
             input lists should be connected through their index
                 __hopper_positions[i] -> __timings[i]"""
         pass
 
     def activate_hoppers_alternative_input(self, __hopper_positions_and_timings: list[list[int]]):
-        """ sends communication to the hoppers to activate them
+        """ sends communication to the hopper to activate them
             input:= [<hopper-position>,<timing>]"""
         pass
 
@@ -58,6 +58,6 @@ class HopperTime:
         pass
 
     def calculate_multiple_timings(self, __amounts: list[int]) -> list[int]:
-        """ Calculates the time for multiple hoppers.
+        """ Calculates the time for multiple hopper.
             Input:= list[amount]
             The list input position should correspond to the list output position."""

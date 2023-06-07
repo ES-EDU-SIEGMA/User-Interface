@@ -34,7 +34,7 @@ class EditHopper:
                 self.__print_help_commands()
             case "ingredients":
                 self.__print_ingredient_names()
-            case "hoppers":
+            case "hopper":
                 self.__print_hopper_layout()
             case "select":
                 self.__return_value = ["change_view", "selection"]
@@ -84,7 +84,7 @@ class EditHopper:
               "input <help>                             to see a list of available commands\n\n"
               "edit hopper cmds:\n"
               "input <ingredients>                      to see a list of all ingredients\n"
-              "input <hoppers>                          to see a list of the current hopper layout\n"
+              "input <hopper>                          to see a list of the current hopper layout\n"
               "input [<hopper-position>;<ingredient>]   to put an ingredient onto the hopper-position\n"
               "      example:  1;coca_cola\n\n"
               "change UI_module cmds:\n"

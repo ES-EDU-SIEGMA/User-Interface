@@ -2,7 +2,7 @@ class HopperTime:
     """ This class is used to calculate the timings for each individual hopper.
 
         Gets called by a hopper_interface object.
-        Calculates the timing for one or multiple hoppers.
+        Calculates the timing for one or multiple hopper.
         Returns those timings.
 
         amount is an integer measured in ml."""
@@ -15,6 +15,6 @@ class HopperTime:
         pass
 
     def calculate_multiple_timings(self, __amounts: list[int]) -> list[int]:
-        """ Calculates the time for multiple hoppers.
+        """ Calculates the time for multiple hopper.
             Input:= list[amount]
             The list input position should correspond to the list output position."""

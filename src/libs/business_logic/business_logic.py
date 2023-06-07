@@ -1,9 +1,9 @@
 from ..ui import userinterface as UI_module
 from ..drink_data import new_data_interface as Data_module
-from ..communication import Communication as Communication_module
+from ..hopper import hopper as Hopper_communication_module
 
 
-# todo implement the Communication class or something along the lines of hopper
+# todo implement the Hopper class or something along the lines of hopper
 
 
 class BusinessLogic:
@@ -12,12 +12,12 @@ class BusinessLogic:
     __program_is_running: bool
     __ui_object: UI_module.UserInterface
     __data_object: Data_module.DataInterface
-    __hopper_object: Communication_module.Communication
+    __hopper_object: Hopper_communication_module.Hopper
 
     def __init__(self,
                  __ui_object: UI_module.UserInterface,
                  __data_object: Data_module.DataInterface,
-                 __communication_object: Communication_module.Communication):
+                 __communication_object: Hopper_communication_module.Hopper):
 
         __program_is_running = True
         self.__ui_object = __ui_object

@@ -1,5 +1,5 @@
 class Communication:
-    """ This class is used to communicate with the hoppers.
+    """ This class is used to communicate with the hopper.
 
         On Instantiation this class instantiates any protocol objects it might need (Example serial).
         Gets called by the hopper_interface object with the hopper_position and hopper_timings
@@ -14,12 +14,12 @@ class Communication:
         pass
 
     def activate_hoppers(self, __hopper_positions: list[int], __timings: list[int]):
-        """ sends communication to the hoppers to activate them
+        """ sends communication to the hopper to activate them
             input lists should be connected through their index
                 __hopper_positions[i] -> __timings[i]"""
         pass
 
     def activate_hoppers_alternative_input(self, __hopper_positions_and_timings: list[list[int]]):
-        """ sends communication to the hoppers to activate them
+        """ sends communication to the hopper to activate them
             input:= [<hopper-position>,<timing>]"""
         pass
