@@ -1,4 +1,4 @@
-from libs.ui import ui as UserInterface
+from libs.ui import userinterface as UserInterface
 from libs.drink_data import new_data_interface as Data
 import json
 
@@ -13,6 +13,6 @@ if __name__ == "__main__":
         print(e)
         __standard_input_hopper_positions = {}
     __data_object = Data.DataInterface(__standard_input_hopper_positions)
-    UserInterface.Ui("gui_console", __data_object)
+    UserInterface.UserInterface("gui_console", __data_object)
 
     print("end_call")

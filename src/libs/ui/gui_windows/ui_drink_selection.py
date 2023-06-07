@@ -1,4 +1,4 @@
-from .. import ui as CallBack
+from .. import userinterface as CallBack
 import PyQt5.QtWidgets as PyQtWidgets
 import PyQt5.QtCore as PyQtCore
 import time
@@ -8,7 +8,7 @@ import sys
 
 class Selection(PyQtWidgets.QWidget):
     __data_drink_names: list[str] = None
-    call_back_object: CallBack.Ui
+    call_back_object: CallBack.UserInterface
     return_value: str = None
 
     __header_label: PyQtWidgets.QLabel

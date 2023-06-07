@@ -1,4 +1,4 @@
-from ui import ui as Ui
+from ui import userinterface as Ui
 
 if __name__ == "__main__":
-    ui = Ui.Ui("gui_console")
+    ui = Ui.UserInterface("gui_console")

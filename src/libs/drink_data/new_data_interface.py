@@ -29,6 +29,13 @@ class DataInterface:
         """ returns list[<recipe-name>]"""
         return self.__data_storage.get_recipe_dispensable_names()
 
+    # todo create the get_data_ui method
+    def get_data_ui(self, __program_state: str):
+        pass
+
+    def get_data_logic(self, __program_state: str, __cmd: str):
+        pass
+
     # todo we need ingredient data for calculating timings. But what kind of data should be returned
 
     ####################################################################################################################
@@ -39,6 +46,7 @@ class DataInterface:
     def set_hopper(self, __hopper_position: int, __new_beverage_on_hopper_name: str):
         self.__data_storage.set_hopper(__hopper_position, __new_beverage_on_hopper_name)
 
+    # todo change create_recipe input
     def create_recipe(self, __new_recipe_input: dict):
         """ <new-recipe-input>:= list[<recipe-name>,<beverage-name>,<fill-amount>,<beverage-name>,<fill-amount>,...]"""
         self.__data_storage.create_recipe(__new_recipe_input)
