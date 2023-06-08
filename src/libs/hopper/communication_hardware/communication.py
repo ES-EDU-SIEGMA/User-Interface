@@ -20,7 +20,7 @@ class Communication:
     __picos_hardware: list[serial.Serial]
     __hopper_sizes: list[int]
 
-    def __init__(self, __hopper_sizes):
+    def __init__(self, __hopper_sizes: list[int]):
 
         self.__hopper_sizes = __hopper_sizes
 

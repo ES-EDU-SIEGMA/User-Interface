@@ -15,13 +15,18 @@ class BusinessLogic:
     __hopper_object: Hopper_communication_module.Hopper
 
     def __init__(self,
-                 __ui_object: UI_module.UserInterface,
-                 __data_object: Data_module.DataInterface,
-                 __communication_object: Hopper_communication_module.Hopper):
+                 __configuration_dict: dict,
+                 __hopper_configuration: dict,
+                 __hopper_sizes: list[int]):
 
-        __program_is_running = True
-        self.__ui_object = __ui_object
-        self.__data_object = __data_object
+        self.__data_object = Data_module.DataInterface(__hopper_configuration)
+        self.__ui_object = UI_module.UserInterface(__configuration_dict["ui_console"], self.__data_object)
+        self.__hopper_object = Hopper_communication_module.Hopper(__configuration_dict["mock_communication"],
+                                                                  __hopper_sizes)
+
+        self.__program_is_running = True
+        self.__program_state = "selection"
+        self.__program_loop()
 
     def __program_loop(self):
 
