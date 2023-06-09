@@ -64,14 +64,16 @@ class EditHopper:
 
     def __try_change_hopper_layout(self, __input: str) -> bool:
         # If the input has the form <hopper>;<ingredient>;<rest> we ignore the rest and accept the input
+
         __split_input = __input.split(";")
+
         if (__split_input[0].isdigit() and int(__split_input[0]) in range(0, self.__max_hopper) and
                 __split_input[1] in self.__ingredient_names):
             # check if __input has the form str <hopper-position>;<ingredient>
             # check if input-hopper-position < self.__max_hopper
 
             self.__return_value = ["edit_hopper",
-                                   self.__ingredient_hopper_names[int(__split_input[0])],
+                                   int(__split_input[0]),
                                    __split_input[1]]
 
             print("hopper layout changed to:\n"

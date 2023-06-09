@@ -11,7 +11,7 @@ class Selection:
 
         if __data:
             # check if __data is not None
-            self.__dispensable_recipe_names = __recipe_names
+            self.__dispensable_recipe_names = __data
         else:
             # __data is None
             self.__dispensable_recipe_names = []

@@ -27,12 +27,12 @@ class DataInterface:
                                                    self.__data_storage.get_recipe_names()]
                 return __return_value
 
-    def get_data_logic(self, __program_state: str, __recipe_name: str):
+    def get_data_logic(self, __program_state: str, __recipe_name: str) -> list[list[int]]:
 
         match __program_state:
             case "selection":
                 __return_value: list[list[int]] = self.__data_storage.get_required_ingredient_information(__recipe_name)
-
+                return __return_value
     # todo we need ingredient data for calculating timings. But what kind of data should be returned
 
     ####################################################################################################################
@@ -44,6 +44,20 @@ class DataInterface:
         self.__data_storage.set_hopper(__hopper_position, __new_beverage_on_hopper_name)
 
     # todo change create_recipe input
-    def create_recipe(self, __new_recipe_input: dict):
-        """ <new-recipe-input>:= list[<recipe-name>,<beverage-name>,<fill-amount>,<beverage-name>,<fill-amount>,...]"""
-        self.__data_storage.create_recipe(__new_recipe_input)
+    def create_recipe(self, __new_recipe_information: list[str]):
+
+        __new_recipe_name: str = __new_recipe_information.pop(0)
+        __new_recipe: dict = {__new_recipe_name: {}}
+        # __new_recipe := dict{ <recipe-name>: dict{ <ingredient-name>: dict{fill_amount: int}}}
+        __new_recipe_list = __new_recipe_information[0].split(";")
+        # __new_recipe_list:= list[<ingredient-name>,<fill_amount>,<ingredient-name>,<fill_amount>,...]
+
+        while __new_recipe_list:
+            # check if there are still elements in __new_recipe_information
+
+            __ingredient_name: str = __new_recipe_list.pop(0)
+            __fill_amount: int = int(__new_recipe_list.pop(0))
+            __new_recipe[__new_recipe_name][__ingredient_name] = {}
+            __new_recipe[__new_recipe_name][__ingredient_name]["fill_amount"] = __fill_amount
+
+        self.__data_storage.create_recipe(__new_recipe)

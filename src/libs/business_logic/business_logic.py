@@ -47,8 +47,6 @@ class BusinessLogic:
 
             case "change_view":
                 self.__program_state = __cmd.pop(0)
-            case "exit":
-                self.__program_is_running = False
 
             case "dispense_drink":
                 self.__dispense_drink(__cmd)
@@ -72,7 +70,8 @@ class BusinessLogic:
         self.__data_object.set_hopper(int(__cmd[0]), __cmd[1])
 
     def __new_recipe(self, __new_recipe_information: list[str]):
-        self.__data_object.create_recipe()
+
+        self.__data_object.create_recipe(__new_recipe_information)
         # todo add create_recipe input
 
     # maybe create a callback to change the program state from the gui? Problem: state is then inside the gui

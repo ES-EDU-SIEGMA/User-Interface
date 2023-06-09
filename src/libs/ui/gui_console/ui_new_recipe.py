@@ -5,7 +5,7 @@ class NewRecipe:
     __return_value: list[str]
     __is_running: bool
 
-    __new_recipe: list[str]
+    __new_recipe: list[list[str]]
     __sum_fill_amounts: int
     MAX_FILL_AMOUNT: int = 350
 
@@ -83,15 +83,17 @@ class NewRecipe:
             return self.__try_add_ingredient(__split_input)
 
     def __create_recipe(self, __recipe_name: str):
+
         if not self.__new_recipe:
             # check if self.__new_recipe is []
             print("Can't create an empty recipe. You didn't add any ingredients to your recipe.")
 
         elif (__recipe_name not in self.__recipe_names and
-                __recipe_name not in self.__commands):
+              __recipe_name not in self.__commands):
             # make sure the new recipe names doesn't conflict with already existing recipe names or command names
 
-            self.__return_value = ["new_recipe", __recipe_name, self.__new_recipe]
+            __new_recipe_string: str = self.__new_recipe_string()
+            self.__return_value = ["new_recipe", __recipe_name, __new_recipe_string]
             self.__is_running = False
 
             print(f"recipe {__recipe_name} added with the following ingredients:")
@@ -101,7 +103,16 @@ class NewRecipe:
             # the new recipe name is not valid
             print(f"failed to create your drink. The name: {__recipe_name} is not valid")
 
+    def __new_recipe_string(self) -> str:
+        # transforms self.__new_recipe: list[list[str]] to a str
+
+        __new_recipe_ingredient_strings: list[str] = [";".join(element) for element in self.__new_recipe]
+        __new_recipe_string: str = ";".join(element for element in __new_recipe_ingredient_strings)
+
+        return __new_recipe_string
+
     def __try_add_ingredient(self, __split_input: list[str]) -> bool:
+        # todo prevent adding two times the same ingredient or overwrite ingredient
 
         if __split_input[0] in self.__ingredient_names and __split_input[1].isdigit():
             # confirm that input has the form of str <ingredient-name>;<ml-amount>
@@ -113,9 +124,10 @@ class NewRecipe:
             if (self.__sum_fill_amounts + __fill_amount) < self.MAX_FILL_AMOUNT:
                 # Test whether the ml-amount fits into the glass with the rest of the recipes ingredient.
 
-                self.__new_recipe.append(__ingredient_name)
-                self.__new_recipe.append(str(__fill_amount))
-                print(f"{__ingredient_name} with {__fill_amount}ml added to your recipe")
+                __new_recipe_ingredient: list[str] = [__ingredient_name, (str(__fill_amount))]
+                self.__new_recipe.append(__new_recipe_ingredient)
+
+                print(f"added new ingredient {__ingredient_name} with {__fill_amount}ml")
 
             else:
                 # test to check whether ingredient fits into the glass failed.
@@ -152,8 +164,9 @@ class NewRecipe:
         print("Your recipe:")
         if self.__new_recipe:
             # check if self.__new_recipe is not []
-            for __list_item in self.__new_recipe:
-                print(f"ingredient  {__list_item[0]}   fill amount {__list_item[1]}ml")
+
+            for __new_recipe_ingredient in self.__new_recipe:
+                print(f"ingredient:{__new_recipe_ingredient[0]}   fill amount:{__new_recipe_ingredient[1]}ml")
 
         else:
             # self.__new_recipe is []
