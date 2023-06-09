@@ -21,6 +21,7 @@ class Communication:
     __hopper_sizes: list[int]
 
     def __init__(self, __hopper_sizes: list[int]):
+        # todo make communication available for n tiny's
 
         self.__hopper_sizes = __hopper_sizes
 
@@ -53,6 +54,7 @@ class Communication:
             # __max_attempts is chosen arbitrarily
 
             while __current_identification_attempt < __max_attempts:
+
                 self.__write_pico(__pico_connection, bytes("i\n", "utf-8"))
                 # write the signal "i\n" to the pico, to get a response signal for the hopper identification
                 __pico_response: bin = self.__read_pico(__pico_connection)

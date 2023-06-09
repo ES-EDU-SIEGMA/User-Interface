@@ -1,5 +1,5 @@
 from ..ui import userinterface as UI_module
-from ..drink_data import new_data_interface as Data_module
+from ..drink_data import data_interface as Data_module
 from ..hopper import hopper as Hopper_communication_module
 
 

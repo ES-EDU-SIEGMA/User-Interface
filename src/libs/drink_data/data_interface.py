@@ -1,48 +1,63 @@
-from . import data_objects as Data
+from .data_json import data_storage as Data
 
 
 class DataInterface:
-    __runtime_data: Data.RuntimeData  # object to get drink_data from
+    __data_storage: Data.DataStorage
 
-    def __init__(self):
-        self.__runtime_data = Data.RuntimeData()
+    def __init__(self, __hopper_position_and_amount: dict):
+        self.__data_storage = Data.DataStorage(__hopper_position_and_amount)
+        print("initializing DataInterface")
 
-    def get_beverage_names(self) -> list[str]:
-        """ returns a list of all beverage names (beverage names are unique)"""
-        return self.__runtime_data.get_beverage_names()
+    ####################################################################################################################
+    # Methods to access data
+    ####################################################################################################################
 
-    def get_recipe_names(self) -> list[str]:
-        """ returns a list of all recipe names (recipe names are unique)"""
-        return self.__runtime_data.get_recipe_names()
+    def get_data_ui(self, __program_state: str) -> list[str] | list[list[str]]:
 
-    def get_dispensable_beverage_names(self) -> list[str]:
-        """ returns a list of all recipe names (beverage names are unique)"""
-        return self.__runtime_data.get_dispensable_beverage_names()
+        match __program_state:
+            case "selection":
+                __return_value: list[str] = self.__data_storage.get_recipe_dispensable_names()
+                return __return_value
+            case "edit":
+                __return_value: list[list[str]] = [self.__data_storage.get_ingredient_on_hopper_names(),
+                                                   self.__data_storage.get_ingredient_names()]
+                return __return_value
+            case "new":
+                __return_value: list[list[str]] = [self.__data_storage.get_ingredient_names(),
+                                                   self.__data_storage.get_recipe_names()]
+                return __return_value
 
-    def get_dispensable_recipe_names(self) -> list[str]:
-        """ returns a list of the names of all recipes that can be dispensed (recipe names are unique)"""
-        return self.__runtime_data.get_dispensable_recipe_names()
+    def get_data_logic(self, __program_state: str, __recipe_name: str) -> list[list[int]]:
 
-    def get_beverage_hopper_names(self) -> list[str]:
-        """ returns a list of the names of all ingredients that can be dispensed (beverage names are unique)"""
-        return self.__runtime_data.get_beverage_hopper_names()
+        match __program_state:
+            case "selection":
+                __return_value: list[list[int]] = self.__data_storage.get_required_ingredient_information(__recipe_name)
+                return __return_value
+    # todo we need ingredient data for calculating timings. But what kind of data should be returned
 
-    # todo maybe return bool on set cmds
-    def create_recipe(self, __name: str, __name_and_amount: str):
-        self.__runtime_data.create_recipe(__name, __name_and_amount)
+    ####################################################################################################################
+    # Methods to change data
+    ####################################################################################################################
 
-    # currently create_beverage is not supported
-    def create_beverage(self):
-        pass
+    # todo transform input to the correct input
+    def set_hopper(self, __hopper_position: int, __new_beverage_on_hopper_name: str):
+        self.__data_storage.set_hopper(__hopper_position, __new_beverage_on_hopper_name)
 
-    # todo don't know whether this name1,2 thing is good
-    def set_beverage_hopper(self, __old_beverage_name: str, __new_beverage_name: str):
-        pass
+    # todo change create_recipe input
+    def create_recipe(self, __new_recipe_information: list[str]):
 
-    # idea for this is to create functionality that allows to manipulate already existing ingredients
-    def change_beverage(self):
-        pass
+        __new_recipe_name: str = __new_recipe_information.pop(0)
+        __new_recipe: dict = {__new_recipe_name: {}}
+        # __new_recipe := dict{ <recipe-name>: dict{ <ingredient-name>: dict{fill_amount: int}}}
+        __new_recipe_list = __new_recipe_information[0].split(";")
+        # __new_recipe_list:= list[<ingredient-name>,<fill_amount>,<ingredient-name>,<fill_amount>,...]
 
-    # idea for this is to create functionality that allows to manipulate already existing recipes
-    def change_recipe(self):
-        pass
+        while __new_recipe_list:
+            # check if there are still elements in __new_recipe_information
+
+            __ingredient_name: str = __new_recipe_list.pop(0)
+            __fill_amount: int = int(__new_recipe_list.pop(0))
+            __new_recipe[__new_recipe_name][__ingredient_name] = {}
+            __new_recipe[__new_recipe_name][__ingredient_name]["fill_amount"] = __fill_amount
+
+        self.__data_storage.create_recipe(__new_recipe)

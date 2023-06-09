@@ -1,7 +1,7 @@
 from .gui_console import ui_drink_selection as Ui_selection_module
 from .gui_console import ui_edit_hoppers as Ui_edit_module
 from .gui_console import ui_new_recipe as Ui_new_module
-from ..drink_data import new_data_interface as Data_module
+from ..drink_data import data_interface as Data_module
 
 
 class UserInterface:

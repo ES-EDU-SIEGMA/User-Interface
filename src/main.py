@@ -1,5 +1,5 @@
 from libs.ui import userinterface as User_interface_module
-from libs.drink_data import new_data_interface as Data_module
+from libs.drink_data import data_interface as Data_module
 from libs.business_logic import business_logic as Business_logic_module
 import json
 

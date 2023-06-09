@@ -140,7 +140,7 @@ class DataStorage:
             __ingredient_hopper_position_and_amount:= dict {<ingredient-name>: {hopper_position: int, amount: int}}"""
 
         try:
-            with open("libs/drink_data/new_data_json/ingredients.json", "r") as __json_ingredients:
+            with open("libs/drink_data/data_json/ingredients.json", "r") as __json_ingredients:
                 self.__ingredients = json.load(__json_ingredients)
 
             for __ingredient_name in self.__ingredients:
@@ -164,7 +164,7 @@ class DataStorage:
         """ gets the recipes from the corresponding json file and determines whether a recipe is dispensable"""
 
         try:
-            with open(file="libs/drink_data/new_data_json/recipes.json", mode="r") as __json_recipes:
+            with open(file="libs/drink_data/data_json/recipes.json", mode="r") as __json_recipes:
                 self.__recipes = json.load(__json_recipes)
 
         except Exception as error:
