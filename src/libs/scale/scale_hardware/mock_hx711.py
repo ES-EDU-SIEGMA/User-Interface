@@ -1,6 +1,6 @@
 class MockHX711:
 
-    def __init__(self, __calculation_method: str, __number_of_measurements: int):
+    def __init__(self):
         pass
 
     @staticmethod

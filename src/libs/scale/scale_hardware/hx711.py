@@ -59,7 +59,10 @@ class HX711:
 
     def get_weight(self) -> int:
         __value: int = self.__get_value()
-        return int(round(__value * 1000))
+        __return_value = int(__value / self.__reference_unit)
+        # todo check this: i don't know why we divide by a reference unit here.
+        return int(round(__return_value * 1000))
+        # multiply with 1000 to get the correct unit
 
     @staticmethod
     def close_hx711():
@@ -84,8 +87,7 @@ class HX711:
                 # another alternative to a standard method is to throw an exception.
                 __scale_value = self.__get_median_weight()
 
-        return int(__scale_value / self.__reference_unit)
-        # todo check this: i don't know why we divide by a reference unit here.
+        return __scale_value
 
     # todo: think about if the first half of __get_median_weight and __get_average_weight should be its own method
 
@@ -93,9 +95,9 @@ class HX711:
 
         __measuring_values: list[int] = []
         __current_number_of_measurements: int = 0
-        __max_number_of_measurements: int = self.__number_of_measurements
 
-        while __current_number_of_measurements < __max_number_of_measurements:
+        while __current_number_of_measurements < self.__number_of_measurements:
+            __current_number_of_measurements += 1
             __measured_value = self.__get_scale_values()
             __measuring_values.append(__measured_value - self.__offset)
             # deduct the scale offset from every __measured_value
@@ -119,9 +121,9 @@ class HX711:
 
         __measuring_values: list[int] = []
         __current_number_of_measurements: int = 0
-        __max_number_of_measurements: int = self.__number_of_measurements
 
-        while __current_number_of_measurements < __max_number_of_measurements:
+        while __current_number_of_measurements < self.__number_of_measurements:
+            __current_number_of_measurements += 1
             __measured_value = self.__get_scale_values()
             __measuring_values.append(__measured_value - self.__offset)
             # deduct the scale offset from every __measured_value

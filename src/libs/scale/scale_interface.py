@@ -7,11 +7,11 @@ from .scale_hardware import mock_hx711 as Mock_hx711_module
 class Scale:
     __scale_object: Hx711_module.HX711 | Mock_hx711_module.MockHX711
 
-    def __init__(self, __mock_scale: bool):
+    def __init__(self, __mock_scale: bool, __calculation_method: str, __number_of_measurements: int):
         if __mock_scale:
             self.__scale_object = Mock_hx711_module.MockHX711()
         else:
-            self.__scale_object = Hx711_module.HX711()
+            self.__scale_object = Hx711_module.HX711(__calculation_method, __number_of_measurements)
 
     def get_weight(self) -> int:
         return self.__scale_object.get_weight()
