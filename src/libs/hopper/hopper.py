@@ -1,5 +1,5 @@
 from .timing_calculation import timing_calculation as Timing_calculation_module
-# from .communication_hardware import communication as Communication_module
+from .communication_hardware import communication as Communication_module
 from .communication_hardware import mock_communication as Mock_communication_module
 
 
