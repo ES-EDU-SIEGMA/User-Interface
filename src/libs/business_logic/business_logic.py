@@ -33,8 +33,10 @@ class BusinessLogic:
         while self.__program_is_running:
 
             __cmd: list[str] = self.__ui_object.select_view(self.__program_state)
+
             if __cmd:
                 self.__execute_command(__cmd)
+
             else:
                 # exit the program if __cmd is an empty list
                 self.__program_is_running = False
@@ -56,7 +58,7 @@ class BusinessLogic:
                 self.__new_recipe(__cmd)
 
     def __dispense_drink(self, __cmd: list[str]):
-        # todo change get_data_logic as there is currently only one occurrence of the method
+
         __data: list[list[int]] = self.__data_object.get_data_logic(self.__program_state, __cmd[0])
         # __data:= [[<amount-ml>, <flow-speed>]] position for each hopper is encoded into the list position
         self.__hopper_object.dispense_drink(__data)
@@ -69,7 +71,7 @@ class BusinessLogic:
         # the ui already checked whether the input is valid
         self.__data_object.set_hopper(int(__cmd[0]), __cmd[1])
 
-    def __new_recipe(self, __nre_recipe_information: list[str]):
+    def __new_recipe(self, __new_recipe_information: list[str]):
         self.__data_object.create_recipe()
         # todo add create_recipe input
 

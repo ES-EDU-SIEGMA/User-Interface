@@ -68,6 +68,19 @@ class DataStorage:
             returns list[<ingredient-name>]"""
         return self.__ingredient_on_hopper_names
 
+    def get_required_ingredient_information(self, __recipe_name) -> list[list[int]]:
+        """ returns a list with ingredient information for the required ingredients of a given recipe_name
+            returns list[list[<fill-amount-ml>,<flow-speed>]]"""
+
+        __return_value: list[list[int]] = []
+
+        for __ingredient_name in self.__recipes[__recipe_name]:
+            __fill_amount: int = self.__recipes[__recipe_name][__ingredient_name]
+            __flow_speed: int = self.__ingredients[__ingredient_name]["flow_speed"]
+            __return_value.append([__fill_amount, __flow_speed])
+
+        return __return_value
+
     ####################################################################################################################
     # Methods that are used to change runtime data
     ####################################################################################################################

@@ -12,29 +12,26 @@ class DataInterface:
     # Methods to access data
     ####################################################################################################################
 
-    def get_ingredient_names(self) -> list[str]:
-        """ returns list[<ingredient-name>]"""
-        return self.__data_storage.get_ingredient_names()
+    def get_data_ui(self, __program_state: str) -> list[str] | list[list[str]]:
 
-    def get_recipe_names(self) -> list[str]:
-        """ returns list[<recipe-name>]"""
-        return self.__data_storage.get_recipe_names()
+        match __program_state:
+            case "selection":
+                __return_value: list[str] = self.__data_storage.get_recipe_dispensable_names()
+                return __return_value
+            case "edit":
+                __return_value: list[list[str]] = [self.__data_storage.get_ingredient_on_hopper_names(),
+                                                   self.__data_storage.get_ingredient_names()]
+                return __return_value
+            case "new":
+                __return_value: list[list[str]] = [self.__data_storage.get_ingredient_names(),
+                                                   self.__data_storage.get_recipe_names()]
+                return __return_value
 
-    def get_ingredient_on_hopper_names(self) -> list[str]:
-        """ returns list[<ingredient-name>]
-            the individual hopper position is encoded into the list position of the name"""
-        return self.__data_storage.get_ingredient_on_hopper_names()
+    def get_data_logic(self, __program_state: str, __recipe_name: str):
 
-    def get_recipe_dispensable_names(self) -> list[str]:
-        """ returns list[<recipe-name>]"""
-        return self.__data_storage.get_recipe_dispensable_names()
-
-    # todo create the get_data_ui method
-    def get_data_ui(self, __program_state: str):
-        pass
-
-    def get_data_logic(self, __program_state: str, __cmd: str):
-        pass
+        match __program_state:
+            case "selection":
+                __return_value: list[list[int]] = self.__data_storage.get_required_ingredient_information(__recipe_name)
 
     # todo we need ingredient data for calculating timings. But what kind of data should be returned
 
