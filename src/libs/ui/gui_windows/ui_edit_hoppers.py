@@ -323,7 +323,7 @@ class ChangeDrinkWindow(PyQtWidgets.QWidget):
                         # find new Beverage
                         for x in range(len(self.beverages_not_on_hopper)):
                             if to_change_id == self.beverages_not_on_hopper[x].beverage_id:
-                                # found it -> now update the runtime drink_data and print an information to the
+                                # found it -> now update the runtime data and print an information to the
                                 self.informationLabel.setText(
                                     f"Changed the drink from"
                                     f"{self.parentWidget.runtime_data.beverages_on_hopper[beverage_on_hopper].beverage_name}"
@@ -331,7 +331,7 @@ class ChangeDrinkWindow(PyQtWidgets.QWidget):
                                 )
                                 # set new hopper_id
                                 self.beverages_not_on_hopper[x].beverage_hopper_id = hopper_id
-                                # override all the old drink_data
+                                # override all the old data
                                 self.runtime_data_beverage = self.beverages_not_on_hopper[x]
                                 self.parentWidget.runtime_data.beverages_on_hopper[
                                     beverage_on_hopper

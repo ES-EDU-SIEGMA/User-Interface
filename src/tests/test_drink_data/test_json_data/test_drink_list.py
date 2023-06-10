@@ -1,4 +1,4 @@
-from libs.drink_data.json_data import data_storage as JsonData
+from libs.data.json_data import data_storage as JsonData
 import unittest
 
 

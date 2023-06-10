@@ -1,5 +1,5 @@
 from libs.ui import userinterface as UI_module
-from libs.drink_data import data_interface as Data_module
+from libs.data import data_interface as Data_module
 from libs.hopper import hopper as Hopper_module
 from libs.scale import scale_interface as Scale_module
 

@@ -12,8 +12,8 @@
 
   "configure_ui_type": "ui_console",
 
-  "configure_ingredient_file_path": "libs/drink_data/data_json/ingredients.json",
-  "configure_recipe_file_path": "libs/drink_data/data_json/recipes.json",
+  "configure_ingredient_file_path": "libs/data/data_json/ingredients.json",
+  "configure_recipe_file_path": "libs/data/data_json/recipes.json",
 
   "configure_tiny": {
     "LEFT": [

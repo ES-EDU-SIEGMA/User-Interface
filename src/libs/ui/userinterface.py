@@ -12,7 +12,6 @@ class UserInterface:
 
         match __configure_ui_type:
             case "ui_console":
-                print("ui_type")
                 self.__ui_view_selection = Ui_selection_module.Selection()
                 self.__ui_view_edit_hopper = Ui_edit_module.EditHopper()
                 self.__ui_view_new_recipe = Ui_new_module.NewRecipe()

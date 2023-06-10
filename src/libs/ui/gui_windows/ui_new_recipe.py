@@ -9,7 +9,7 @@ from libs.ui.gui_windows.css import css_new_drink_window as css
 
 
 ########################################################################################################################
-# Functions to handle drink_data
+# Functions to handle data
 ########################################################################################################################
 def get_beverage_by_name(beverages: list[RuntimeData.Beverage], name: str) -> RuntimeData.Beverage:
     for beverage in beverages:

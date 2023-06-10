@@ -1,4 +1,4 @@
-from libs.drink_data import data_interface as Data_interface_module
+from libs.data import data_interface as Data_interface_module
 import unittest
 
 

@@ -131,8 +131,8 @@ class DataStorage:
             with open(file=__configuration_ingredient_file_path, mode="r") as __json_ingredients:
                 self.__ingredients = json.load(__json_ingredients)
 
-        except Exception as error:
-            print(error)
+        except Exception as __error:
+            print(f"produced an error while reading in the ingredient file.\nerror: {__error}")
             return {}
 
         for __ingredient_name in self.__ingredients:
@@ -159,8 +159,8 @@ class DataStorage:
             with open(file=__configuration_recipe_file_path, mode="r") as __json_recipes:
                 self.__recipes = json.load(__json_recipes)
 
-        except Exception as error:
-            print(error)
+        except Exception as __error:
+            print(f"produced an error while reading in the recipe file.\nerror: {__error}")
             return {}
 
     def __update_ingredient_on_hopper_names(self):
