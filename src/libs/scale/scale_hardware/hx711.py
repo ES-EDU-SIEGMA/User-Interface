@@ -8,12 +8,12 @@ class HX711:
     """ __PD_SCK refers to the pin on the pi to which the hx 711 PD_SCK pin is connected.
         the PD_SCK pin on the hx711 is used to control the hx711 converter.
         __DOUT refers to the pin on the pi to which the hx711 DOUT pin is connected.
-        the DOUT pin on the hx711 returns of the form 24 bit encoded 2's complement.
+        the DOUT pin on the hx711 returns an int encoded as 24 bit 2's complement.
 
         to read data from the hx711 DOUT pin the PD_SCK pin on the hx711 must be activated and deactivated.
         the hx711 then returns one bit of data.
 
-        __GAIN # todo add explanation
+        __GAIN # todo add explanation. We are using GAIN=128 on Channel A
 
         __calculation_method:= str "median" | "average"
         __number_of_measurements determines how many measurement values used to calculate a weight value.
@@ -50,6 +50,10 @@ class HX711:
 
         time.sleep(1)
         # todo not sure if waiting 1 sec is necessary. Included this one because it was in the previous code.
+
+        self.__offset = 0
+        self.__get_value()
+        # reading from the hx711 to set the GAIN value
 
         self.__determine_offset()
 
@@ -152,7 +156,6 @@ class HX711:
         self.__number_of_measurements = 15
         # the value that self.__number_of_calculations is set to is arbitrary.
 
-        self.__offset = 0
         self.__offset = self.__get_average_weight()
 
         self.__number_of_measurements = __tmp
@@ -175,7 +178,7 @@ class HX711:
         __middle_byte: int = self.__read_byte()
         __lsb_byte: int = self.__read_byte()
 
-        self.__read_bit()
+        self.__read_next_bit()
         # we need to read one bit after every three bytes to set the GAIN value on the hx711.
 
         self.__read_lock.release()
@@ -190,11 +193,14 @@ class HX711:
 
         for __bit in range(8):
             __byte_value <<= 1
-            __byte_value |= self.__read_bit()
+            __byte_value |= self.__read_next_bit()
 
         return __byte_value
 
-    def __read_bit(self):
+    def __read_next_bit(self):
+        # Clock HX711 Digital Serial Clock (PD_SCK).  DOUT will be
+        # ready 1us after PD_SCK rising edge, so we sample after
+        # lowering PD_SCL, when we know DOUT will be stable.
 
         GPIO.output(self.__PD_SCK, True)
         GPIO.output(self.__PD_SCK, False)
@@ -209,7 +215,8 @@ class HX711:
     @staticmethod
     def __convert_to_signed_int(__three_bytes: list[int]) -> int:
         # the hx711 sends a number that is encoded in two complement.
-        # convert number from two complement to signed int value
+        # convert the number from two's complement to signed int value
+
         __two_complement_value: int = ((__three_bytes[0] << 16) |
                                        (__three_bytes[1] << 8) |
                                        __three_bytes[2])
@@ -223,8 +230,7 @@ class HX711:
     ####################################################################################################################
 
     def __new_reading_cycle(self):
-        # each cycle in which we read from the hx711 is initiated by turning it on and off.
-        # todo: i am not quite sure at the moment whether this is necessary.
+        # each cycle in which we read from the hx711 is initiated by turning the hx711 on and off.
 
         self.__power_down()
         self.__power_up()

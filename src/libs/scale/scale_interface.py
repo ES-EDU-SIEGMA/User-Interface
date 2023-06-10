@@ -16,5 +16,5 @@ class Scale:
     def get_weight(self) -> int:
         return self.__scale_object.get_weight()
 
-    def close_connection(self):
+    def close(self):
         self.__scale_object.close_hx711()

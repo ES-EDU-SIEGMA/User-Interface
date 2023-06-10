@@ -27,3 +27,7 @@ class Hopper:
             __timings.append(self.__calculation_object.calculate_timing(__element))
 
         self.__communication_object.send_timings(__timings)
+
+    def close(self):
+
+        self.__communication_object.close_connection()
