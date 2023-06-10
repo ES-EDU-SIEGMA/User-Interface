@@ -3,19 +3,23 @@ import json
 
 class DataStorage:
     """ <ingredient> is a liquid that can be put on the hopper
-            __ingredients:= dict {<ingredient-name>: dict {flow_speed: int, amount: int, hopper_position: int/None}}
-            <ingredient-name>:= a unique string that represents the ingredient
-            flow_speed:= key to an integer that represents the flow speed of the ingredient
-            amount:= key to an integer/None that represents the amount of liquid left in the ingredient container
-
         <recipe> is a combination of one or more ingredients that form a drink
-            __recipes:=dict{<recipe-name>: dict {<ingredient-name>: dict {fill_amount: int}}
-            <recipe-name>:= a unique string that represents the recipe
-            <ingredient-name>:= a unique string that represents an ingredient
-            fill_amount:= key to an integer that represents the required ml amount of an ingredient in the recipe
+
+        __ingredients:= dict {<ingredient-name>: dict {flow_speed: int, amount: int, hopper_position: int | None}}
+        <ingredient-name>:= a unique string that represents the ingredient
+        flow_speed:= key to an integer that holds the flow speed of the ingredient
+        amount:= key to an integer that holds the amount of liquid left in the ingredient container
+        hopper_position:= key to an integer | None that holds the hopper-position of an ingredient
+
+        __recipes:=dict{<recipe-name>: dict {<ingredient-name>: dict {fill_amount: int}}
+        <recipe-name>:= a unique string that represents the recipe
+        <ingredient-name>:= a unique string that represents an ingredient
+        fill_amount:= key to an integer that holds the required ml amount of an ingredient in the recipe
+
+        __ingredient_on_hopper_names encodes the hopper position in the list position
 
         -A recipe can consist of only one ingredient
-        -A <recipe> can have the same name as an <ingredient>
+        -A <recipe-name> can be the same string as an <ingredient-name>
         -An <ingredient-name> should only be used once per <recipe>
         -A recipe is dispensable if all of its <ingredient-name>'s are on the hopper"""
 
@@ -26,7 +30,6 @@ class DataStorage:
     __ingredients: dict = {}
     __recipes: dict = {}
     __ingredient_on_hopper_names: list[str] = []
-    # the hopper position is encoded into the list position of __ingredient_on_hopper_names
     __dispensable_recipe_names: list[str] = []
     __hopper_count: int = 12
 
@@ -34,18 +37,20 @@ class DataStorage:
     #
     ####################################################################################################################
 
-    def __init__(self, __ingredient_hopper_position_and_amount: dict):
-        """ __ingredient_hopper_position_and_amount:= dict {<ingredient-name>: {hopper_position: int, amount: int}}"""
+    def __init__(self, __configuration_ingredients: dict,
+                 __configuration_ingredient_file_path: str,
+                 __configuration_recipe_file_path: str):
 
-        self.__initialize_data(__ingredient_hopper_position_and_amount)
+        self.__initialize_data(__configuration_ingredients,
+                               __configuration_ingredient_file_path,
+                               __configuration_recipe_file_path)
 
     ####################################################################################################################
     # Methods that are used to access runtime data
     ####################################################################################################################
 
     def get_ingredient_names(self) -> list[str]:
-        """ returns a list of all <ingredient-name>'s
-            returns list[<ingredient-name>]"""
+        # return list[<ingredient-name>]
 
         __result: list[str] = []
 
@@ -55,8 +60,7 @@ class DataStorage:
         return __result
 
     def get_recipe_names(self) -> list[str]:
-        """ returns a list of all <recipe-name>'s
-            returns list[<recipe-name>]"""
+        # return list[<recipe-name>]
 
         __result: list[str] = []
 
@@ -66,60 +70,43 @@ class DataStorage:
         return __result
 
     def get_recipe_dispensable_names(self) -> list[str]:
-        """ returns a list of <recipe-name>'s that are dispensable
-            returns list[<recipe-name>]"""
+        # return list[<recipe-name>]
 
         return self.__dispensable_recipe_names
 
     def get_ingredient_on_hopper_names(self) -> list[str]:
-        """ returns a list of <ingredient-name> that are on the hopper
-            returns list[<ingredient-name>]"""
+        # return list[<ingredient-name>]
 
         return self.__ingredient_on_hopper_names
-
-    def get_required_ingredient_information(self, __recipe_name) -> list[list[int]]:
-        """ returns a list with ingredient information for the required ingredients of a given recipe_name
-            returns list[list[<fill-amount-ml>,<flow-speed>]]"""
-
-        __return_value: list[list[int]] = []
-
-        for __ingredient_name in self.__recipes[__recipe_name]:
-            __fill_amount: int = self.__recipes[__recipe_name][__ingredient_name]["fill_amount"]
-            __flow_speed: int = self.__ingredients[__ingredient_name]["flow_speed"]
-            __return_value.append([__fill_amount, __flow_speed])
-
-        return __return_value
 
     ####################################################################################################################
     # Methods that are used to change runtime data
     ####################################################################################################################
 
-    def set_hopper(self, __hopper_position: int, __new_ingredient_on_hopper_name: str):
-        """ Changes the hopper-layout by removing the old ingredient from the hopper
-            and adding the new one to the hopper
-            __new_ingredient_on_hopper_name: str or None"""
-        # todo rework the set_hopper method
+    def set_hopper(self, __hopper_position: int, __ingredient_name: str):
 
-        if __new_ingredient_on_hopper_name:
-            # todo : change this
-            self.__ingredients[__new_ingredient_on_hopper_name]["hopper_position"] = __hopper_position
+        if __ingredient_name:
+            # check if we got an ingredient_name and not an empty string
 
-        if self.__ingredient_on_hopper_names[__hopper_position]:
-            # if there is an ingredient on __hopper_position it gets removed and set to None
+            self.__ingredients[__ingredient_name]["hopper_position"] = __hopper_position
+            # update the hopper-position of the new ingredient
+
+        if self.__ingredient_on_hopper_names[__hopper_position] is not None:
+            # check if there is an old ingredient on the hopper
+
             __previous_ingredient_on_hopper_name = self.__ingredient_on_hopper_names[__hopper_position]
             self.__ingredients[__previous_ingredient_on_hopper_name]["hopper_position"] = None
+            # remove the old ingredient from the hopper
 
         self.__update_ingredient_on_hopper_names()
         self.__update_dispensable_recipe_names()
-        # __update_ingredient_on_hopper_names() should be called before __update_dispensable_recipe_names()
 
-    def create_recipe(self, __new_recipe: dict):
-        """ Adds a new recipe to the runtime data but doesn't save it persistently.
-            __new_recipe_input:= dict { <recipe-name>: dict {<ingredient-name>: dict {fill_amount: int}}}"""
-        # If <recipe-name> is already used the old recipe in __recipes gets overwritten.
+    def create_recipe(self, __data: dict):
+        # __data := {<recipe-name>: {<ingredient-name>: {fill_amount: <fill-amount>}}}
+        # new recipes aren't stored persistently
 
-        for __recip_name in __new_recipe:
-            self.__recipes[__recip_name] = __new_recipe[__recip_name]
+        __new_recipe_name: str = list(__data.keys())[0]
+        self.__recipes[__new_recipe_name] = __data[__new_recipe_name]
 
         self.__update_dispensable_recipe_names()
 
@@ -127,44 +114,49 @@ class DataStorage:
     # Utility Methods
     ####################################################################################################################
 
-    def __initialize_data(self, __ingredient_hopper_position_and_amount: dict):
-        self.__read_ingredients(__ingredient_hopper_position_and_amount)
-        self.__read_recipes()
+    def __initialize_data(self, __configuration_ingredients: dict,
+                          __configuration_ingredient_file_path: str,
+                          __configuration_recipe_file_path: str):
+
+        self.__read_ingredients(__configuration_ingredients, __configuration_ingredient_file_path)
+        self.__read_recipes(__configuration_recipe_file_path)
         self.__update_ingredient_on_hopper_names()
         self.__update_dispensable_recipe_names()
         # __update_ingredient_on_hopper_names() should be called before __update_dispensable_recipe_names()
 
-    def __read_ingredients(self, __ingredient_hopper_position_and_amount: dict):
-        """ gets the ingredients from the corresponding json file and
-            adds the fill_amounts and hopper_positions from the input to each ingredient
-            __ingredient_hopper_position_and_amount:= dict {<ingredient-name>: {hopper_position: int, amount: int}}"""
+    def __read_ingredients(self, __configuration_ingredients: dict, __configuration_ingredient_file_path: str):
+        # __configuration_ingredients:= dict {<ingredient-name>: {hopper_position: int | None, amount: int}}
 
         try:
-            with open("libs/drink_data/data_json/ingredients.json", "r") as __json_ingredients:
+            with open(file=__configuration_ingredient_file_path, mode="r") as __json_ingredients:
                 self.__ingredients = json.load(__json_ingredients)
-
-            for __ingredient_name in self.__ingredients:
-                # adds the keys hopper_position and amount to every ingredient and fills in the correct values
-
-                if __ingredient_name in __ingredient_hopper_position_and_amount:
-                    self.__ingredients[__ingredient_name]["hopper_position"] = \
-                        __ingredient_hopper_position_and_amount[__ingredient_name]["hopper_position"]
-                    self.__ingredients[__ingredient_name]["amount"] = \
-                        __ingredient_hopper_position_and_amount[__ingredient_name]["amount"]
-                else:
-                    # standard value if the input doesn't specify anything for an ingredient
-                    self.__ingredients[__ingredient_name]["hopper_position"] = None
-                    self.__ingredients[__ingredient_name]["amount"] = None
 
         except Exception as error:
             print(error)
             return {}
 
-    def __read_recipes(self):
-        """ gets the recipes from the corresponding json file and determines whether a recipe is dispensable"""
+        for __ingredient_name in self.__ingredients:
+            # configure all ingredients
+
+            if __ingredient_name in __configuration_ingredients:
+                # check if we are given ingredient-data to configure an ingredient
+
+                self.__ingredients[__ingredient_name]["hopper_position"] = \
+                    __configuration_ingredients[__ingredient_name]["hopper_position"]
+
+                self.__ingredients[__ingredient_name]["amount"] = \
+                    __configuration_ingredients[__ingredient_name]["amount"]
+
+            else:
+                # use standard values if no ingredient-data is available for an ingredient
+
+                self.__ingredients[__ingredient_name]["hopper_position"] = None
+                self.__ingredients[__ingredient_name]["amount"] = 0
+
+    def __read_recipes(self, __configuration_recipe_file_path: str):
 
         try:
-            with open(file="libs/drink_data/data_json/recipes.json", mode="r") as __json_recipes:
+            with open(file=__configuration_recipe_file_path, mode="r") as __json_recipes:
                 self.__recipes = json.load(__json_recipes)
 
         except Exception as error:
@@ -172,23 +164,20 @@ class DataStorage:
             return {}
 
     def __update_ingredient_on_hopper_names(self):
-        """ updates __ingredient_on_hopper_names by checking if hopper_position has an int value for every ingredient.
-            __ingredient_on_hopper_names[i] <=> <ingredient-name> on hopper position i
-            the hopper position is encoded into the list position"""
 
-        __result: list[str] = [None] * self.__hopper_count  # type: ignore
+        __result: list[str | None] = [None] * self.__hopper_count
 
         for __ingredient_name in self.__ingredients:
-            # in regard to the if statement: hopper_position is int or None
 
             if self.__ingredients[__ingredient_name]["hopper_position"] is not None:
+                # check if an ingredient is on the hopper. hopper_position: int | None
+
                 __hopper_position = self.__ingredients[__ingredient_name]["hopper_position"]
                 __result[__hopper_position] = __ingredient_name
 
         self.__ingredient_on_hopper_names = __result
 
     def __update_dispensable_recipe_names(self):
-        """ updates __dispensable_recipe_names"""
 
         __result: list[str] = []
 
@@ -200,15 +189,15 @@ class DataStorage:
         self.__dispensable_recipe_names = __result
 
     def __determine_if_dispensable(self, __recipe_name: str) -> bool:
-        """ For a given <recipe-name> checks if all <ingredient-name>'s that are needed for a
-            recipe are available on the hopper"""
 
         __required_ingredient_names: list[str] = []
+        # __required_ingredient_names holds the names of all ingredients that are used in a recipe
 
         for __ingredient_name in self.__recipes[__recipe_name]:
             __required_ingredient_names.append(__ingredient_name)
 
         if set(__required_ingredient_names).issubset(set(self.__ingredient_on_hopper_names)):
+            # check if the required-ingredients are all available on the hopper
             return True
 
         else:

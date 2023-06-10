@@ -1,13 +1,18 @@
 class Selection:
+    """ __return_value:= {  "exit": bool,
+                            "cmd_change_ui_view": "" | "selection" | "edit" | "new" ,
+                            "cmd_dispense_drink": <drink-name>
+                          }"""
+
     __dispensable_recipe_names: list[str]
-    __return_value: list[str]
+
     __is_running: bool
-    __recipe_names_is_empty: bool
+    __return_value: dict
 
     def __init__(self):
         pass
 
-    def activate(self, __data: list[str]) -> list[str]:
+    def activate(self, __data: list[str]) -> dict:
 
         if __data:
             # check if __data is not None
@@ -16,11 +21,13 @@ class Selection:
             # __data is None
             self.__dispensable_recipe_names = []
 
-        self.__return_value = []
-
         print("You are currently in the drink-selection window.\n"
               "Enter <help> to see the available commands.")
         self.__print_recipe_names()
+
+        self.__return_value = {"exit": False,
+                               "cmd_change_ui_view": "",
+                               "cmd_dispense_drink": None}
 
         self.__is_running = True
         return self.__drink_selection_loop()
@@ -29,9 +36,10 @@ class Selection:
     #
     ####################################################################################################################
 
-    def __drink_selection_loop(self) -> list[str]:
+    def __drink_selection_loop(self) -> dict:
 
         while self.__is_running:
+
             __input: str = input()
             self.__case_distinction(__input)
 
@@ -45,37 +53,37 @@ class Selection:
             case "drinks":
                 self.__print_recipe_names()
             case "edit":
-                self.__return_value = ["change_view", "edit"]
+                self.__return_value["cmd_change_ui_view"] = "edit"
                 self.__is_running = False
             case "new":
-                self.__return_value = ["change_view", "new"]
+                self.__return_value["cmd_change_ui_view"] = "new"
                 self.__is_running = False
             case "exit":
-                self.__return_value = []
+                self.__return_value["exit"] = True
                 self.__is_running = False
             case _:
-                if not self.__find_recipe_name(__input):
+                if not self.__try_valid_selection_input(__input):
                     print("please enter a valid input")
 
-    def __find_recipe_name(self, __input: str) -> bool:
+    def __try_valid_selection_input(self, __input: str) -> bool:
 
         if __input in self.__dispensable_recipe_names:
             # check if __input is a recipe_name that the machine knows
 
-            self.__return_value = ["dispense_drink", __input]
+            self.__return_value["cmd_dispense_drink"] = __input
             self.__is_running = False
 
-            print("your drink is being dispensed")
+            print(f"your {__input} is being dispensed")
             return True
 
-        # sends the select cmd if a number that represents a recipe is the input
         elif __input.isdigit() and 0 <= int(__input) < len(self.__dispensable_recipe_names):
             # check if __input is an int that represents a recipe_name that the machine knows
 
-            self.__return_value = ["dispense_drink", self.__dispensable_recipe_names[int(__input)]]
+            __recipe_name: str = self.__dispensable_recipe_names[int(__input)]
+            self.__return_value["cmd_dispense_drink"] = __recipe_name
             self.__is_running = False
 
-            print("your drink is being dispensed")
+            print(f"your {__recipe_name} is being dispensed")
             return True
 
         else:
@@ -91,34 +99,35 @@ class Selection:
         print("The following drinks are available for selection:")
 
         if self.__dispensable_recipe_names:
-            # check if self.__dispensable_recipe_names is not []
+            # check if there are recipes available
 
-            __index = 0
-            for __drink_name in self.__dispensable_recipe_names:
-                print(f"{__index}: {__drink_name}")
+            __drink_number = 0
+            for __recipe_name in self.__dispensable_recipe_names:
+                print(f"{__drink_number}: {__recipe_name}")
+                __drink_number += 1
 
         else:
-            # self.__dispensable_recipe_names is []
+            # no recipes are available
             print("There are no recipes available currently")
 
     def __print_help_commands(self):
 
         if self.__dispensable_recipe_names:
-            # check if self.__dispensable_recipe_names is not []
+            # check if there are recipes available
 
             print("input options: \n"
                   "input <help>                           to see a list of commands\n\n"
                   "drink selection cmds:\n"
                   "input <drinks>                         to see a list of all available drinks\n"
-                  "input <drink-name> or <drink-index>    to dispense the drink\n\n"
-                  f"      Example: {self.__dispensable_recipe_names[0]}  or  0"
+                  "input <drink-name> or <drink-index>    to dispense the drink\n"
+                  f"      Example: {self.__dispensable_recipe_names[0]}  or  0\n\n"
                   "change UI_module cmds:\n"
                   "input <edit>                           to edit the hopper-layout\n"
                   "input <new>                            to enter a new recipe\n"
                   "input <exit>                           to exit the application")
 
         else:
-            # self.__dispensable_recipe_names is []
+            # no recipes are available
 
             print("input options: \n"
                   "input <help>                           to see a list of commands\n\n"

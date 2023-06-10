@@ -1,0 +1,50 @@
+{
+  "configure_glass_size": 350,
+
+  "configure_measurements_per_scale_value": 5,
+  "configure_measurement_calculation_method": "average",
+
+  "configure_test_scale_version": false,
+  "configure_test_serial_version": false,
+
+  "configure_mock_communication": true,
+  "configure_mock_scale": true,
+
+  "configure_ui_type": "ui_console",
+
+  "configure_ingredient_file_path": "libs/drink_data/data_json/ingredients.json",
+  "configure_recipe_file_path": "libs/drink_data/data_json/recipes.json",
+
+  "configure_tiny": {
+    "LEFT": [
+      {"hopper_position": 0, "hopper_size": 40},
+      {"hopper_position": 1, "hopper_size": 40},
+      {"hopper_position": 2, "hopper_size": 40},
+      {"hopper_position": 3, "hopper_size": 40}
+    ],
+    "RIGHT": [
+      {"hopper_position": 4, "hopper_size": 40},
+      {"hopper_position": 5, "hopper_size": 40},
+      {"hopper_position": 6, "hopper_size": 40},
+      {"hopper_position": 7, "hopper_size": 40}
+    ],
+    "RONDELL": [
+      {"hopper_position": 8, "hopper_size": 40},
+      {"hopper_position": 9, "hopper_size": 40},
+      {"hopper_position": 10, "hopper_size": 40},
+      {"hopper_position": 11, "hopper_size": 40}
+    ]
+
+  },
+  "configure_ingredients": {
+    "Apple_juice": {"hopper_position":  0, "amount": 500},
+    "Orange_juice": {"hopper_position":  1, "amount": 500},
+    "Mineral_water": {"hopper_position":  2, "amount": 500},
+    "Jaegermeister": {"hopper_position":  3, "amount": 500},
+    "Fanta": {"hopper_position":  4, "amount": 500},
+    "Coca_Cola": {"hopper_position":  5, "amount": 500},
+    "Sprite": {"hopper_position":  6, "amount": 500},
+    "RedBull": {"hopper_position":  7, "amount": 500},
+    "Strawberry_liqueur": {"hopper_position":  8, "amount": 500}
+  }
+}

@@ -22,7 +22,7 @@ def is_in_list(_element, _list):
     return False
 
 
-# returns true if the Beverage _needed is mixable with the current hopper configuration
+# returns true if the Beverage _needed is mixable with the current hopper test_configuration
 # false if not
 def mixable(_needed, _beverages):
     for i in range(len(_needed)):
@@ -210,7 +210,7 @@ def getNeededBeverages(needed, allbeverages):
     return res
 
 
-# returns a list of all mixable mixdrinks with the current hopper configuration
+# returns a list of all mixable mixdrinks with the current hopper test_configuration
 def getAllAvailableMixedDrinks():
     global connected
     global txn

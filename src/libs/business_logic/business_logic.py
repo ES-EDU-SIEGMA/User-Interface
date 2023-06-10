@@ -1,77 +1,68 @@
 from ..ui import userinterface as UI_module
 from ..drink_data import data_interface as Data_module
-from ..hopper import hopper as Hopper_communication_module
+from ..hopper import hopper as Hopper_module
+from ..scale import scale_interface as Scale_module
+
+from .program_state import state_selection as State_selection_module
+from .program_state import state_edit as State_edit_module
+from .program_state import state_new as State_new_module
 
 
-# todo implement the Hopper class or something along the lines of hopper
-
+########################################################################################################################
+# Business logic
+########################################################################################################################
 
 class BusinessLogic:
-    __program_state: str
-    # __program_state is one of ["selection", "edit", "new"]
+    __program_state_selection: State_selection_module.StateSelection
+    __program_state_edit: State_edit_module.StateEdit
+    __program_state_new: State_new_module.StateNew
+
+    __program_state: State_selection_module.StateSelection | State_edit_module.StateEdit | State_new_module.StateNew
+
     __program_is_running: bool
-    __ui_object: UI_module.UserInterface
-    __data_object: Data_module.DataInterface
-    __hopper_object: Hopper_communication_module.Hopper
 
-    def __init__(self,
-                 __configuration_dict: dict,
-                 __hopper_configuration: dict,
-                 __hopper_sizes: list[int]):
+    def __init__(self, __configuration: dict):
 
-        self.__data_object = Data_module.DataInterface(__hopper_configuration)
-        self.__ui_object = UI_module.UserInterface(__configuration_dict["ui_console"], self.__data_object)
-        self.__hopper_object = Hopper_communication_module.Hopper(__configuration_dict["mock_communication"],
-                                                                  __hopper_sizes)
+        __data_object = Data_module.DataInterface(__configuration["configure_ingredients"],
+                                                  __configuration["configure_ingredient_file_path"],
+                                                  __configuration["configure_recipe_file_path"])
+        __ui_object = UI_module.UserInterface(__configuration["configure_ui_type"])
+        __hopper_object = Hopper_module.Hopper(__configuration["configure_mock_communication"],
+                                               __configuration["configure_tiny"])
+        __scale_object = Scale_module.Scale(__configuration["configure_mock_scale"],
+                                            __configuration["configure_measurement_calculation_method"],
+                                            __configuration["configure_measurements_per_scale_value"])
 
+        self.__program_state_selection = State_selection_module.StateSelection(__ui_object, __data_object,
+                                                                               __hopper_object, __scale_object)
+        self.__program_state_edit = State_edit_module.StateEdit(__ui_object, __data_object)
+        self.__program_state_new = State_new_module.StateNew(__ui_object, __data_object)
+
+        self.__program_state = self.__program_state_selection
         self.__program_is_running = True
-        self.__program_state = "selection"
         self.__program_loop()
 
     def __program_loop(self):
 
         while self.__program_is_running:
 
-            __cmd: list[str] = self.__ui_object.select_view(self.__program_state)
+            __cmd: dict = self.__program_state.call_ui()
 
-            if __cmd:
-                self.__execute_command(__cmd)
-
-            else:
-                # exit the program if __cmd is an empty list
+            if __cmd["exit"]:
                 self.__program_is_running = False
 
-    def __execute_command(self, __cmd: list[str]):
+            elif __cmd["cmd_change_ui_view"]:
+                self.__change_program_state(__cmd["cmd_change_ui_view"])
 
-        match __cmd.pop(0):
+            else:
+                self.__program_state.execute_command(__cmd)
 
-            case "change_view":
-                self.__program_state = __cmd.pop(0)
+    def __change_program_state(self, __new_state):
 
-            case "dispense_drink":
-                self.__dispense_drink(__cmd)
-            case "edit_hopper":
-                self.__edit_hopper(__cmd)
-            case "new_recipe":
-                self.__new_recipe(__cmd)
-
-    def __dispense_drink(self, __cmd: list[str]):
-
-        __data: list[list[int]] = self.__data_object.get_data_logic(self.__program_state, __cmd[0])
-        # __data:= [[<amount-ml>, <flow-speed>]] position for each hopper is encoded into the list position
-        self.__hopper_object.dispense_drink(__data)
-        # todo implement get_hopper_status
-
-    # question: should the selection be disabled until a new drink can be dispensed
-    # question: should a progress state during the dispensing process be implemented
-
-    def __edit_hopper(self, __cmd: list[str]):
-        # the ui already checked whether the input is valid
-        self.__data_object.set_hopper(int(__cmd[0]), __cmd[1])
-
-    def __new_recipe(self, __new_recipe_information: list[str]):
-
-        self.__data_object.create_recipe(__new_recipe_information)
-        # todo add create_recipe input
-
-    # maybe create a callback to change the program state from the gui? Problem: state is then inside the gui
+        match __new_state:
+            case "selection":
+                self.__program_state = self.__program_state_selection
+            case "edit":
+                self.__program_state = self.__program_state_edit
+            case "new":
+                self.__program_state = self.__program_state_new
