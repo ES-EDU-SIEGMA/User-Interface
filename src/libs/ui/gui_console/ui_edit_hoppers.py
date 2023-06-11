@@ -1,8 +1,10 @@
 class EditHopper:
-    """ __return_value:= {  "exit": bool,
-                            "cmd_change_ui_view": "" | "selection" | "edit" | "new" ,
-                            "cmd_edit_hopper": {"hopper_position": <position>, "ingredient_name": <name>}
-                          }"""
+    """ __return_value:= {
+                            "cmd": "exit" | "change_ui" | "edit",
+                            "data": None | "new" | "selection" |
+                            {"hopper_position": <hopper-position>,
+                             "ingredient_name": <ingredient-name>}
+                    }"""
     __ingredient_hopper_names: list[str]
     __ingredient_names: list[str]
 
@@ -30,9 +32,8 @@ class EditHopper:
         print("You are currently in the edit-hopper window.\n"
               "Enter <help> to see the available commands.")
 
-        self.__return_value = {"exit": False,
-                               "cmd_change_ui_view": "",
-                               "cmd_edit_hopper": None}
+        self.__return_value = {"cmd": "",
+                               "data": None}
 
         self.__is_running = True
         return self.__edit_hopper_loop()
@@ -59,13 +60,15 @@ class EditHopper:
             case "hopper":
                 self.__print_hopper_layout()
             case "select":
-                self.__return_value["cmd_change_ui_view"] = "selection"
+                self.__return_value["cmd"] = "change_ui"
+                self.__return_value["data"] = "selection"
                 self.__is_running = False
             case "new":
-                self.__return_value["cmd_change_ui_view"] = "new"
+                self.__return_value["cmd"] = "change_ui"
+                self.__return_value["data"] = "new"
                 self.__is_running = False
             case "exit":
-                self.__return_value["exit"] = True
+                self.__return_value["cmd"] = "exit"
                 self.__is_running = False
             case _:
                 if not self.__try_valid_edit_input(__input):
@@ -82,8 +85,9 @@ class EditHopper:
             # check if __input has the form str <hopper-position>;<ingredient>
             # check if input-hopper-position < self.__max_hopper
 
-            self.__return_value["cmd_edit_hopper"] = {"hopper_position": int(__split_input[0]),
-                                                      "ingredient_name": __split_input[1]}
+            self.__return_value["cmd"] = "edit"
+            self.__return_value["data"] = {"hopper_position": int(__split_input[0]),
+                                           "ingredient_name": __split_input[1]}
 
             print(f"hopper layout changed to:\n"
                   f"hopper-position: {__split_input[0]}   ingredient: {__split_input[1]}")

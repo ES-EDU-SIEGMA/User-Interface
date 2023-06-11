@@ -6,15 +6,18 @@ class StateEdit:
     __ui_object: UI_module.UserInterface
     __data_object: Data_module.DataInterface
 
-    __program_state: str = "edit"
+    __PROGRAM_STATE: str = "edit"
 
-    def __init__(self, __ui_object, __data_object):
+    def __init__(self,
+                 __ui_object: UI_module.UserInterface,
+                 __data_object: Data_module.DataInterface):
+
         self.__ui_object = __ui_object
         self.__data_object = __data_object
 
     def call_ui(self) -> dict:
-        __data = self.__data_object.get_data_ui(self.__program_state)
-        return self.__ui_object.select_view(self.__program_state, __data)
+        __data = self.__data_object.get_data_ui(self.__PROGRAM_STATE)
+        return self.__ui_object.select_view(self.__PROGRAM_STATE, __data)
 
-    def execute_command(self, __cmd: dict):
-        self.__data_object.set_hopper(__cmd["cmd_edit_hopper"])
+    def execute_command(self, __data: dict):
+        self.__data_object.set_hopper(__data)

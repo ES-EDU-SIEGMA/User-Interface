@@ -1,8 +1,9 @@
 class NewRecipe:
-    """ __return_value:= {  "exit": bool,
-                            "cmd_change_ui_view": "" | "selection" | "edit" | "new" ,
-                            "cmd_create_recipe": {<recipe-name>: {<ingredient-name>: {"fill_amount": <fill-amount>}}}
-                            }"""
+    """ __return_value:= {
+                            "cmd": "exit" | "change_ui" | "new",
+                            "data": None | "selection" | "edit" |
+                            {<recipe-name>: {<ingredient-name>: {"fill_amount": <fill-amount>}}}
+                    }"""
 
     __ingredient_names: list[str]
     __recipe_names: list[str]
@@ -35,9 +36,8 @@ class NewRecipe:
         print("You are currently in the new-recipe window.\n"
               "Enter <help> to see the available commands.")
 
-        self.__return_value = {"exit": False,
-                               "cmd_change_ui_view": "",
-                               "cmd_create_recipe": None}
+        self.__return_value = {"cmd": "",
+                               "data": None}
 
         self.__is_running = True
         return self.__new_recipe_loop()
@@ -66,13 +66,15 @@ class NewRecipe:
             case "my_recipe":
                 self.__print_new_recipe_progress()
             case "select":
-                self.__return_value["cmd_change_ui_view"] = "selection"
+                self.__return_value["cmd"] = "change_ui"
+                self.__return_value["data"] = "selection"
                 self.__is_running = False
             case "edit":
-                self.__return_value["cmd_change_ui_view"] = "edit"
+                self.__return_value["cmd"] = "change_ui"
+                self.__return_value["data"] = "edit"
                 self.__is_running = False
             case "exit":
-                self.__return_value["exit"] = False
+                self.__return_value["cmd"] = "exit"
                 self.__is_running = False
             case _:
                 if not self.__rey_valid_recipe_input(__input):
@@ -102,12 +104,14 @@ class NewRecipe:
               __recipe_name not in self.__commands):
             # check if new recipe-name conflicts with existing recipe-names or console-commands
 
-            self.__return_value["cmd_create_recipe"][__recipe_name] = {}
+            self.__return_value["cmd"] = "new"
+            self.__return_value["data"] = {}
+            self.__return_value["data"][__recipe_name] = {}
             for __ingredient_list in self.__new_recipe_progress:
                 __ingredient_name = __ingredient_list[0]
                 __fill_amount = __ingredient_list[1]
-                self.__return_value["cmd_create_recipe"][__recipe_name][__ingredient_name] = {}
-                self.__return_value["cmd_create_recipe"][__recipe_name][__ingredient_name][
+                self.__return_value["data"][__recipe_name][__ingredient_name] = {}
+                self.__return_value["data"][__recipe_name][__ingredient_name][
                     "fill_amount"] = __fill_amount
 
             print(f"recipe {__recipe_name} added with the following ingredients:")

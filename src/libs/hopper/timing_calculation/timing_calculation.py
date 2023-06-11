@@ -10,9 +10,17 @@ class Calculation:
     def __init__(self):
         pass
 
-    def calculate_timing(self, __data: list[int]):
-        # __data:=[<amount-ml>,<flow-speed>];   len(__data)==2;  __data: list[int]
-        __amount_ml = __data[0]
-        __flow_speed = __data[1]
-        __timing = __amount_ml * self.__MS_PER_ML * __flow_speed
-        return __timing
+    def calculate_timing(self, __data: dict) -> list[int | list[int]]:
+        # {<hopper-position>: {amount_ml: int, flow_speed: int}}
+
+        __expected_weight: int = 0
+        __timings: list[int] = []
+
+        for __hopper_position in __data:
+            __amount_ml = __data[__hopper_position]["fill_amount"]
+            __flow_speed = __data[__hopper_position]["flow_speed"]
+
+            __timing = __amount_ml * self.__MS_PER_ML * __flow_speed
+            __timings.append(__timing)
+            __expected_weight += __amount_ml
+        return [__expected_weight, __timings]

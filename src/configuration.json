@@ -10,6 +10,8 @@
   "configure_mock_communication": true,
   "configure_mock_scale": true,
 
+  "configure_max_waiting_time": 5,
+
   "configure_ui_type": "ui_console",
 
   "configure_ingredient_file_path": "libs/data/data_json/ingredients.json",

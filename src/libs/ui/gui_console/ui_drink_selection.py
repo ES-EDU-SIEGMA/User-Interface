@@ -1,8 +1,8 @@
 class Selection:
-    """ __return_value:= {  "exit": bool,
-                            "cmd_change_ui_view": "" | "selection" | "edit" | "new" ,
-                            "cmd_dispense_drink": <drink-name>
-                          }"""
+    """ __return_value:= {
+                            "cmd": "exit" | "change_ui" | "dispense",
+                            "data": None | "edit" | "new" | <recipe-name>
+                    }"""
 
     __dispensable_recipe_names: list[str]
 
@@ -10,7 +10,7 @@ class Selection:
     __return_value: dict
 
     def __init__(self):
-        pass
+        __progress_dispense_drink = False
 
     def activate(self, __data: list[str]) -> dict:
 
@@ -25,9 +25,8 @@ class Selection:
               "Enter <help> to see the available commands.")
         self.__print_recipe_names()
 
-        self.__return_value = {"exit": False,
-                               "cmd_change_ui_view": "",
-                               "cmd_dispense_drink": None}
+        self.__return_value = {"cmd": "",
+                               "data": None}
 
         self.__is_running = True
         return self.__drink_selection_loop()
@@ -37,40 +36,39 @@ class Selection:
     ####################################################################################################################
 
     def __drink_selection_loop(self) -> dict:
-
         while self.__is_running:
-
             __input: str = input()
             self.__case_distinction(__input)
 
         return self.__return_value
 
     def __case_distinction(self, __input: str):
-
         match __input:
             case "help":
                 self.__print_help_commands()
             case "drinks":
                 self.__print_recipe_names()
             case "edit":
-                self.__return_value["cmd_change_ui_view"] = "edit"
+                self.__return_value["cmd"] = "change_ui"
+                self.__return_value["data"] = "edit"
                 self.__is_running = False
             case "new":
-                self.__return_value["cmd_change_ui_view"] = "new"
+                self.__return_value["cmd"] = "change_ui"
+                self.__return_value["data"] = "new"
                 self.__is_running = False
             case "exit":
-                self.__return_value["exit"] = True
+                self.__return_value["cmd"] = "exit"
                 self.__is_running = False
             case _:
                 if not self.__try_valid_selection_input(__input):
                     print("please enter a valid input")
 
     def __try_valid_selection_input(self, __input: str) -> bool:
-
         if __input in self.__dispensable_recipe_names:
             # check if __input is a recipe_name that the machine knows
 
-            self.__return_value["cmd_dispense_drink"] = __input
+            self.__return_value["cmd"] = "dispense"
+            self.__return_value["data"] = __input
             self.__is_running = False
 
             print(f"your {__input} is being dispensed")
@@ -80,7 +78,8 @@ class Selection:
             # check if __input is an int that represents a recipe_name that the machine knows
 
             __recipe_name: str = self.__dispensable_recipe_names[int(__input)]
-            self.__return_value["cmd_dispense_drink"] = __recipe_name
+            self.__return_value["cmd"] = "dispense"
+            self.__return_value["data"] = __recipe_name
             self.__is_running = False
 
             print(f"your {__recipe_name} is being dispensed")
@@ -95,7 +94,6 @@ class Selection:
     ####################################################################################################################
 
     def __print_recipe_names(self):
-
         print("The following drinks are available for selection:")
 
         if self.__dispensable_recipe_names:
@@ -111,7 +109,6 @@ class Selection:
             print("There are no recipes available currently")
 
     def __print_help_commands(self):
-
         if self.__dispensable_recipe_names:
             # check if there are recipes available
 

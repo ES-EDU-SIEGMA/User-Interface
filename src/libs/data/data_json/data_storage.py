@@ -79,6 +79,21 @@ class DataStorage:
 
         return self.__ingredient_on_hopper_names
 
+    def get_dispense_data(self, __recipe_name: str) -> dict:
+        # return dict{<hopper-position>: {fill_amount: int, flow_speed: int}}
+
+        __return_value: dict = {}
+        __ingredient_names_recipe: dict = (self.__recipes[__recipe_name]).keys()
+
+        for __ingredient_name in __ingredient_names_recipe:
+            __hopper_position: int = self.__ingredients[__ingredient_name]["hopper_position"]
+            __flow_speed: int = self.__ingredients[__ingredient_name]["flow_speed"]
+            __fill_amount: int = self.__recipes[__recipe_name][__ingredient_name]["fill_amount"]
+
+            __return_value[str(__hopper_position)] = {"fill_amount": __fill_amount, "flow_speed": __flow_speed}
+
+        return __return_value
+
     ####################################################################################################################
     # Methods that are used to change runtime data
     ####################################################################################################################

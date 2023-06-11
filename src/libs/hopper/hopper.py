@@ -7,26 +7,33 @@ class Hopper:
     __calculation_object: Timing_calculation_module.Calculation
     __communication_object: Mock_communication_module.Communication | Communication_module.Communication
 
+    __expected_weight: int
+
     def __init__(self, __mock_communication: bool, __hopper_sizes: list[int]):
 
         if __mock_communication:
+            # check if communication should be mocked
+
             self.__communication_object = Mock_communication_module.Communication()
 
         else:
+            # normal communication with the hopper
+
             self.__communication_object = Communication_module.Communication(__hopper_sizes)
 
         self.__calculation_object = Timing_calculation_module.Calculation()
 
-    def dispense_drink(self, __data: list[list[int]]):
-        # __data:= [[<amount-ml>, <flow-speed>]] position for each hopper is encoded into the list position.
+    def dispense_drink(self, __data: dict):
 
-        __timings: list[int] = []
-        # __timings encodes hopper position into list position of the timing.
-
-        for __element in __data:
-            __timings.append(self.__calculation_object.calculate_timing(__element))
+        __tmp: list[int | list[int]] = self.__calculation_object.calculate_timing(__data)
+        self.__expected_weight: int = __tmp[0]
+        __timings: list = __tmp[1]
 
         self.__communication_object.send_timings(__timings)
+
+    def get_expected_weight(self) -> int:
+
+        return self.__expected_weight
 
     def close(self):
 

@@ -34,6 +34,11 @@ class DataInterface:
                                                    self.__data_storage.get_recipe_names()]
                 return __return_value
 
+    def get_data_dispense(self, __recipe_name: str) -> dict:
+        # {<hopper-position>: {amount_ml: int, flow_speed: int}}
+
+        return self.__data_storage.get_dispense_data(__recipe_name)
+
     ####################################################################################################################
     # Methods to change data
     ####################################################################################################################
