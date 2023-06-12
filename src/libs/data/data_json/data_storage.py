@@ -69,15 +69,15 @@ class DataStorage:
 
         return __result
 
+    def get_ingredient_on_hopper_names(self) -> list[str | None]:
+        # return list[<ingredient-name>]
+
+        return self.__ingredient_on_hopper_names
+
     def get_recipe_dispensable_names(self) -> list[str]:
         # return list[<recipe-name>]
 
         return self.__dispensable_recipe_names
-
-    def get_ingredient_on_hopper_names(self) -> list[str]:
-        # return list[<ingredient-name>]
-
-        return self.__ingredient_on_hopper_names
 
     def get_dispense_data(self, __recipe_name: str) -> dict:
         # return dict{<hopper-position>: {fill_amount: int, flow_speed: int}}
