@@ -5,22 +5,51 @@ class Calculation:
         -> 6000sec/40ml = 150 milliseconds/ml
         -> f(x):= x*150*<flow-speed>      where x is the ml-amount of a drink
         and f(x) the required time it takes to dispense the drink"""
-    __MS_PER_ML = 150
 
-    def __init__(self):
-        pass
+    __ms_per_ml: int = 150
+    __hopper_sizes: list[int | None]
 
-    def calculate_timing(self, __data: dict) -> list[int | list[int]]:
-        # {<hopper-position>: {amount_ml: int, flow_speed: int}}
+    def __init__(self, __ms_per_ml: int, __hopper_sizes: list[int | None]):
+        # len(__hopper_sizes) = highest_hopper_number - 1
+        self.__ms_per_ml = __ms_per_ml
+        self.__hopper_sizes = __hopper_sizes
 
+    def calculate_timing(self, __data: dict) -> dict:
+        # __data: {<hopper-position>: {fill_amount: int, flow_speed: int}}
+        # return {expected_weight: int, timings: [[<hopper_emptying_count>, <time_per_emptying>]]}
+
+        __return_value: dict = {"expected_weight": None, "timings": {}}
         __expected_weight: int = 0
-        __timings: list[int] = []
+        __timings: list[list[int]] = []
 
         for __hopper_position in __data:
-            __amount_ml = __data[__hopper_position]["fill_amount"]
+            __fill_amount = __data[__hopper_position]["fill_amount"]
             __flow_speed = __data[__hopper_position]["flow_speed"]
 
-            __timing = __amount_ml * self.__MS_PER_ML * __flow_speed
-            __timings.append(__timing)
-            __expected_weight += __amount_ml
-        return [__expected_weight, __timings]
+            __hopper_emptying_count: int
+            __time_per_emptying: int
+
+            __timing_data: list[int] = []
+
+            if self.__hopper_sizes[int(__hopper_position)]:
+                # check if there is an int or None
+
+                __hopper_size: int = self.__hopper_sizes[int(__hopper_position)]
+                __time_per_emptying = __hopper_size * self.__ms_per_ml * __flow_speed
+
+                __hopper_emptying_count = __fill_amount // __hopper_size
+                if __hopper_emptying_count == 0:
+                    # make sure every ingredient gets dispensed even if it doesn't fill an entire hopper
+                    __hopper_emptying_count = 1
+
+                __timing_data.append(__hopper_emptying_count)
+                __timing_data.append(__time_per_emptying)
+
+            __expected_weight += __fill_amount
+
+            __timings.append(__timing_data)
+
+        __return_value["expected_weight"] = __expected_weight
+        __return_value["timings"] = __timings
+
+        return __return_value

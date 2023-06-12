@@ -1,0 +1,18 @@
+{
+  "test_ingredient_1": {
+    "flow_speed": 1
+  },
+  "test_ingredient_2": {
+    "flow_speed": 2
+  },
+  "test_ingredient_3": {
+    "flow_speed": 1
+  },
+  "test_ingredient_4": {
+    "flow_speed": 10
+  },
+  "test_ingredient_5": {
+    "flow_speed": 5
+  }
+
+}

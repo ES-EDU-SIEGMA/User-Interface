@@ -34,8 +34,14 @@ class BusinessLogic:
         self.__data_object = Data_module.DataInterface(__configuration["configure_ingredients"],
                                                        __configuration["configure_ingredient_file_path"],
                                                        __configuration["configure_recipe_file_path"])
+
         self.__hopper_object = Hopper_module.Hopper(__configuration["configure_mock_communication"],
-                                                    __configuration["configure_tiny"])
+                                                    __configuration["configuration_ms_per_ml"],
+                                                    __configuration["configuration_hopper_sizes"],
+                                                    __configuration["configure_pico_identifier"],
+                                                    __configuration["configure_connection_pi_tiny"],
+                                                    __configuration["configure_max_serial_identifier_attempt"])
+
         self.__scale_object = Scale_module.Scale(__configuration["configure_mock_scale"],
                                                  __configuration["configure_measurement_calculation_method"],
                                                  __configuration["configure_measurements_per_scale_value"])

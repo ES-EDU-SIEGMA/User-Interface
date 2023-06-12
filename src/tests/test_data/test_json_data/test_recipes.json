@@ -1,0 +1,10 @@
+{
+  "test_recipe_1": {
+    "ingredient_1": {"fill_amount": 30},
+    "ingredient_4": {"fill_amount": 100}
+  },
+  "test_recipe_2": {
+    "ingredient_3": {"fill_amount": 100},
+    "ingredient_2": {"fill_amount": 20}
+  }
+}
