@@ -34,6 +34,7 @@ class Hopper:
             # todo change this
 
         self.__calculation_object = Timing_calculation_module.Calculation(__ms_per_ml, __hopper_sizes)
+        self.__expected_weight = 0
 
     def dispense_drink(self, __data: dict):
 
