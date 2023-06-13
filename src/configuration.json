@@ -4,9 +4,6 @@
   "configure_measurements_per_scale_value": 5,
   "configure_measurement_calculation_method": "average",
 
-  "configure_test_scale_version": false,
-  "configure_test_serial_version": false,
-
   "configure_mock_communication": true,
   "configure_mock_scale": true,
 

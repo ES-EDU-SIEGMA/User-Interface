@@ -18,9 +18,9 @@ class Calculation:
         # __data: {<hopper-position>: {fill_amount: int, flow_speed: int}}
         # return {expected_weight: int, timings: [[<hopper_emptying_count>, <time_per_emptying>]]}
 
-        __return_value: dict = {"expected_weight": None, "timings": {}}
+        __return_value: dict = {"expected_weight": None, "timings": []}
         __expected_weight: int = 0
-        __timings: list[list[int]] = []
+        __timings: list[list[int]] = [[]]*12
 
         for __hopper_position in __data:
             __fill_amount = __data[__hopper_position]["fill_amount"]
@@ -47,7 +47,7 @@ class Calculation:
 
             __expected_weight += __fill_amount
 
-            __timings.append(__timing_data)
+            __timings[int(__hopper_position)] = __timing_data
 
         __return_value["expected_weight"] = __expected_weight
         __return_value["timings"] = __timings
