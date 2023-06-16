@@ -1,7 +1,9 @@
 from __future__ import annotations
 
-from src.libs.ui.cli_ui import ui_drink_selection as ui_selection_module
-from src.libs.ui.cli_ui import ui_drink_progress as ui_progress_module
+from libs.ui.cli_ui import (
+    ui_drink_selection as ui_selection_module,
+    ui_drink_progress as ui_progress_module,
+)
 
 
 class UserInterface:

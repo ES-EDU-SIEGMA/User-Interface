@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from src.libs.ui.cli_ui import (
+from libs.ui.cli_ui import (
     ui_drink_selection as ui_selection_module,
     ui_edit_hoppers as ui_edit_module,
     ui_new_recipe as ui_new_module,

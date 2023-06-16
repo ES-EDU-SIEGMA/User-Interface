@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .data_json import data_storage as data
+from libs.data.data_json import data_storage as data
 
 
 class DataInterface:

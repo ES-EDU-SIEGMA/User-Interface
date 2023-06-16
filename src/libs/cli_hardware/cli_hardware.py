@@ -1,6 +1,7 @@
 import time
 
-from src.libs.scale import scale_interface as scale_module
+
+from libs.scale import scale_interface as scale_module
 
 
 class CliHardware:

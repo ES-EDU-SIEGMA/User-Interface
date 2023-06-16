@@ -1,4 +1,4 @@
-from src.libs.hopper.timing_calculation import (
+from libs.hopper.timing_calculation import (
     timing_calculation as timing_calculation_module,
 )
 

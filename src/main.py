@@ -1,10 +1,10 @@
 import json
 
-from src.libs.business_logic import (
+from libs.business_logic import (
     business_logic as business_logic_module,
     business_logic_simple as business_logic_module_only_selection,
 )
-from src.libs.cli_hardware import cli_hardware as cli_hardware_module
+from libs.cli_hardware import cli_hardware as cli_hardware_module
 
 
 class Main:

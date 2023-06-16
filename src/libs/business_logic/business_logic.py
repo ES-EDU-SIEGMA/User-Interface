@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from src.libs.ui import userinterface as ui_module
-from src.libs.data import data_interface as data_module
-from src.libs.hopper import hopper as hopper_module
-from src.libs.scale import scale_interface as scale_module
+from libs.ui import userinterface as ui_module
+from libs.data import data_interface as data_module
+from libs.hopper import hopper as hopper_module
+from libs.scale import scale_interface as scale_module
 
-from src.libs.business_logic.program_state import (
+from libs.business_logic.program_state import (
     state_selection as state_selection_module,
     state_edit as state_edit_module,
     state_new as state_new_module,
