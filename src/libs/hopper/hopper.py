@@ -19,7 +19,7 @@ class Hopper:
     ):
         if __mock_communication:
             # check if communication should be mocked
-            from src.libs.hopper.communication_hardware import (
+            from libs.hopper.communication_hardware import (
                 mock_communication as mock_communication_module,
             )
 
@@ -27,7 +27,7 @@ class Hopper:
 
         else:
             # normal communication with the hopper
-            from src.libs.hopper.communication_hardware import (
+            from libs.hopper.communication_hardware import (
                 communication as communication_module,
             )
 

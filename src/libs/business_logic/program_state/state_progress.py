@@ -1,8 +1,8 @@
 import time
 
-from src.libs.ui import userinterface as ui_module
-from src.libs.hopper import hopper as hopper_module
-from src.libs.scale import scale_interface as scale_module
+from libs.ui import userinterface as ui_module
+from libs.hopper import hopper as hopper_module
+from libs.scale import scale_interface as scale_module
 
 
 class StateProgress:

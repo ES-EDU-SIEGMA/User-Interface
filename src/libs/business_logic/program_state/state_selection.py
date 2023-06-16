@@ -1,6 +1,6 @@
-from src.libs.ui import userinterface as ui_module
-from src.libs.data import data_interface as data_module
-from src.libs.hopper import hopper as hopper_module
+from libs.ui import userinterface as ui_module
+from libs.data import data_interface as data_module
+from libs.hopper import hopper as hopper_module
 
 
 class StateSelection:
