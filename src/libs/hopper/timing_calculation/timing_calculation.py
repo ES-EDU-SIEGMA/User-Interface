@@ -1,10 +1,13 @@
+from __future__ import annotations
+
+
 class Calculation:
-    """ assumption_1: the speed for different hopper sizes is the same
-        assumption_2: the required time can be approximated linearly
-        assumption_3: a 40 ml hopper needs 6000 milliseconds
-        -> 6000sec/40ml = 150 milliseconds/ml
-        -> f(x):= x*150*<flow-speed>      where x is the ml-amount of a drink
-        and f(x) the required time it takes to dispense the drink"""
+    """assumption_1: the speed for different hopper sizes is the same
+    assumption_2: the required time can be approximated linearly
+    assumption_3: a 40 ml hopper needs 6000 milliseconds
+    -> 6000sec/40ml = 150 milliseconds/ml
+    -> f(x):= x*150*<flow-speed>      where x is the ml-amount of a drink
+    and f(x) the required time it takes to dispense the drink"""
 
     __ms_per_ml: int = 150
     __hopper_sizes: list[int | None]
@@ -20,7 +23,7 @@ class Calculation:
 
         __return_value: dict = {"expected_weight": None, "timings": []}
         __expected_weight: int = 0
-        __timings: list[list[int]] = [[]]*12
+        __timings: list[list[int]] = [[]] * 12
 
         for __hopper_position in __data:
             __fill_amount = __data[__hopper_position]["fill_amount"]

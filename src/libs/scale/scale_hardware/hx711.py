@@ -1,23 +1,24 @@
 import RPi.GPIO as GPIO
+
 # the module RPi.GPIO is only available for the raspberry pi
 import time
 import threading
 
 
 class HX711:
-    """ __PD_SCK refers to the pin on the pi to which the hx 711 PD_SCK pin is connected.
-        the PD_SCK pin on the hx711 is used to control the hx711 converter.
-        __DOUT refers to the pin on the pi to which the hx711 DOUT pin is connected.
-        the DOUT pin on the hx711 returns an int encoded as 24 bit 2's complement.
+    """__PD_SCK refers to the pin on the pi to which the hx 711 PD_SCK pin is connected.
+    the PD_SCK pin on the hx711 is used to control the hx711 converter.
+    __DOUT refers to the pin on the pi to which the hx711 DOUT pin is connected.
+    the DOUT pin on the hx711 returns an int encoded as 24 bit 2's complement.
 
-        to read data from the hx711 DOUT pin the PD_SCK pin on the hx711 must be activated and deactivated.
-        the hx711 then returns one bit of data.
+    to read data from the hx711 DOUT pin the PD_SCK pin on the hx711 must be activated and deactivated.
+    the hx711 then returns one bit of data.
 
-        __GAIN # todo add explanation. We are using GAIN=128 on Channel A
+    __GAIN # todo add explanation. We are using GAIN=128 on Channel A
 
-        __calculation_method:= str "median" | "average"
-        __number_of_measurements determines how many measurement values used to calculate a weight value.
-        __offset is a weight value that is used to tare the scale."""
+    __calculation_method:= str "median" | "average"
+    __number_of_measurements determines how many measurement values used to calculate a weight value.
+    __offset is a weight value that is used to tare the scale."""
 
     __calculation_method: str
     __number_of_measurements: int
@@ -77,7 +78,6 @@ class HX711:
     ####################################################################################################################
 
     def __get_value(self) -> int:
-
         self.__new_reading_cycle()
         __scale_value: int
 
@@ -91,7 +91,6 @@ class HX711:
     # todo: think about if the first half of __get_median_weight and __get_average_weight should be its own method
 
     def __get_median_weight(self) -> int:
-
         __measuring_values: list[int] = []
         __current_number_of_measurements: int = 0
 
@@ -112,12 +111,13 @@ class HX711:
         else:
             # self.__number_of_calculations is even
             __middle_of_values = len(__measuring_values) / 2
-            return int(sum(__measuring_values[__middle_of_values: __middle_of_values + 2]) / 2)
+            return int(
+                sum(__measuring_values[__middle_of_values : __middle_of_values + 2]) / 2
+            )
             # because there is no middle value for an even number of values,
             # we return the average of the two values around the middle
 
     def __get_average_weight(self) -> int:
-
         __measuring_values: list[int] = []
         __current_number_of_measurements: int = 0
 
@@ -132,7 +132,7 @@ class HX711:
 
         __trim_percentage: float = 0.1
         __trim_amount: int = int(len(__measuring_values) * __trim_percentage)
-        __trimmed_data: list[int] = __measuring_values[__trim_amount: -__trim_amount]
+        __trimmed_data: list[int] = __measuring_values[__trim_amount:-__trim_amount]
         # we are trimming the edges of the data to remove potentially large outlier values.
         # the __trim_percentage is set arbitrarily.
 
@@ -178,12 +178,13 @@ class HX711:
 
         self.__read_lock.release()
 
-        __return_value: int = self.__convert_to_signed_int([__msb_byte, __middle_byte, __lsb_byte])
+        __return_value: int = self.__convert_to_signed_int(
+            [__msb_byte, __middle_byte, __lsb_byte]
+        )
 
         return __return_value
 
     def __read_byte(self):
-
         __byte_value: int = 0
 
         for __bit in range(8):
@@ -194,7 +195,7 @@ class HX711:
 
     def __read_next_bit(self):
         # Clock HX711 Digital Serial Clock (PD_SCK).  DOUT will be
-        # ready 1us after PD_SCK rising edge, so we sample after
+        # ready 1µs after PD_SCK rising edge, so we sample after
         # lowering PD_SCL, when we know DOUT will be stable.
 
         GPIO.output(self.__PD_SCK, True)
@@ -212,11 +213,13 @@ class HX711:
         # the hx711 sends a number that is encoded in two complement.
         # convert the number from two's complement to signed int value
 
-        __two_complement_value: int = ((__three_bytes[0] << 16) |
-                                       (__three_bytes[1] << 8) |
-                                       __three_bytes[2])
+        __two_complement_value: int = (
+            (__three_bytes[0] << 16) | (__three_bytes[1] << 8) | __three_bytes[2]
+        )
 
-        __signed_int_value: int = -(__two_complement_value & 0x800000) + (__two_complement_value & 0x7fffff)
+        __signed_int_value: int = -(__two_complement_value & 0x800000) + (
+            __two_complement_value & 0x7FFFFF
+        )
 
         return __signed_int_value
 
@@ -236,8 +239,8 @@ class HX711:
         GPIO.output(self.__PD_SCK, False)
         GPIO.output(self.__PD_SCK, True)
         # cause a rising edge on the HX711 Digital Serial Clock (PD_SCK).
-        # we then leave it held up and wait for 100 us.
-        # after 60us the HX711 should be powered down.
+        # we then leave it held up and wait for 100µs.
+        # after 60µs the HX711 should be powered down.
 
         time.sleep(0.0001)
 

@@ -1,8 +1,8 @@
 class Selection:
-    """ __return_value:= {
-                            "cmd": "exit" | "change_ui" | "dispense",
-                            "data": None | "edit" | "new" | <recipe-name>
-                    }"""
+    """__return_value:= {
+            "cmd": "exit" | "change_ui" | "dispense",
+            "data": None | "edit" | "new" | <recipe-name>
+    }"""
 
     __dispensable_recipe_names: list[str]
 
@@ -13,7 +13,6 @@ class Selection:
         __progress_dispense_drink = False
 
     def activate(self, __data: list[str]) -> dict:
-
         if __data:
             # check if __data is not None
             self.__dispensable_recipe_names = __data
@@ -21,12 +20,13 @@ class Selection:
             # __data is None
             self.__dispensable_recipe_names = []
 
-        print("You are currently in the drink-selection window.\n"
-              "Enter <help> to see the available commands.")
+        print(
+            "You are currently in the drink-selection window.\n"
+            "Enter <help> to see the available commands."
+        )
         self.__print_recipe_names()
 
-        self.__return_value = {"cmd": "",
-                               "data": None}
+        self.__return_value = {"cmd": "", "data": None}
 
         self.__is_running = True
         return self.__drink_selection_loop()
@@ -43,25 +43,24 @@ class Selection:
         return self.__return_value
 
     def __case_distinction(self, __input: str):
-        match __input:
-            case "help":
-                self.__print_help_commands()
-            case "drinks":
-                self.__print_recipe_names()
-            case "edit":
-                self.__return_value["cmd"] = "change_ui"
-                self.__return_value["data"] = "edit"
-                self.__is_running = False
-            case "new":
-                self.__return_value["cmd"] = "change_ui"
-                self.__return_value["data"] = "new"
-                self.__is_running = False
-            case "exit":
-                self.__return_value["cmd"] = "exit"
-                self.__is_running = False
-            case _:
-                if not self.__try_valid_selection_input(__input):
-                    print("please enter a valid input")
+        if __input == "help":
+            self.__print_help_commands()
+        elif __input == "drinks":
+            self.__print_recipe_names()
+        elif __input == "edit":
+            self.__return_value["cmd"] = "change_ui"
+            self.__return_value["data"] = "edit"
+            self.__is_running = False
+        elif __input == "new":
+            self.__return_value["cmd"] = "change_ui"
+            self.__return_value["data"] = "new"
+            self.__is_running = False
+        elif __input == "exit":
+            self.__return_value["cmd"] = "exit"
+            self.__is_running = False
+        else:
+            if not self.__try_valid_selection_input(__input):
+                print("please enter a valid input")
 
     def __try_valid_selection_input(self, __input: str) -> bool:
         if __input in self.__dispensable_recipe_names:
@@ -74,7 +73,9 @@ class Selection:
             print(f"your {__input} is being dispensed")
             return True
 
-        elif __input.isdigit() and 0 <= int(__input) < len(self.__dispensable_recipe_names):
+        elif __input.isdigit() and 0 <= int(__input) < len(
+            self.__dispensable_recipe_names
+        ):
             # check if __input is an int that represents a recipe_name that the machine knows
 
             __recipe_name: str = self.__dispensable_recipe_names[int(__input)]
@@ -112,26 +113,30 @@ class Selection:
         if self.__dispensable_recipe_names:
             # check if there are recipes available
 
-            print("input options: \n"
-                  "input <help>                           to see a list of commands\n\n"
-                  "drink selection cmds:\n"
-                  "input <drinks>                         to see a list of all available drinks\n"
-                  "input <drink-name> or <drink-index>    to dispense the drink\n"
-                  f"      Example: {self.__dispensable_recipe_names[0]}  or  0\n\n"
-                  "change UI_module cmds:\n"
-                  "input <edit>                           to edit the hopper-layout\n"
-                  "input <new>                            to enter a new recipe\n"
-                  "input <exit>                           to exit the application")
+            print(
+                "input options: \n"
+                "input <help>                           to see a list of commands\n\n"
+                "drink selection cmds:\n"
+                "input <drinks>                         to see a list of all available drinks\n"
+                "input <drink-name> or <drink-index>    to dispense the drink\n"
+                f"      Example: {self.__dispensable_recipe_names[0]}  or  0\n\n"
+                "change UI_module cmds:\n"
+                "input <edit>                           to edit the hopper-layout\n"
+                "input <new>                            to enter a new recipe\n"
+                "input <exit>                           to exit the application"
+            )
 
         else:
             # no recipes are available
 
-            print("input options: \n"
-                  "input <help>                           to see a list of commands\n\n"
-                  "drink selection cmds:\n"
-                  "input <drinks>                         to see a list of all available drinks\n"
-                  "input <drink-name> or <drink-index>    to dispense the drink\n\n"
-                  "change UI_module cmds:\n"
-                  "input <edit>                           to edit the hopper-layout\n"
-                  "input <new>                            to enter a new recipe\n"
-                  "input <exit>                           to exit the application")
+            print(
+                "input options: \n"
+                "input <help>                           to see a list of commands\n\n"
+                "drink selection cmds:\n"
+                "input <drinks>                         to see a list of all available drinks\n"
+                "input <drink-name> or <drink-index>    to dispense the drink\n\n"
+                "change UI_module cmds:\n"
+                "input <edit>                           to edit the hopper-layout\n"
+                "input <new>                            to enter a new recipe\n"
+                "input <exit>                           to exit the application"
+            )

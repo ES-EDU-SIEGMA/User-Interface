@@ -1,16 +1,15 @@
 class Progress:
-    """ __return_value:= {
-                            "cmd": "progress",
-                            "data": <progress-percentage>
-                    }"""
+    """__return_value:= {
+            "cmd": "progress",
+            "data": <progress-percentage>
+    }"""
 
     def __init__(self):
         pass
 
     def activate(self, __progress_percentage: int) -> dict:
         self.__drink_progress(__progress_percentage)
-        return {"cmd": "progress",
-                "data": __progress_percentage}
+        return {"cmd": "progress", "data": __progress_percentage}
 
     @staticmethod
     def __drink_progress(__progress_percentage: int):

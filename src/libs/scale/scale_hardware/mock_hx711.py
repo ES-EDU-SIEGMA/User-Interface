@@ -1,5 +1,4 @@
 class MockHX711:
-
     def __init__(self):
         pass
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import serial
 import time
 
@@ -17,34 +19,44 @@ class Communication:
     STANDARD_BAUDRATE = 115200
     __picos_hardware: list[serial.Serial]
 
-    def __init__(self,
-                 __pico_identifier: list[str],
-                 __serial_connections: list[str],
-                 __max_serial_identifier_attempt: int):
-
+    def __init__(
+        self,
+        __pico_identifier: list[str],
+        __serial_connections: list[str],
+        __max_serial_identifier_attempt: int,
+    ):
         # try to establish serial connections to the tiny picos
         try:
             for __serial_connection_path in __serial_connections:
-                self.__picos_hardware.append(serial.Serial(__serial_connection_path, self.STANDARD_BAUDRATE))
+                self.__picos_hardware.append(
+                    serial.Serial(__serial_connection_path, self.STANDARD_BAUDRATE)
+                )
         except Exception as error:
-            raise Exception(f"error while establishing connections to a tiny pico.     {error}")
+            raise Exception(
+                f"error while establishing connections to a tiny pico.     {error}"
+            )
 
         self.__identify_picos(__pico_identifier, __max_serial_identifier_attempt)
         self.__wait_until_ready()
         # todo: think about how long we want to wait in __wait_until_ready() currently there is no limit.
 
-    def __identify_picos(self, __pico_identifier: list[str], __max_serial_identifier_attempt: int):
-        """ change __picos_hardware serial-object order so that:
-            __picos_hardware[0] = serial-object with pico identifier __pico_identifier[0]
-            __picos_hardware[1] = serial-object with pico identifier __pico_identifier[1]
-            etc. """
+    def __identify_picos(
+        self, __pico_identifier: list[str], __max_serial_identifier_attempt: int
+    ):
+        """change __picos_hardware serial-object order so that:
+        __picos_hardware[0] = serial-object with pico identifier __pico_identifier[0]
+        __picos_hardware[1] = serial-object with pico identifier __pico_identifier[1]
+        etc."""
 
-        __temp_picos_hardware: list[serial.Serial | None] = [None] * len(__pico_identifier)
+        __temp_picos_hardware: list[serial.Serial | None] = [None] * len(
+            __pico_identifier
+        )
 
-        __pico_identifier_responses: list[bytes] = self.__get_pico_identifier_byte_conversion(__pico_identifier)
+        __pico_identifier_responses: list[
+            bytes
+        ] = self.__get_pico_identifier_byte_conversion(__pico_identifier)
 
         for __pico_connection in self.__picos_hardware:
-
             __current_identification_attempt = 0
 
             while __current_identification_attempt < __max_serial_identifier_attempt:
@@ -59,9 +71,9 @@ class Communication:
 
                     __index = __pico_identifier_responses.index(__pico_response)
 
-                    if __pico_response == b'F\r\n':
+                    if __pico_response == b"F\r\n":
                         # check if an error occurred during data transmission.
-                        # tiny pico sends  F\r\n  as an error signal
+                        # tiny pico sends F\r\n as an error signal
                         __current_identification_attempt += 1
                         time.sleep(5)
 
@@ -71,7 +83,9 @@ class Communication:
 
                     else:
                         # pico identifier is used for two different picos
-                        raise Exception("\nerror: two tiny picos send the same connection identifier")
+                        raise Exception(
+                            "\nerror: two tiny picos send the same connection identifier"
+                        )
 
                 else:
                     # pico identifier is not in __pico_identifier.
@@ -85,7 +99,9 @@ class Communication:
             raise Exception("error: not all tiny picos were able to be identified")
 
     @staticmethod
-    def __get_pico_identifier_byte_conversion(__pico_identifier: list[str]) -> list[bytes]:
+    def __get_pico_identifier_byte_conversion(
+        __pico_identifier: list[str],
+    ) -> list[bytes]:
         # return pico identifiers as a byte list
 
         __result: list[bytes] = []
@@ -94,7 +110,7 @@ class Communication:
             __pico_identifier = f"{__pico_identifier}\r\n"
             __result.append(bytes(__pico_identifier, "utf-8"))
 
-        __result.append(b'F\r\n')
+        __result.append(b"F\r\n")
 
         return __result
 
@@ -113,7 +129,7 @@ class Communication:
     ####################################################################################################################
 
     def close_connection(self):
-        """ closes the connection for all tiny picos"""
+        """closes the connection for all tiny picos"""
 
         for __pico_connection in self.__picos_hardware:
             try:
@@ -130,7 +146,7 @@ class Communication:
 
         for __tiny_pico_index in range(len(self.__picos_hardware)):
             if __hopper_messages[__tiny_pico_index]:
-                # check if there is a message to sent for a tiny pico
+                # check if there is a message to send for a tiny pico
                 __msg_to_send: str = __hopper_messages[__tiny_pico_index].pop(0)
                 self.__send_msg(self.__picos_hardware[__tiny_pico_index], __msg_to_send)
 
@@ -145,14 +161,15 @@ class Communication:
         __messages_all_hoppers: list[list[str]] = []
 
         for __serial_index in range(len(self.__picos_hardware)):
-
             __messages_pico: list[str] = []
 
-            while (__timings[__serial_index * 4 + 0][0] or
-                   __timings[__serial_index * 4 + 1][0] or
-                   __timings[__serial_index * 4 + 2][0] or
-                   __timings[__serial_index * 4 + 3][0]):
-                # check if <hopper_emptying_count> is not 0 for one of the 4 hoppers that connect to a tiny
+            while (
+                __timings[__serial_index * 4 + 0][0]
+                or __timings[__serial_index * 4 + 1][0]
+                or __timings[__serial_index * 4 + 2][0]
+                or __timings[__serial_index * 4 + 3][0]
+            ):
+                # check if <hopper_emptying_count> is not 0 for one of the 4 hoppers that connect to a Tiny
 
                 __one_message_to_pico: str = ""
                 # __one_message_to_pico = "<timing-1>;<timing-2>;<timing-3>;<timing-4>;\n
@@ -189,7 +206,7 @@ class Communication:
 
     @staticmethod
     def __write_pico(__pico_connection: serial.Serial, __input):
-        """ this method is used to write to picos and offer error handling"""
+        """this method is used to write to picos and offer error handling"""
         # todo add error handling
         # todo include this one in __send_msg by not encoding __input to byte format
         try:
@@ -200,7 +217,7 @@ class Communication:
 
     @staticmethod
     def __read_pico(__pico_connection: serial.Serial) -> bin:
-        """ this method is used to read from picos and offer error handling"""
+        """this method is used to read from picos and offer error handling"""
         # todo add error handling
         try:
             return __pico_connection.readline()

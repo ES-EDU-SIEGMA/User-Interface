@@ -1,17 +1,20 @@
-# from .scale_hardware import hx711 as Hx711_module
-# import is commented out because import RPi.GPIO in hx711 creates problems when running the code outside the pi.
-# to run the code on the pi remove the comment symbol from the import line for the Hx711_module.
-from .scale_hardware import mock_hx711 as Mock_hx711_module
-
-
 class Scale:
-    __scale_object: Mock_hx711_module.MockHX711  # | Hx711_module.HX711
-
-    def __init__(self, __mock_scale: bool, __calculation_method: str, __number_of_measurements: int):
+    def __init__(
+        self,
+        __mock_scale: bool,
+        __calculation_method: str,
+        __number_of_measurements: int,
+    ):
         if __mock_scale:
-            self.__scale_object = Mock_hx711_module.MockHX711()
+            from src.libs.scale.scale_hardware import mock_hx711 as mock_hx711_module
+
+            self.__scale_object = mock_hx711_module.MockHX711()
         else:
-            self.__scale_object = Hx711_module.HX711(__calculation_method, __number_of_measurements)
+            from src.libs.scale.scale_hardware import hx711 as hx711_module
+
+            self.__scale_object = hx711_module.HX711(
+                __calculation_method, __number_of_measurements
+            )
 
     def get_weight(self) -> int:
         return self.__scale_object.get_weight()

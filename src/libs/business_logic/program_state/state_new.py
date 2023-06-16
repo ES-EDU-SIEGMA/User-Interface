@@ -1,17 +1,18 @@
-from libs.ui import userinterface as UI_module
-from libs.data import data_interface as Data_module
+from src.libs.ui import userinterface as ui_module
+from src.libs.data import data_interface as data_module
 
 
 class StateNew:
-    __ui_object: UI_module.UserInterface
-    __data_object: Data_module.DataInterface
+    __ui_object: ui_module.UserInterface
+    __data_object: data_module.DataInterface
 
     __PROGRAM_STATE: str = "new"
 
-    def __init__(self,
-                 __ui_object: UI_module.UserInterface,
-                 __data_object: Data_module.DataInterface):
-
+    def __init__(
+        self,
+        __ui_object: ui_module.UserInterface,
+        __data_object: data_module.DataInterface,
+    ):
         self.__ui_object = __ui_object
         self.__data_object = __data_object
 
