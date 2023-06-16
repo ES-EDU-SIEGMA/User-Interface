@@ -140,7 +140,7 @@ class Communication:
 
     def __create_hopper_messages(self, __timings: list[list[int]]) -> list[list[str]]:
         # __timings: [[<hopper_emptying_count>, <time_per_emptying>]]
-        # return list[list[<hopper-timing-msg>]]]
+        # return list[list[<hopper-timing-msg>]]
 
         __messages_all_hoppers: list[list[str]] = []
 
