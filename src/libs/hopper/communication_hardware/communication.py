@@ -17,7 +17,7 @@ class Communication:
     """
 
     STANDARD_BAUDRATE = 115200
-    __picos_hardware: list[serial.Serial]
+    __picos_hardware: list[serial.Serial] = []
 
     def __init__(
         self,
@@ -80,6 +80,7 @@ class Communication:
                     elif __temp_picos_hardware[__index] is None:
                         # check if this pico identifier isn't already used to identify a different serial connection.
                         __temp_picos_hardware[__index] = __pico_connection
+                        break
 
                     else:
                         # pico identifier is used for two different picos
@@ -89,7 +90,7 @@ class Communication:
 
                 else:
                     # pico identifier is not in __pico_identifier.
-                    raise Exception("error: received an unknown pico identifier")
+                    raise Exception(f"error: received an unknown pico identifier {__pico_response}")
 
         self.__picos_hardware = __temp_picos_hardware
 

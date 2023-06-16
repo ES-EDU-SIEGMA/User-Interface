@@ -10,9 +10,9 @@ class Scale:
 
             self.__scale_object = mock_hx711_module.MockHX711()
         else:
-            from libs.scale.scale_hardware import hx711 as hx711_module
+            from libs.scale.scale_hardware.hx711 import HX711 as HX711
 
-            self.__scale_object = hx711_module.HX711(
+            self.__scale_object = HX711(
                 __calculation_method, __number_of_measurements
             )
 

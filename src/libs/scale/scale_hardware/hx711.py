@@ -33,7 +33,7 @@ class HX711:
     __DOUT: int = 5
     __GAIN: int = 128
 
-    def __int__(self, __calculation_method: str, __number_of_measurements: int):
+    def __init__(self, __calculation_method: str, __number_of_measurements: int):
         self.__calculation_method = __calculation_method
         self.__number_of_measurements = __number_of_measurements
 
@@ -132,11 +132,14 @@ class HX711:
 
         __trim_percentage: float = 0.1
         __trim_amount: int = int(len(__measuring_values) * __trim_percentage)
-        __trimmed_data: list[int] = __measuring_values[__trim_amount:-__trim_amount]
+        __trimmed_data: list[int] = __measuring_values[__trim_amount: -__trim_amount]
         # we are trimming the edges of the data to remove potentially large outlier values.
         # the __trim_percentage is set arbitrarily.
 
-        return int(sum(__trimmed_data) / len(__trimmed_data))
+        if len(__trimmed_data) == 0:
+            return 0
+        else:
+            return int(sum(__trimmed_data) / len(__trimmed_data))
 
     ####################################################################################################################
     # Method to tare the scale
