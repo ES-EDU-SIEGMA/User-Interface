@@ -69,39 +69,29 @@ class BusinessLogic:
 
             __ui_cmd: dict = self.__program_state.call_ui()
 
-            match __ui_cmd["cmd"]:
-                case "exit":
-                    self.__data_object.close()
-                    self.__hopper_object.close()
-                    self.__scale_object.close()
-                    self.__program_is_running = False
-
-                case "change_ui":
-                    self.__change_program_state(__ui_cmd["data"])
-
-                case "dispense":
-                    self.__program_state_selection.execute_command(__ui_cmd["data"])
-                    self.__program_state = self.__program_state_progress
-
-                case "progress":
-                    if __ui_cmd["data"] == -1:
-                        # dispense drink is finished return to selection
-                        self.__program_state = self.__program_state_selection
-                    else:
-                        self.__program_state.execute_command(__ui_cmd["data"])
-
-                case "edit":
-                    self.__program_state_edit.execute_command(__ui_cmd["data"])
-
-                case "new":
-                    self.__program_state_new.execute_command(__ui_cmd["data"])
+            if __ui_cmd["cmd"] == "exit":
+                self.__data_object.close()
+                self.__hopper_object.close()
+                self.__scale_object.close()
+                self.__program_is_running = False
+            elif __ui_cmd["cmd"] == "change_ui":
+                self.__change_program_state(__ui_cmd["data"])
+            elif __ui_cmd["cmd"] == "progress":
+                if __ui_cmd["data"] == -1:
+                    # dispense drink is finished return to selection
+                    self.__program_state = self.__program_state_selection
+                else:
+                    self.__program_state.execute_command(__ui_cmd["data"])
+            elif __ui_cmd["cmd"] == "edit":
+                self.__program_state_edit.execute_command(__ui_cmd["data"])
+            elif __ui_cmd["cmd"] == "new":
+                self.__program_state_new.execute_command(__ui_cmd["data"])
 
     def __change_program_state(self, __new_state: str):
 
-        match __new_state:
-            case "selection":
-                self.__program_state = self.__program_state_selection
-            case "edit":
-                self.__program_state = self.__program_state_edit
-            case "new":
-                self.__program_state = self.__program_state_new
+        if __new_state == "selection":
+            self.__program_state = self.__program_state_selection
+        elif __new_state == "edit":
+            self.__program_state = self.__program_state_edit
+        elif __new_state == "new":
+            self.__program_state = self.__program_state_new

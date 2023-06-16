@@ -42,13 +42,13 @@ class Selection:
 
     def __case_distinction(self, __input: str):
 
-        match __input:
-            case "exit":
-                self.__return_value["cmd"] = "exit"
-                self.__is_running = False
-            case _:
-                if not self.__try_valid_selection_input(__input):
-                    print("please enter a valid input")
+        if __input == "exit":
+            self.__return_value["cmd"] = "exit"
+            self.__is_running = False
+        else:
+            if not self.__try_valid_selection_input(__input):
+                print("please enter a valid input")
+
 
     def __try_valid_selection_input(self, __input: str) -> bool:
 

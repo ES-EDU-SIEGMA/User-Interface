@@ -21,18 +21,19 @@ class DataInterface:
 
     def get_data_ui(self, __program_state: str) -> list[str] | list[list[str]]:
 
-        match __program_state:
-            case "selection":
-                __return_value: list[str] = self.__data_storage.get_recipe_dispensable_names()
-                return __return_value
-            case "edit":
-                __return_value: list[list[str]] = [self.__data_storage.get_ingredient_on_hopper_names(),
-                                                   self.__data_storage.get_ingredient_names()]
-                return __return_value
-            case "new":
-                __return_value: list[list[str]] = [self.__data_storage.get_ingredient_names(),
-                                                   self.__data_storage.get_recipe_names()]
-                return __return_value
+        if __program_state == "selection":
+            __return_value: list[str] = self.__data_storage.get_recipe_dispensable_names()
+            return __return_value
+
+        elif __program_state == "edit":
+            __return_value: list[list[str]] = [self.__data_storage.get_ingredient_on_hopper_names(),
+                                               self.__data_storage.get_ingredient_names()]
+            return __return_value
+        elif __program_state == "new":
+            __return_value: list[list[str]] = [self.__data_storage.get_ingredient_names(),
+                                               self.__data_storage.get_recipe_names()]
+            return __return_value
+
 
     def get_data_dispense(self, __recipe_name: str) -> dict:
         # {<hopper-position>: {amount_ml: int, flow_speed: int}}

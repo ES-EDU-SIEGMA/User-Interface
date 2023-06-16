@@ -21,30 +21,25 @@ class CliHardware:
 
             __input: list[str] = input().split(";")
 
-            match __input[0]:
+            if __input[0] == "exit":
+                self.__running = False
 
-                case "exit":
-                    self.__running = False
+            elif __input[0] == "weight":
+                if (__input[1].isdigit() and
+                        __input[2].isdigit()):
 
-                case "weight":
+                    __current_number_measurements: int = 0
+                    __max_number_measurements: int = int(__input[1])
+                    __time_between_measurements_sec: int = int(__input[2])
 
-                    if (__input[1].isdigit() and
-                            __input[2].isdigit()):
+                    while __current_number_measurements < __max_number_measurements:
+                        __scale_value: int = self.__scale_object.get_weight()
+                        print(f"value: {__scale_value}")
+                        time.sleep(__time_between_measurements_sec)
 
-                        __current_number_measurements: int = 0
-                        __max_number_measurements: int = int(__input[1])
-                        __time_between_measurements_sec: int = int(__input[2])
+                        __current_number_measurements += 1
 
-                        while __current_number_measurements < __max_number_measurements:
-                            __scale_value: int = self.__scale_object.get_weight()
-                            print(f"value: {__scale_value}")
-                            time.sleep(__time_between_measurements_sec)
-
-                            __current_number_measurements += 1
-
-                        print("cmd: weight;<number-of-measurements>;<time-between>")
-                case _:
+                    print("cmd: weight;<number-of-measurements>;<time-between>")
+                else:
                     print("wrong input;")
                     print("cmd: weight;<number-of-measurements>;<time-between>")
-
-

@@ -81,15 +81,10 @@ class HX711:
         self.__new_reading_cycle()
         __scale_value: int
 
-        match self.__calculation_method:
-            case "median":
-                __scale_value = self.__get_median_weight()
-            case "average":
-                __scale_value = self.__get_average_weight()
-            case _:
-                # use standard method median. standard method is chosen arbitrarily.
-                # another alternative to a standard method is to throw an exception.
-                __scale_value = self.__get_median_weight()
+        if self.__calculation_method == "median":
+            __scale_value = self.__get_median_weight()
+        elif self.__calculation_method == "average":
+            __scale_value = self.__get_average_weight()
 
         return __scale_value
 

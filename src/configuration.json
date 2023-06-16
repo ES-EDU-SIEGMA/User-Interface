@@ -1,6 +1,6 @@
 {
   "configuration_only_selection": false,
-  "configuration_cli_hardware": true,
+  "configuration_cli_hardware": false,
 
   "configure_glass_size": 350,
 
