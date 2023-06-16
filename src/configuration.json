@@ -1,4 +1,7 @@
 {
+  "configuration_only_selection": false,
+  "configuration_cli_hardware": true,
+
   "configure_glass_size": 350,
 
   "configure_measurements_per_scale_value": 5,
