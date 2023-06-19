@@ -1,13 +1,13 @@
 {
-  "configuration_only_selection": false,
+  "configuration_only_selection": true,
   "configuration_cli_hardware": false,
 
   "configure_glass_size": 350,
 
   "configure_measurements_per_scale_value": 5,
 
-  "configure_mock_communication": true,
-  "configure_mock_scale": true,
+  "configure_mock_communication": false,
+  "configure_mock_scale": false,
 
   "configure_max_waiting_time": 5,
 
@@ -17,7 +17,7 @@
   "configure_recipe_file_path": "libs/data/data_json/recipes.json",
 
   "configure_pico_identifier": ["LEFT", "RIGHT", "RONDELL"],
-  "configuration_ms_per_ml": 150,
+  "configuration_ms_per_ml": 25,
   "configuration_hopper_sizes": [40,40,40,40,40,40,40,40,40,null,null,null],
   "configure_connection_pi_tiny": ["/dev/ttyACM0", "/dev/ttyACM1", "/dev/ttyACM2"],
   "configure_max_serial_identifier_attempt": 5,
