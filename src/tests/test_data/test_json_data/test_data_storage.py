@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from os.path import abspath as absolute_path, join, dirname, realpath
-from src.libs.data.data_json import data_storage as json_data_module
+from libs.data.data_json import data_storage as json_data_module
 import unittest
 
 

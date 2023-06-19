@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from src.libs.hopper import hopper as hopper_module
+from libs.hopper import hopper as hopper_module
 import unittest
 
 
