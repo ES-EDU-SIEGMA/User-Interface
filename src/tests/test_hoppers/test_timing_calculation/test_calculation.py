@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from src.libs.hopper.timing_calculation import timing_calculation as calculation_module
+from libs.hopper.timing_calculation import timing_calculation as calculation_module
 import unittest
 
 

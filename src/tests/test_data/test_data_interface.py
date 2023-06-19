@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from os.path import abspath as absolute_path, join, dirname, realpath
-from src.libs.data import data_interface as data_interface_module
+from libs.data import data_interface as data_interface_module
 import unittest
 
 
