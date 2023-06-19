@@ -146,7 +146,7 @@ class Communication:
         # <hopper-messages-tiny>: list[str] = [<hopper-message>]
 
         for __tiny_pico_index in range(len(self.__picos_hardware)):
-            if __hopper_messages[__tiny_pico_index]:
+            while __hopper_messages[__tiny_pico_index]:
                 # check if there is a message to send for a tiny pico
                 __msg_to_send: str = __hopper_messages[__tiny_pico_index].pop(0)
                 self.__send_msg(self.__picos_hardware[__tiny_pico_index], __msg_to_send)
@@ -181,16 +181,17 @@ class Communication:
                     if __timings[__index][0]:
                         # check if <hopper_emptying_count> > 0
                         __one_message_to_pico += f"{__timings[__index]};"
+                        __timings[__index][0] -= 1
                     else:
                         # <hopper_emptying_count> is 0
                         __one_message_to_pico += "0;"
 
                 __messages_pico.append(f"{__one_message_to_pico}\n")
 
-                if __messages_pico:
-                    __messages_all_hoppers.append(__messages_pico)
+            if __messages_pico:
+                __messages_all_hoppers.append(__messages_pico)
 
-            return __messages_all_hoppers
+        return __messages_all_hoppers
 
     ####################################################################################################################
     # Methods to communicate with the pico

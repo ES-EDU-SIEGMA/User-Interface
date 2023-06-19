@@ -79,7 +79,7 @@ class HX711:
 
     def __get_value(self) -> int:
         self.__new_reading_cycle()
-        __scale_value: int
+        __scale_value: int = 0
 
         if self.__calculation_method == "median":
             __scale_value = self.__get_median_weight()

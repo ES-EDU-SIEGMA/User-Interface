@@ -52,6 +52,12 @@ class Calculation:
 
             __timings[int(__hopper_position)] = __timing_data
 
+        for __index in range(len(__timings)):
+            # add [0,0] to every timing that is []
+
+            if not __timings[__index]:
+                __timings[__index] = [0, 0]
+
         __return_value["expected_weight"] = __expected_weight
         __return_value["timings"] = __timings
 
