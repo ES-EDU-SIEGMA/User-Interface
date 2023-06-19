@@ -152,7 +152,6 @@ class Communication:
                 # check if there is a message to send for a tiny pico
                 __msg_to_send: str = __hopper_messages[__tiny_pico_index].pop(0)
                 self.__send_msg(self.__picos_hardware[__tiny_pico_index], __msg_to_send)
-                print(f"SEND: {__msg_to_send}")
 
     ####################################################################################################################
     # Methods to create the messages for pico communication
@@ -183,7 +182,7 @@ class Communication:
 
                     if __timings[__index][0]:
                         # check if <hopper_emptying_count> > 0
-                        __one_message_to_pico += f"{__timings[__index]};"
+                        __one_message_to_pico += f"{__timings[__index][1]};"
                         __timings[__index][0] -= 1
                     else:
                         # <hopper_emptying_count> is 0
