@@ -1,3 +1,6 @@
+#!/usr/bin/env/python3
+
+
 """
 simple script to test scale implementation on the hardware
 
@@ -11,7 +14,7 @@ __scale: Scale = None
 if __name__ == "__main__":
     __scale = Scale(False, 5)
 
-    for measurement_index in range(1, 10):
+    while True:
         print(__scale.get_weight())
         time.sleep(3)
 
