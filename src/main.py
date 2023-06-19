@@ -25,12 +25,28 @@ class Main:
             print(f"can't read in the configuration file. error: {error}")
             exit(1)
 
+        __configuration_dict[
+            "configure_ingredient_file_path"
+        ] = self.resolve_relative_path(
+            __configuration_dict["configure_ingredient_file_path"]
+        )
+        __configuration_dict["configure_recipe_file_path"] = self.resolve_relative_path(
+            __configuration_dict["configure_recipe_file_path"]
+        )
+
         if __configuration_dict["configuration_only_selection"]:
             business_logic_module_only_selection.BusinessLogic(__configuration_dict)
         elif __configuration_dict["configuration_cli_hardware"]:
             cli_hardware_module.CliHardware(__configuration_dict)
         else:
             business_logic_module.BusinessLogic(__configuration_dict)
+
+    @staticmethod
+    def resolve_relative_path(relative_path: str) -> str:
+        real_path = dirname(realpath(__file__))
+        for part in relative_path.split("/"):
+            join(real_path, part)
+        return absolute_path(real_path)
 
 
 if __name__ == "__main__":
