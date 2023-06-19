@@ -9,7 +9,7 @@ class Calculation:
     -> f(x):= x*150*<flow-speed>      where x is the ml-amount of a drink
     and f(x) the required time it takes to dispense the drink"""
 
-    __ms_per_ml: int = 150
+    __ms_per_ml: int = 25
     __hopper_sizes: list[int | None]
 
     def __init__(self, __ms_per_ml: int, __hopper_sizes: list[int | None]):

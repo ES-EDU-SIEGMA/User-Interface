@@ -90,7 +90,9 @@ class Communication:
 
                 else:
                     # pico identifier is not in __pico_identifier.
-                    raise Exception(f"error: received an unknown pico identifier {__pico_response}")
+                    raise Exception(
+                        f"error: received an unknown pico identifier {__pico_response}"
+                    )
 
         self.__picos_hardware = __temp_picos_hardware
 
@@ -150,6 +152,7 @@ class Communication:
                 # check if there is a message to send for a tiny pico
                 __msg_to_send: str = __hopper_messages[__tiny_pico_index].pop(0)
                 self.__send_msg(self.__picos_hardware[__tiny_pico_index], __msg_to_send)
+                print(f"SEND: {__msg_to_send}")
 
     ####################################################################################################################
     # Methods to create the messages for pico communication
