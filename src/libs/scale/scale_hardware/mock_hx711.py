@@ -5,7 +5,3 @@ class MockHX711:
     @staticmethod
     def get_weight() -> 0:
         return 0
-
-    @staticmethod
-    def close_hx711():
-        pass

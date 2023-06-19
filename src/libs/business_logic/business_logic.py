@@ -58,7 +58,6 @@ class BusinessLogic:
 
         self.__scale_object = scale_module.Scale(
             __configuration["configure_mock_scale"],
-            __configuration["configure_measurement_calculation_method"],
             __configuration["configure_measurements_per_scale_value"],
         )
 
