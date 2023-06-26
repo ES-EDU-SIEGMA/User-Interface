@@ -1,4 +1,5 @@
 class Scale:
+    __gpio = None
     __scale_object = None
     __reference_unit: int = 870298
     __mock_in_use: bool = False
@@ -19,7 +20,8 @@ class Scale:
             from libs.scale.scale_hardware.tatobari_hx711.hx711 import HX711 as HX711
             import RPi.GPIO as GPIO
 
-            GPIO.setwarnings(False)
+            self.__gpio = GPIO
+            self.__gpio.setwarnings(False)
             self.__number_of_measurements = __number_of_measurements
             self.__scale_object = HX711(5, 6)
             self.__scale_object.set_reading_format("MSB", "MSB")
@@ -44,4 +46,4 @@ class Scale:
         if self.__mock_in_use:
             return
 
-        GPIO.cleanup()
+        self.__gpio.cleanup()
