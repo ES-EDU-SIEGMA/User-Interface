@@ -1,0 +1,4 @@
+[submodule "hx711"]
+	path = src/libs/scale/scale_hardware/tatobari_hx711
+	url = https://github.com/tatobari/hx711py.git
+	branch = master

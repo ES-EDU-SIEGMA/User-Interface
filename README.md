@@ -1,58 +1,67 @@
-# SIEGMA User Interface
+# SIEGMA2223 - DrinkMixingMachine
 
-This project provides the Python UI and backend for the Drink mixing machine.
+This project is the GUI and backend for the DrinkMixingMachine.
 
-## INSTALLATION
+<!-- TOC -->
 
-In order for the program to run properly, you need the following python librarys:
+# Table of contents
 
-- [PyQt5](https://pypi.org/project/PyQt5/)
-- [pyserial](https://pypi.org/project/pyserial/)
-- [psycopg2](https://pypi.org/project/psycopg2/) if you want to run the tool with a postgres DB
+* [Desciption]()
+* [Setup](#setup)
+* [Configuration](#configuration)
+* [data](#data-model)
 
-### Database-Setup
+## Description
 
-The original version of the Program requires a postgres database to work.
-This database can run locally on the pi or the machine the code is currently running
-on.
-The program expects the Database to be designed based on the given [SQL scheme](./drinkmixingmachine.sql).
-If there is a need to change out the database to a different type of database, only the [dbcon.py](./src/libs/dbcon.py)
-script has to be changed.
-The connection information to the database can be found and changed in the `__init__()` function of
-the [dbcon.py](./src/libs/dbcon.py) script.
-This function has to be called before the database is used.
+The DrinkMixingMachine
 
-The Database running on the Pi has the following login-data: user: admin, password: admin (yes we are serious)
-Same goes with the Pi.
+## Setup
 
-## USAGE OF THE APPLICATION
+In order for the program to run properly on the pi, the following python libraries are needed:
 
-When you start the application you will be greeted by the main window. On the left you can find a list of beverages and
-mix drinks which are currently mixable.
-If you click on one of those, there will be a pop-up window which asks you to specify the drink size and will inform you
-of the duration and progress of the mixing process (given you clicked start mixing).
-On the right you can find three buttons, the lowest one will exit the application, the middle one will open another
-window which lets you change the occupation of the hoppers and the highest one will let you create new cocktails.
+- [RPI.GPIO](src/libs/scale/scale_hardware/hx711.py)
+- [Serial](src/libs/hopper/communication_hardware/communication.py)
 
-### Adding new beverages
+Running the code on a regular computer doesn't require any additional libraries.
 
-Sadly there is no easy way to add a new Beverage via the GUI.
-So you have to add them manually to the database.
-The beverages are stored the table `drinkmixingmachine.beverages`.
-There you have to manually insert them, the information needed are the name of the Beverage you are adding and the
-flowspeed of the Beverage.
-The flowspeed tells the application how viscous the beverages is you are currently adding.
-This is a very important information, because if the multiplier is too low, you are going to have way less mixed into
-your drink then you wanted.
-A flowspeed of 1 corresponds to the flowspeed of tap water.
-This value acts like a multiplier, so the value 2 will make the machine open the hopper twice as long.
+## Configuration
 
-### THE MIXING PROCESS
+The program can be configured by changing the [configuration.json](src/configuration.json) file.
 
-Once you selected a Beverage or Mix drink you want mixed and specified the drink size the application will look up all
-information it needs to mix.
-It will then calculate the time each hopper needs to be activated and trys to make it as parallel as possible.
-If everything is calculated it will send those information to the corresponding pico.
+configuration options:
 
-Further information about the communication protocol between the Tiny2040 and the Raspberry Pi can be retrieved from the
-[Documentation Repository](https://github.com/ES-EDU-SIEGMA/Documentation).
+- configure_glass_size: int = ml that the glass holds
+
+
+- configure_measurements_per_scale_value: int = how many measurements are used for one scale value
+- configure_[measurement_calculation_method](src/libs/scale/scale_hardware/hx711.py): str = "average" | "median"
+
+
+- configure_test_scale_version: bool = use a different ui to test the scale
+- configure_test_serial_version: bool = use a different ui to test the hoppers
+
+
+- configure_[mock_communication](src/libs/hopper/communication_hardware/mock_communication.py): bool = use a mock for
+  hopper communication
+- configure_[mock_scale](src/libs/scale/scale_hardware/mock_hx711.py): bool = use a mock for scale measurements
+
+
+- configure_[ui_type](src/libs/ui/userinterface.py): str = "ui_console" | "placeholder"
+
+
+- configure_[ingredient_file_path](src/libs/data/data_json/ingredients.json): str = file path to the ingredient file
+- configure_[recipe_file_path](src/libs/data/data_json/recipes.json): str = file path to the recipe
+
+
+- configure_tiny: dict
+- configure_ingredients: dict
+
+## Data model
+
+The machine differentiates between ingredients and recipes.
+
+Ingredient:= a liquid that can be put on a hopper.  
+Ingredient: dir = {<ingredient-name>: {flow_speed: int,amount: int, hopper_position: None | int}}
+
+Recipe:= a liquid consisting of one or more ingredients that can be mixed into a drink.  
+Recipe: dir = {<recipe-name>: {<ingredient-name>: {fill_amount: int}
