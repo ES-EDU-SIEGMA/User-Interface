@@ -1,5 +1,0 @@
-Testing the current scale implementation via unit-tests would not be very sufficient.
-The current implementation only provides three functions (__init__, get_weight, close), and these are only accessed via a interface.
-
-Due to its strict hardware dependencies integration-tests executed on the hardware would be more sufficient.
-=> src/integration-tests/integration-test-scale.py

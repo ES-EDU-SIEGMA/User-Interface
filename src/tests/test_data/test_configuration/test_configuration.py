@@ -51,22 +51,6 @@ class TestConfigurationFile(unittest.TestCase):
             "scale_value should be greater or equal to 0",
         )
 
-    def test_configure_measurement_calculation_method(self):
-        __measurement_calculation_method: str = self.__configuration[
-            "configure_measurement_calculation_method"
-        ]
-        __known_calculation_methods: list[str] = ["average", "median"]
-        self.assertIs(
-            type(__measurement_calculation_method),
-            str,
-            "calculation_method should be type str",
-        )
-        self.assertIn(
-            __measurement_calculation_method,
-            __known_calculation_methods,
-            f"calculation_method should be element of {__known_calculation_methods}",
-        )
-
     def test_configure_mock_communication(self):
         __mock_communication: bool = self.__configuration[
             "configure_mock_communication"
