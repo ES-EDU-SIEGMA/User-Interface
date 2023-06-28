@@ -38,7 +38,6 @@ class Communication:
 
         self.__identify_picos(__pico_identifier, __max_serial_identifier_attempt)
         self.__wait_until_ready()
-        # todo: think about how long we want to wait in __wait_until_ready() currently there is no limit.
 
     def __identify_picos(
         self, __pico_identifier: list[str], __max_serial_identifier_attempt: int
@@ -98,7 +97,6 @@ class Communication:
 
         if None in __temp_picos_hardware:
             # check if all picos are identified and throw an exception if we weren't able to identify all picos
-            # todo optionally: add error handling to make a new attempt in identifying the picos
             raise Exception("error: not all tiny picos were able to be identified")
 
     @staticmethod
@@ -119,7 +117,6 @@ class Communication:
 
     def __wait_until_ready(self):
         # wait until all picos send the calibrated signal.
-        # todo: think about whether we should wait endlessly or change this
         __ready_picos: int = 0
         while __ready_picos < len(self.__picos_hardware):
             for __pico_connection in self.__picos_hardware:
@@ -210,9 +207,7 @@ class Communication:
 
     @staticmethod
     def __write_pico(__pico_connection: serial.Serial, __input):
-        """this method is used to write to picos and offer error handling"""
-        # todo add error handling
-        # todo include this one in __send_msg by not encoding __input to byte format
+        """this method is used to write to picos"""
         try:
             __pico_connection.write(__input)
         except Exception as error:
@@ -221,8 +216,7 @@ class Communication:
 
     @staticmethod
     def __read_pico(__pico_connection: serial.Serial) -> bin:
-        """this method is used to read from picos and offer error handling"""
-        # todo add error handling
+        """this method is used to read from picos"""
         try:
             return __pico_connection.readline()
         except Exception as error:

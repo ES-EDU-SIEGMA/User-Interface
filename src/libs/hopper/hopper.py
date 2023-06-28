@@ -34,7 +34,6 @@ class Hopper:
             self.__communication_object = communication_module.Communication(
                 __pico_identifier, __serial_connections, __max_serial_identifier_attempt
             )
-            # todo change this
 
         self.__calculation_object = timing_calculation_module.Calculation(
             __ms_per_ml, __hopper_sizes
