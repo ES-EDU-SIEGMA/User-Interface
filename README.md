@@ -46,9 +46,10 @@ git submodule update --init --recursive
 #### References in code:
 [Serial](src/libs/hopper/communication_hardware/communication.py)  
 [RPI.GPIO](src/libs/scale/scale_interface.py)
+[hx_711](src/libs/scale/scale_interface.py)
 
-#### tatobari_hx711 module github:
-[hx_711](src/libs/scale/scale_hardware/tatobari_hx711)
+#### tatobari_hx711 module on github:
+[hx_711](https://github.com/tatobari/hx711py)
 
 
 <br>
@@ -74,8 +75,10 @@ See the [configuration options](#configuration-options) for an explanation.
 <br>
 
 ## Program
-
+Overview of the program:  
 ![uml diagram program overview](/documentation/class%20diagram%20general%20overview%20program.png)
+![uml sequence diagram program start](/documentation/sequence%20diagram%20program%20start.png)
+![uml sequence diagram dispense drink](/documentation/sequence%20diagram%20dispense%20drink.png)
 
 #### to run the program simply use:
 ```bash
@@ -141,9 +144,36 @@ python src/main.py
 - The pi will throw an error if an unknown identifier is received.
 
 #### Tiny pico communication:
+- the pi calculates the motor timings for each hopper.
+- after calculating the hopper timings the pi sends the timings to the corresponding pico.
+- > message of hopper timings from pi to tiny pico:  
+  > "timing_hopper_0;timing_hopper_1;timings_hopper_2;timing_hopper_3;\n"
 
+#### hopper positions:
+- each tiny pico has up to 4 hoppers.
+- the internal hopper positions range from 0 - 4 * length("configure_pico_identifier")
+- the internal hopper position 0 refers to hopper 0 on tiny pico with its identifier in position 0 in configure_pico_identifier
+- and internal hopper position 7 for configure_pico_identifier position 1 with hopper 3.
+
+<br>
+
+***
+
+<br>
 
 ## Scale
+
+#### General information:
+- the  scale is connected to a xxx (hx711)
+- the pi reads out the scale values by accessing the hx711.
+- we use an external submodule to access the hx711
+- a scale value in the program is the result of averaging multiple scale values received from the hx711.
+- the scale needs to be calibrated by using a REFERENCE_UNIT value.
+
+#### Technical details
+- [hx711 git-hub link](https://github.com/tatobari/hx711py)
+- [hx711 data sheet link](https://cdn.sparkfun.com/datasheets/Sensors/ForceFlex/hx711_english.pdf)
+
 
 <br>
 
