@@ -62,9 +62,6 @@ See the [configuration options](#configuration-options) for an explanation.
 > - configure_mock_communication: **false**
 > - configure_mock_scale: **false**
 
-<br>
-
-***
 
 
 ## Program
