@@ -21,9 +21,10 @@ class BusinessLogic:
     __program_state_progress: state_progress_module.StateProgress
 
     __program_state: (
-        state_selection_module.StateSelection | state_progress_module.StateProgress
+            state_selection_module.StateSelection | state_progress_module.StateProgress
     )
 
+    __ui_object: ui_module.UserInterface
     __data_object: data_module.DataInterface
     __scale_object: scale_module.Scale
     __hopper_object: hopper_module.Hopper
@@ -31,7 +32,12 @@ class BusinessLogic:
     __program_is_running: bool
 
     def __init__(self, __configuration: dict):
-        __ui_object: ui_module.UserInterface = ui_module.UserInterface(
+
+        ################################################################################################################
+        # initialize program objects
+        ################################################################################################################
+
+        self.__ui_object = ui_module.UserInterface(
             __configuration["configure_ui_type"]
         )
         self.__data_object = data_module.DataInterface(
@@ -54,23 +60,37 @@ class BusinessLogic:
             __configuration["configure_measurements_per_scale_value"],
         )
 
+        ################################################################################################################
+        # initialize program state objects
+        ################################################################################################################
+
         self.__program_state_selection = state_selection_module.StateSelection(
-            __ui_object, self.__data_object, self.__hopper_object
+            self.__ui_object, self.__data_object, self.__hopper_object
         )
         self.__program_state_progress = state_progress_module.StateProgress(
-            __ui_object,
+            self.__ui_object,
             self.__hopper_object,
             self.__scale_object,
             __configuration["configure_max_waiting_time"],
         )
 
+        ################################################################################################################
+        # start the program
+        ################################################################################################################
+
         self.__program_state = self.__program_state_selection
         self.__program_is_running = True
         self.__program_loop()
 
+    ####################################################################################################################
+    # main program loop
+    ####################################################################################################################
+
     def __program_loop(self):
         while self.__program_is_running:
+
             __ui_cmd: dict = self.__program_state.call_ui()
+            # call_ui() returns dict{"cmd": str, "data": some_data}
 
             if __ui_cmd["cmd"] == "exit":
                 self.__data_object.close()
