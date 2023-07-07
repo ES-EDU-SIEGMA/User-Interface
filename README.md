@@ -12,7 +12,6 @@
 * [Configuration-options](#configuration-options)
 
 
-***
 
 <br>
 
