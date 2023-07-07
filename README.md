@@ -3,13 +3,13 @@
 
 ## Table of contents
 
-* **[Requirements](#requirements)**
-* **[Configuration](#configuration)**
-* **[Program](#program)**
-* **[Data model](#data-model)**
-* **[Hopper](#hopper)**
-* **[Scale](#scale)**
-* **[Configuration-options](#configuration-options)**
+* [Requirements](#requirements)
+* [Configuration](#configuration)
+* [Program](#program)
+* [Data model](#data-model)
+* [Hopper](#hopper)
+* [Scale](#scale)
+* [Configuration-options](#configuration-options)
 
 <br>
 
