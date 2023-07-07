@@ -66,9 +66,9 @@ See the [configuration options](#configuration-options) for an explanation.
 
 ## Program
 Overview of the program:  
-![uml diagram program overview](/documentation/class%20diagram%20general%20overview%20program.png)
-![uml sequence diagram program start](/documentation/sequence%20diagram%20program%20start.png)
-![uml sequence diagram dispense drink](/documentation/sequence%20diagram%20dispense%20drink.png)
+![uml diagram program overview](/documentation/class_diagram_general_overview_program.png)
+![uml sequence diagram program start](/documentation/sequence_diagram_program_start.png)
+![uml sequence diagram dispense drink](/documentation/sequence_diagram_dispense_drink.png)
 
 #### to run the program simply use:
 ```bash
@@ -79,7 +79,7 @@ python src/main.py
 ## Data model
 
 #### General overview of the data model:
-![data model uml diagram](/documentation/Data%20model.png)  
+![data model uml diagram](/documentation/Data_model.png)  
 > #### Ingredient
 > 
 > - an ingredient is a  liquid that  can be put on a hopper.
