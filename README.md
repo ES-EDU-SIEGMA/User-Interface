@@ -1,6 +1,5 @@
 # SIEGMA2223 - DrinkMixingMachine - Python code
 
-***
 
 ## Table of contents
 
