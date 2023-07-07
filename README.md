@@ -2,9 +2,7 @@
 
 ***
 
-<!-- TOC -->
-
-# Table of contents
+## Table of contents
 
 * **[Requirements](#requirements)**
 * **[Configuration](#configuration)**
