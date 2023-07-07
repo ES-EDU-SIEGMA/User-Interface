@@ -11,7 +11,6 @@
 * [Scale](#scale)
 * [Configuration-options](#configuration-options)
 
-<br>
 
 ***
 
