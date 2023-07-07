@@ -75,9 +75,6 @@ Overview of the program:
 python src/main.py
 ```
 
-***
-
-<br>
 
 ## Data model
 
