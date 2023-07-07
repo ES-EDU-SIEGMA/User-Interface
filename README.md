@@ -13,25 +13,24 @@
 
 
 
-<br>
 
 ## Requirements
 
-> Running the code locally without hardware access:
->
-> - Python version XXX
-> - No additional modules needed
+### Running the code locally without hardware access:
+
+- Python version XXX
+- No additional modules needed
 
 
-> Running the code on the pi:
->
-> - Python version XXX
-> -  module `Serial`  
-> *The module Serial is used to communicate over UART with the tiny.*
-> -  module `RPI.GPIO`  
-> *The module RPI.GPIO is used to communicate with the hx711 over the pi GPIO pins.*
-> -  submodule [`tatobari_hx711`](https://github.com/tatobari/hx711py)  
-> *The submodule tatobari_hx711 is used to read out the scale value*
+### Running the code on the pi:
+
+- Python version XXX
+- module `Serial`  
+  *The module Serial is used to communicate over UART with the tiny.*
+- module `RPI.GPIO`  
+  *The module RPI.GPIO is used to communicate with the hx711 over the pi GPIO pins.*
+- submodule [`tatobari_hx711`](https://github.com/tatobari/hx711py)  
+  *The submodule tatobari_hx711 is used to read out the scale value*
 
 To update the tatobari_hx711 submodule run the following command:
 ```bash
@@ -67,7 +66,6 @@ See the [configuration options](#configuration-options) for an explanation.
 
 ***
 
-<br>
 
 ## Program
 Overview of the program:  
@@ -79,8 +77,6 @@ Overview of the program:
 ```bash
 python src/main.py
 ```
-
-<br>
 
 ***
 
@@ -116,15 +112,13 @@ python src/main.py
 > }
 >```
 
-<br>
 
-***
 
-<br>
 
 ## Hopper
 
 #### General information:
+
 - The hopper mechanism is controlled through tiny pico controllers.  
 - To activate a hopper the pi communicates with a tiny.  
 - Each tiny connects to 1 to 4 stepper motors that control one hopper each.  
@@ -132,6 +126,7 @@ python src/main.py
 - The pi is connected to the tiny through his USB ports.
 
 #### Connection initialization:
+
 - The pi try's to initialize a connection with a tiny on each USB port that is named in the [configuration](#configuration-options).
 - If a connection couldn't be established the pi will throw an error.
 - After connecting to all tinys the pi will try to identify each tiny connection.
@@ -139,26 +134,24 @@ python src/main.py
 - The pi will throw an error if an unknown identifier is received.
 
 #### Tiny pico communication:
+
 - the pi calculates the motor timings for each hopper.
 - after calculating the hopper timings the pi sends the timings to the corresponding pico.
 - > message of hopper timings from pi to tiny pico:  
   > "timing_hopper_0;timing_hopper_1;timings_hopper_2;timing_hopper_3;\n"
 
 #### hopper positions:
+
 - each tiny pico has up to 4 hoppers.
 - the internal hopper positions range from 0 - 4 * length("configure_pico_identifier")
 - the internal hopper position 0 refers to hopper 0 on tiny pico with its identifier in position 0 in configure_pico_identifier
 - and internal hopper position 7 for configure_pico_identifier position 1 with hopper 3.
 
-<br>
-
-***
-
-<br>
 
 ## Scale
 
 #### General information:
+
 - the  scale is connected to a xxx (hx711)
 - the pi reads out the scale values by accessing the hx711.
 - we use an external submodule to access the hx711
@@ -166,15 +159,11 @@ python src/main.py
 - the scale needs to be calibrated by using a REFERENCE_UNIT value.
 
 #### Technical details
+
 - [hx711 git-hub link](https://github.com/tatobari/hx711py)
 - [hx711 data sheet link](https://cdn.sparkfun.com/datasheets/Sensors/ForceFlex/hx711_english.pdf)
 
 
-<br>
-
-***
-
-<br>
 
 ## Configuration options
 
