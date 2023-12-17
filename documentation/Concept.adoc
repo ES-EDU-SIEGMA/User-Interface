@@ -1,0 +1,343 @@
+= Class Structure
+
+== Current
+
+ifdef::env-github[]
+[source,mermaid]
+endif::[]
+ifndef::env-github[]
+[mermaid,format=svg]
+endif::[]
+----
+classDiagram
+    class Main
+    class BusinessLogic {
+        -__program_state
+        -__ui_object
+        -__data_object
+        -__scale_object
+        -__hopper_object
+        -__program_loop()
+        -__change_program_state()
+    }
+    class UI {
+        +select_view(List~String~: input_data)
+    }
+    note for UIDrinkSelection "`activate` method runs `__drink_selection_loop`"
+    class UIDrinkSelection {
+        -List~String~: __dispensable_recipe_names
+        -Boolean: __is_running
+        -List: __return_value
+        +activate()
+        -__drink_selection_loop()
+        -__case_distincation()
+        -__print_recipe_namse()
+        -__print_help_commands()
+    }
+    class UIDrinkProgress {
+        +activate()
+    }
+    note for UIEditHoppers "`activate` method runs `__drink_selection_loop`"
+    class UIEditHoppers {
+        -List~String~: __ingredient_hopper_names
+        -List~String~: __ingredient_names
+        -Integer: __max_hopper
+        -Boolean: __is_running
+        -List: __return_value
+        +activate()
+        -__edit_hopper_loop()
+        -__case_distincation()
+        -__print_hopper_layout()
+        -__print_ingredient_names()
+        -__print_help_commands()
+    }
+    note for UINewRecipe "`activate` method runs `__drink_selection_loop`"
+    class UINewRecipe {
+        +activate()
+        -__new_recipe_loop()
+        -__case_distincation()
+        -__create_recipe()
+        -__add_ingredient
+        -__print_recipe_names()
+        -__print_ingredient_names()
+        -__print_new_recipe_progress()
+        -__print_help_commands()
+    }
+    class Hopper {
+        +dispense_drink()
+        +get_expected_weight()
+        +close()
+    }
+    class Communication {
+        +closeConnection()
+        +send_timings(List~List~Integer~)
+    }
+    class TimingCalculation {
+        +calculate_timing(List~Beverages~ __data)
+    }
+    class Scale {
+        +close()
+        +get_weight() Integer
+    }
+    class HX711
+    class Data {
+        +close()
+        +get_data_ui(String: program_state) List~String~
+        +get_data_dispense(String: recipe_name) List
+        +set_hopper(List)
+        +create_recipe(List)
+    }
+    class DataStorageJson
+
+    Main -- BusinessLogic
+    BusinessLogic -- Hopper
+    BusinessLogic -- Scale
+    BusinessLogic -- UI
+    BusinessLogic -- Data
+    UI -- UIDrinkSelection
+    UI -- UIDrinkProgress
+    UI -- UIEditHoppers
+    UI -- UINewRecipe
+    Hopper -- TimingCalculation
+    Hopper -- Communication
+    Hopper -- Communication_mock
+    Communication -- Serial
+    Scale -- HX711
+    Scale -- HX711_mock
+    Data -- DataStorageJson
+----
+
+== Proposal
+
+ifdef::env-github[]
+[source,mermaid]
+endif::[]
+ifndef::env-github[]
+[mermaid,format=svg]
+endif::[]
+----
+classDiagram
+    class BusinessLogic {
+        -PState: program_state
+        -Data: data
+        -UI: ui
+        -Hopper: hopper
+        -Scale: scale
+        BusinessLogic(Scale: scale, UI: ui, Hopper: hopper, Data: data)
+        +run() None
+        -on_exit() None
+    }
+    class PState {
+        <<enumeration>>
+        SELECTION
+        DISPENSE
+        EDIT_INGREDIENTS
+        EDIT_RECIPES
+        EDIT_HOPPER
+        EXIT
+    }
+    namespace User Interface {
+        class UI {
+            <<interface>>
+            +display(String: data_to_show) String
+        }
+        class GUI
+        class CLI
+        class PySimpleGUI
+    }
+    namespace Drink Dispension {
+        class Scale {
+            -HX711: hardware
+            +Scale(HX711: hardware)
+            +tare() None
+            +get_weight() Integer
+        }
+        class HX711
+        class Hopper {
+            -List~Serial~: serial
+            Hopper(List~String~: serial_ports)
+            +dispense(List~Ingredient,Integer~: ingredients, Integer: ml_per_glass) None
+            -generate_message(List~Ingredient,Integer~: ingredients, Integer: ml_per_glass) List~String~
+            -send_message(List~String~: message) None
+        }
+        class Serial
+    }
+    namespace Data Management {
+        class Data {
+            -Datahandler: handler
+            -Dictionary: run_configuration
+            -List~Ingredient~: ingredients
+            -List~Drink~: drinks
+            Data(Datahandler: handler, String: path_to_config)
+            +get_configration() Dictionary
+            +get_ingredient(Integer: ID) Ingredient
+            +add_ingredient(Ingredient: ingredient) None
+            +update_ingredient(Ingredient: ingredient) None
+            +get_drinks(Integer: ID) List~Drink~
+            +get_drink(Integer: ID) Drink
+            +add_drink(Drink: drink) None
+            +update_drink(Drink: drink) None
+        }
+        class Datahandler {
+            <<interface>>
+            +read_ingredients() List~Ingredient~
+            +write_ingredients(List~Ingredient~: ingredients)
+            +read_drinks() List~Drink~
+            +write_drinks(List~Drink~: drinks)
+        }
+        class JsonDatahandler {
+            -write(String: path_to_file, Dictonary: data)
+            -read(String: path_to_file) Dictonary
+        }
+        class Ingredient {
+            -Integer: ID
+            +String: name
+            +Integer: flow_speed
+            +Integer: hopper_id
+            +get_ID() Integer
+            +get_timing(Integer: amount_in_ml) Integer
+        }
+        class Drink {
+            -Integer: ID
+            -List~Ingredient,Integer~: ingredients
+            +get_ID() Integer
+            +get_Ingredients() List~Ingredient,Integer~
+            +add_ingredient(Integer: ingredient_id, Integer: percentage)
+            +remove_ingredient(Integer: ingredient_id)
+            +adjust_amount(Integer: ingredient_id, Integer: percentage)
+        }
+    }
+
+    note "PySimpleGUI, HX711 and Serial are External Dependencies"
+    BusinessLogic *-- PState
+    BusinessLogic o-- UI
+    BusinessLogic o-- Data
+    BusinessLogic o-- Scale
+    BusinessLogic o-- Hopper
+    Scale o-- HX711
+    Data o-- Datahandler
+    Datahandler <|.. JsonDatahandler
+    Data o-- Ingredient
+    Data o-- Drink
+    Drink o-- Ingredient
+    Hopper *-- Serial
+    UI <|.. CLI
+    UI <|.. GUI
+    GUI *-- PySimpleGUI
+----
+
+.main.py
+[source,python]
+----
+import ...
+
+if __name__ == __main__:
+    json_handler = JsonDatahandler()
+    data: Data = Data(handler=json_handler, path_to_config="config.json")
+    HX711 scale_hardware = HX711(...)
+    scale: Scale = Scale(hardware=scale_hardware)
+    hopper: Hopper = Hopper(serial_ports=data.get_configuration()["serial"]["port"])
+    ui: UI = CLI(...)
+    program: BusinessLogic = BusinessLogic(scale=scale, ui=ui, hopper=hopper, data=data)
+    
+    program.run()
+----
+
+.recipes.json
+[source,json]
+----
+{
+  "ingredients": [
+    {
+      "id": <int>,
+      "name": <string>,
+      "hopper": <int>,
+      "flow_speed": <int>
+    },
+    ...
+  ],
+  "drinks": [
+    {
+      "id": <int>,
+      "ingredients": [
+        {
+          "ingredient": <int>,
+          "percentage": <int>
+        },
+        ...
+      ]
+    },
+    ...
+  ]
+}
+----
+
+.configuration.json
+[source,json]
+----
+{
+  "sources": {
+    "recipes": <string>
+  },
+  "mock_serial": <boolean>,
+  "mock_scale": <boolean>,
+  "scale": {
+    "measurements_per_value": <int>,
+    "wait_timeout": <int>
+  },
+  "dispenser": {
+    "glass_size": <int>,
+    "ms_per_ml": <int>,
+    "hopper_size": [
+      <int>,
+      ...
+    ]
+  },
+  "serial": {
+    "identifier": [
+      <string>,
+      ...
+    ],
+    "port": [
+      <strin>,
+      ...
+    ],
+    "max_connection_attempts": <int>
+  }
+}
+----
+
+.load_config.py
+[source, python]
+----
+from __future__ import annotations
+
+import json
+from os.path import abspath, dirname, join, realpath
+
+from pprint import pprint as pretty_print
+
+
+def get_absolute_path(file: str) -> str:
+    return abspath(join(dirname(realpath(__file__)), file))
+
+
+def load_file(configuration_path: str) -> str:
+    try:
+        with open(
+            file=get_absolute_path(configuration_path), mode="r"
+        ) as configuration_file:
+            configuration = configuration_file.read()
+    except FileNotFoundError:
+        raise Exception("No Config File Found!")
+    except:
+        raise Exception("Config can't be loaded!")
+    else:
+        return configuration
+
+
+if __name__ == "__main__":
+    config: str = load_file(configuration_path="new_config.json")
+    config_dict: dict = json.JSONDecoder().decode(config)
+    pretty_print(config_dict)
+----
