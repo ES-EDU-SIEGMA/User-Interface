@@ -117,13 +117,13 @@ ifndef::env-github[]
 endif::[]
 ----
 classDiagram
-    class BusinessLogic {
+    class DrinkMixingMachine {
         -PState: program_state
         -Data: data
         -UI: ui
         -Hopper: hopper
         -Scale: scale
-        BusinessLogic(Scale: scale, UI: ui, Hopper: hopper, Data: data)
+        DrinkMixingMachine(Scale: scale, UI: ui, Hopper: hopper, Data: data)
         +run() None
         -on_exit() None
     }
@@ -139,7 +139,7 @@ classDiagram
     namespace User Interface {
         class UI {
             <<interface>>
-            +display(String: data_to_show) String
+            +display(List~String~: data_to_show) String
         }
         class GUI
         class CLI
@@ -209,11 +209,11 @@ classDiagram
     }
 
     note "PySimpleGUI, HX711 and Serial are External Dependencies"
-    BusinessLogic *-- PState
-    BusinessLogic o-- UI
-    BusinessLogic o-- Data
-    BusinessLogic o-- Scale
-    BusinessLogic o-- Hopper
+    DrinkMixingMachine *-- PState
+    DrinkMixingMachine o-- UI
+    DrinkMixingMachine o-- Data
+    DrinkMixingMachine o-- Scale
+    DrinkMixingMachine o-- Hopper
     Scale o-- HX711
     Data o-- Datahandler
     Datahandler <|.. JsonDatahandler
@@ -239,7 +239,7 @@ if __name__ == __main__:
     hopper: Hopper = Hopper(serial_ports=data.get_configuration()["serial"]["port"])
     ui: UI = CLI(...)
     program: BusinessLogic = BusinessLogic(scale=scale, ui=ui, hopper=hopper, data=data)
-    
+
     program.run()
 ----
 
