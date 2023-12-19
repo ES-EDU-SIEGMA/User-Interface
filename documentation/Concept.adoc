@@ -119,6 +119,7 @@ endif::[]
 classDiagram
     class DrinkMixingMachine {
         -PState: program_state
+        -Datahandler: json_datahandler
         -Data: data
         -UI: ui
         -Hopper: hopper
@@ -154,11 +155,16 @@ classDiagram
         }
         class HX711
         class Hopper {
-            -List~Serial~: serial
-            Hopper(List~String~: serial_ports)
+            -List~Communication~: devices
+            Hopper(List~Communication~: devices)
             +dispense(List~Ingredient,Integer~: ingredients, Integer: ml_per_glass) None
-            -generate_message(List~Ingredient,Integer~: ingredients, Integer: ml_per_glass) List~String~
-            -send_message(List~String~: message) None
+        }
+        class Communication {
+            -Serial: device
+            Communication(Serial: device)
+            +send_timings(List~Integer~: timings) None
+            -generate_message(List~Ingredient~: timings) String
+            -send_message(String: message) None
         }
         class Serial
     }
@@ -186,6 +192,9 @@ classDiagram
             +write_drinks(List~Drink~: drinks)
         }
         class JsonDatahandler {
+            -String: path_to_ingredients
+            -String: path_to_drinks
+            JsonDatahandler(String: path_to_ingredients, String: path_to_drinks)
             -write(String: path_to_file, Dictonary: data)
             -read(String: path_to_file) Dictonary
         }
@@ -220,7 +229,8 @@ classDiagram
     Data o-- Ingredient
     Data o-- Drink
     Drink o-- Ingredient
-    Hopper *-- Serial
+    Hopper o-- Communication
+    Communication o-- Serial
     UI <|.. CLI
     UI <|.. GUI
     GUI *-- PySimpleGUI
