@@ -6,7 +6,6 @@
   "configure_measurements_per_scale_value": 5,
 
   "configure_mock_communication": false,
-  "configure_mock_scale": false,
 
   "configure_max_waiting_time": 5,
 
