@@ -1,27 +1,24 @@
 from __future__ import annotations
 
 
-class Calculation:
-
+class Calculator:
     __ms_per_ml: int
     __hopper_sizes: list[int | None]
 
-    def __init__(self, __ms_per_ml: int, __hopper_sizes: list[int | None]):
-        # len(__hopper_sizes) == highest_hopper_number - 1
-        self.__ms_per_ml = __ms_per_ml
-        self.__hopper_sizes = __hopper_sizes
+    def __init__(self, ms_per_ml: int, hopper_sizes: list[int | None]):
+        self.__ms_per_ml = ms_per_ml
+        self.__hopper_sizes = hopper_sizes
 
-    def calculate_timing(self, __data: dict) -> dict:
+    def calculate_timing(self, data: dict) -> (int, list[list[int]]):
         # __data: {<hopper-position>: {"fill_amount": int, "flow_speed": int}}
-        # return {"expected_weight": int, "timings": [[<hopper_emptying_count>, <time_per_emptying>]]}
 
         __return_value: dict = {"expected_weight": None, "timings": []}
         __expected_weight: int = 0
         __timings: list[list[int]] = [[]] * 12
 
-        for __hopper_position in __data:
-            __fill_amount = __data[__hopper_position]["fill_amount"]
-            __flow_speed = __data[__hopper_position]["flow_speed"]
+        for __hopper_position in data:
+            __fill_amount = data[__hopper_position]["fill_amount"]
+            __flow_speed = data[__hopper_position]["flow_speed"]
 
             __hopper_emptying_count: int
             __time_per_emptying: int
@@ -54,7 +51,4 @@ class Calculation:
             if not __timings[__index]:
                 __timings[__index] = [0, 0]
 
-        __return_value["expected_weight"] = __expected_weight
-        __return_value["timings"] = __timings
-
-        return __return_value
+        return __expected_weight, __timings

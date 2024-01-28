@@ -1,13 +1,5 @@
 from __future__ import annotations
-
 import time
-
-from libs.ui import userinterface as ui_module
-from libs.data import data_interface as data_module
-from libs.hopper import hopper as hopper_module
-from libs.scale.scale import Scale
-from libs.scale.scale_hardware.tatobari_hx711.hx711 import HX711
-from RPi.GPIO import GPIO
 
 from libs.business_logic.program_state import (
     state_selection as state_selection_module,
@@ -15,6 +7,21 @@ from libs.business_logic.program_state import (
     state_new as state_new_module,
     state_progress as state_progress_module,
 )
+
+from libs.ui import userinterface as ui_module
+from libs.data import data_interface as data_module
+
+from RPi.GPIO import GPIO
+from libs.scale.scale_hardware.tatobari_hx711.hx711 import HX711
+from libs.scale.scale import Scale
+
+from libs.hardware.timing_calculator.calculator import Calculator
+from serial import Serial
+from libs.hardware.controller.dispenser_array_controller import DispenserArrayController
+from libs.hardware.controller.idispenser_array_controller import (
+    IDispenserArrayController,
+)
+from libs.hardware.dispenserMechanism import DispenserMechanism
 
 
 ########################################################################################################################
@@ -37,12 +44,17 @@ class BusinessLogic:
 
     __ui_object: ui_module.UserInterface
     __data_object: data_module.DataInterface
-    __scale_object: Scale
-    __hopper_object: hopper_module.Hopper
 
     __scale_hardware: HX711
+    __scale_object: Scale
+
+    __timing_calculator: Calculator
+    __dispenser_array_controller: list[IDispenserArrayController]
+    __dispenser_mechanism: DispenserMechanism
 
     __program_is_running: bool
+
+    PICO_BAUDRATE = 115200
 
     def __init__(self, __configuration: dict):
         ################################################################################################################
@@ -56,13 +68,25 @@ class BusinessLogic:
             __configuration["configure_recipe_file_path"],
         )
 
-        self.__hopper_object = hopper_module.Hopper(
-            __configuration["configure_mock_communication"],
-            __configuration["configuration_ms_per_ml"],
-            __configuration["configuration_hopper_sizes"],
-            __configuration["configure_pico_identifier"],
-            __configuration["configure_connection_pi_tiny"],
-            __configuration["configure_max_serial_identifier_attempt"],
+        self.__timing_calculator = Calculator(
+            ms_per_ml=__configuration["configuration_ms_per_ml"],
+            hopper_sizes=__configuration["configuration_hopper_sizes"],
+        )
+        self.__dispenser_array_controller = []
+        for port in __configuration["configure_connection_pi_tiny"]:
+            serial = Serial(port=port, baudrate=self.PICO_BAUDRATE)
+            self.__dispenser_array_controller.append(
+                DispenserArrayController(
+                    possible_identifiers=__configuration["configure_pico_identifier"],
+                    port=serial,
+                    max_connection_attempts=__configuration[
+                        "configure_max_serial_identifier_attempt"
+                    ],
+                )
+            )
+        self.__dispenser_mechanism = DispenserMechanism(
+            controller=self.__dispenser_array_controller,
+            timing_calculator=self.__timing_calculator,
         )
 
         self.__scale_hardware = self.__init_scale_hardware(
@@ -80,7 +104,7 @@ class BusinessLogic:
         ################################################################################################################
 
         self.__program_state_selection = state_selection_module.StateSelection(
-            self.__ui_object, self.__data_object, self.__hopper_object
+            self.__ui_object, self.__data_object, self.__dispenser_mechanism
         )
         self.__program_state_edit = state_edit_module.StateEdit(
             self.__ui_object, self.__data_object
@@ -90,7 +114,7 @@ class BusinessLogic:
         )
         self.__program_state_progress = state_progress_module.StateProgress(
             self.__ui_object,
-            self.__hopper_object,
+            self.__dispenser_mechanism,
             self.__scale_object,
             __configuration["configure_max_waiting_time"],
         )
@@ -131,7 +155,6 @@ class BusinessLogic:
 
             if __ui_cmd["cmd"] == "exit":
                 self.__data_object.close()
-                self.__hopper_object.close()
                 self.__scale_hardware.power_down()
                 time.sleep(1)
                 GPIO.cleanup()

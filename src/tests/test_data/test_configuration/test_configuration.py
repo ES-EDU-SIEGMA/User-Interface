@@ -51,14 +51,6 @@ class TestConfigurationFile(unittest.TestCase):
             "scale_value should be greater or equal to 0",
         )
 
-    def test_configure_mock_communication(self):
-        __mock_communication: bool = self.__configuration[
-            "configure_mock_communication"
-        ]
-        self.assertIs(
-            type(__mock_communication), bool, "mock_communication should be type bool"
-        )
-
     def test_configuration_max_waiting_time(self):
         __max_waiting_time: int = self.__configuration["configure_max_waiting_time"]
         self.assertIs(
