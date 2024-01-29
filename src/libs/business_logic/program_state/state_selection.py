@@ -1,12 +1,12 @@
 from libs.ui import userinterface as ui_module
 from libs.data import data_interface as data_module
-from libs.hopper import hopper as hopper_module
+from libs.hardware import hopper as hopper_module
 
 
 class StateSelection:
     __ui_object: ui_module.UserInterface
     __data_object: data_module.DataInterface
-    __hopper_object: hopper_module.Hopper
+    __hopper_object: hopper_module.DispenserMechanism
 
     __PROGRAM_STATE: str = "selection"
 
@@ -14,7 +14,7 @@ class StateSelection:
         self,
         __ui_object: ui_module.UserInterface,
         __data_object: data_module.DataInterface,
-        __hopper_object: hopper_module.Hopper,
+        __hopper_object: hopper_module.DispenserMechanism,
     ):
         self.__ui_object = __ui_object
         self.__data_object = __data_object

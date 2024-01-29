@@ -1,13 +1,13 @@
 import time
 
 from libs.ui import userinterface as ui_module
-from libs.hopper import hopper as hopper_module
+from libs.hardware import hopper as hopper_module
 from libs.scale.scale import Scale
 
 
 class StateProgress:
     __ui_object = ui_module.UserInterface
-    __hopper_object = hopper_module.Hopper
+    __hopper_object = hopper_module.DispenserMechanism
     __scale_object = Scale
 
     __max_waiting_time: int
@@ -22,7 +22,7 @@ class StateProgress:
     def __init__(
         self,
         ui_object: ui_module.UserInterface,
-        hopper_object: hopper_module.Hopper,
+        hopper_object: hopper_module.DispenserMechanism,
         scale_object: Scale,
         max_waiting_time: int,
     ):
