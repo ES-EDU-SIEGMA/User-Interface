@@ -9,9 +9,9 @@ from libs.business_logic.program_state import (
 from libs.ui import userinterface as ui_module
 from libs.data import data_interface as data_module
 
-from libs.scale.scale_hardware.tatobari_hx711.hx711 import HX711
+from libs.hardware.tatobari_hx711.hx711 import HX711
 from RPi.GPIO import GPIO
-from libs.scale.scale import Scale
+from libs.hardware.scale.scale import Scale
 
 from libs.hardware.timing_calculator.calculator import Calculator
 from serial import Serial
