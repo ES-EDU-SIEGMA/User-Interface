@@ -2,17 +2,17 @@ from __future__ import annotations
 import unittest
 from unittest.mock import MagicMock, Mock
 
-from libs.hardware.dispenserMechanism import DispenserMechanism
-from libs.hardware.timing_calculator.calculator import Calculator
-from libs.hardware.controller.idispenser_array_controller import (
-    IDispenserArrayController,
+from libs.hardware.dispenseMechanism.dispenseMechanism import DispenseMechanism
+from libs.hardware.timingCalculator.calculator import Calculator
+from libs.hardware.dispenserGroupController.iDispenserGroupController import (
+    IDispenserGroupController,
 )
 
 
 class TestHopper(unittest.TestCase):
     __calculation: Calculator = None
-    __controller: list[IDispenserArrayController] = None
-    __hopper: DispenserMechanism = None
+    __controller: list[IDispenserGroupController] = None
+    __hopper: DispenseMechanism = None
 
     def setUp(self):
         self.__calculation = MagicMock()
@@ -21,7 +21,7 @@ class TestHopper(unittest.TestCase):
         for index in range(1, 3):
             self.__controller.append(MagicMock())
 
-        self.__hopper = DispenserMechanism(
+        self.__hopper = DispenseMechanism(
             controller=self.__controller, timing_calculator=self.__calculation
         )
 

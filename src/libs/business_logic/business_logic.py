@@ -15,7 +15,7 @@ from RPi.GPIO import GPIO
 from libs.hardware.tatobari_hx711.hx711 import HX711
 from libs.hardware.scale.scale import Scale
 
-from libs.hardware.timing_calculator.calculator import Calculator
+from libs.hardware.timingCalculator.calculator import Calculator
 from serial import Serial
 from libs.hardware.dispenserGroupController.dispenserGroupController import (
     DispenserGroupController,

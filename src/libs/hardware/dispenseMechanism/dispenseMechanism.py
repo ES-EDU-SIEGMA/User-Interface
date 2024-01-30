@@ -1,7 +1,7 @@
 from libs.hardware.dispenserGroupController.dispenserGroupController import (
     PicoException,
 )
-from libs.hardware.timing_calculator.calculator import Calculator
+from libs.hardware.timingCalculator.calculator import Calculator
 from libs.hardware.dispenserGroupController.iDispenserGroupController import (
     IDispenserGroupController,
 )

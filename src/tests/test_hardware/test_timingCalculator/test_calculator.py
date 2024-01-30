@@ -1,7 +1,7 @@
 from __future__ import annotations
 import unittest
 
-from libs.hardware.timing_calculator.calculator import Calculator
+from libs.hardware.timingCalculator.calculator import Calculator
 
 
 class TestCalculation(unittest.TestCase):
