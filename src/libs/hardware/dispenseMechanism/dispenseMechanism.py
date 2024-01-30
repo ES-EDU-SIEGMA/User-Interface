@@ -1,17 +1,19 @@
-from libs.hardware.controller.dispenser_array_controller import PicoException
+from libs.hardware.dispenserGroupController.dispenserGroupController import (
+    PicoException,
+)
 from libs.hardware.timing_calculator.calculator import Calculator
-from libs.hardware.controller.idispenser_array_controller import (
-    IDispenserArrayController,
+from libs.hardware.dispenserGroupController.iDispenserGroupController import (
+    IDispenserGroupController,
 )
 
 
-class DispenserMechanism:
+class DispenseMechanism:
     __calculation: Calculator = None
-    __controller: list[IDispenserArrayController] = None
+    __controller: list[IDispenserGroupController] = None
     __expected_weight: int = -1
 
     def __init__(
-        self, controller: list[IDispenserArrayController], timing_calculator: Calculator
+        self, controller: list[IDispenserGroupController], timing_calculator: Calculator
     ):
         self.__controller = controller
         self.__calculation = timing_calculator

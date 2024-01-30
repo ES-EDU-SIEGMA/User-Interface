@@ -17,11 +17,13 @@ from libs.scale.scale import Scale
 
 from libs.hardware.timing_calculator.calculator import Calculator
 from serial import Serial
-from libs.hardware.controller.dispenser_array_controller import DispenserArrayController
-from libs.hardware.controller.idispenser_array_controller import (
-    IDispenserArrayController,
+from libs.hardware.dispenserGroupController.dispenserGroupController import (
+    DispenserGroupController,
 )
-from libs.hardware.dispenserMechanism import DispenserMechanism
+from libs.hardware.dispenserGroupController.iDispenserGroupController import (
+    IDispenserGroupController,
+)
+from libs.hardware.dispenseMechanism.dispenseMechanism import DispenseMechanism
 
 
 ########################################################################################################################
@@ -49,8 +51,8 @@ class BusinessLogic:
     __scale_object: Scale
 
     __timing_calculator: Calculator
-    __dispenser_array_controller: list[IDispenserArrayController]
-    __dispenser_mechanism: DispenserMechanism
+    __dispenser_array_controller: list[IDispenserGroupController]
+    __dispenser_mechanism: DispenseMechanism
 
     __program_is_running: bool
 
@@ -76,7 +78,7 @@ class BusinessLogic:
         for port in __configuration["configure_connection_pi_tiny"]:
             serial = Serial(port=port, baudrate=self.PICO_BAUDRATE)
             self.__dispenser_array_controller.append(
-                DispenserArrayController(
+                DispenserGroupController(
                     possible_identifiers=__configuration["configure_pico_identifier"],
                     port=serial,
                     max_connection_attempts=__configuration[
@@ -84,7 +86,7 @@ class BusinessLogic:
                     ],
                 )
             )
-        self.__dispenser_mechanism = DispenserMechanism(
+        self.__dispenser_mechanism = DispenseMechanism(
             controller=self.__dispenser_array_controller,
             timing_calculator=self.__timing_calculator,
         )
