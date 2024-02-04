@@ -7,7 +7,7 @@ from libs.scale.scale import Scale
 
 class StateProgress:
     __ui_object = ui_module.UserInterface
-    __hopper_object = hopper_module.DispenserMechanism
+    __hopper_object = hopper_module.DispenseMechanism
     __scale_object = Scale
 
     __max_waiting_time: int
@@ -22,7 +22,7 @@ class StateProgress:
     def __init__(
         self,
         ui_object: ui_module.UserInterface,
-        hopper_object: hopper_module.DispenserMechanism,
+        hopper_object: hopper_module.DispenseMechanism,
         scale_object: Scale,
         max_waiting_time: int,
     ):

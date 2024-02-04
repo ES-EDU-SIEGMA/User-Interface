@@ -1,7 +1,7 @@
 import abc
 
 
-class IDispenserArrayController(metaclass=abc.ABCMeta):
+class IDispenserGroupController(metaclass=abc.ABCMeta):
     @classmethod
     def __subclasshook__(cls, __subclass):
         return (

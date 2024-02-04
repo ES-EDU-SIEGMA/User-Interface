@@ -6,7 +6,7 @@ from libs.hardware import hopper as hopper_module
 class StateSelection:
     __ui_object: ui_module.UserInterface
     __data_object: data_module.DataInterface
-    __hopper_object: hopper_module.DispenserMechanism
+    __hopper_object: hopper_module.DispenseMechanism
 
     __PROGRAM_STATE: str = "selection"
 
@@ -14,7 +14,7 @@ class StateSelection:
         self,
         __ui_object: ui_module.UserInterface,
         __data_object: data_module.DataInterface,
-        __hopper_object: hopper_module.DispenserMechanism,
+        __hopper_object: hopper_module.DispenseMechanism,
     ):
         self.__ui_object = __ui_object
         self.__data_object = __data_object

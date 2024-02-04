@@ -24,5 +24,5 @@ class Scale:
             return -1
         measurement = self.__hardware.get_weight(self.__number_of_measurements)
         measurement = int(round(measurement * 1000))  # convert from _mg_ to _g_
-        measurement = measurement + self.__base_value
+        measurement = measurement - self.__base_value
         return measurement

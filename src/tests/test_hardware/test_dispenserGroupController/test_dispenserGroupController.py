@@ -3,17 +3,17 @@ import unittest
 from serial import Serial
 from unittest.mock import MagicMock, Mock
 
-from libs.hardware.controller.idispenser_array_controller import (
-    IDispenserArrayController,
+from libs.hardware.dispenserGroupController.iDispenserGroupController import (
+    IDispenserGroupController,
 )
-from libs.hardware.controller.dispenser_array_controller import (
-    DispenserArrayController,
+from libs.hardware.dispenserGroupController.dispenserGroupController import (
+    DispenserGroupController,
     PicoException,
 )
 
 
 class TestHopper(unittest.TestCase):
-    __controller: IDispenserArrayController = None
+    __controller: IDispenserGroupController = None
     __serial: Serial = None
     __serial_readline_counter: int = 0
 
@@ -30,7 +30,7 @@ class TestHopper(unittest.TestCase):
         self.__serial = MagicMock()
         self.__serial.readline = Mock(side_effect=self.serial_readline_authenticate)
 
-        self.__controller = DispenserArrayController(
+        self.__controller = DispenserGroupController(
             possible_identifiers=["TEST_CON1", "TEST_CON2"], port=self.__serial
         )
 
@@ -38,7 +38,7 @@ class TestHopper(unittest.TestCase):
         self.__serial.readline = Mock(return_value=b"F\n")
         self.assertRaises(
             PicoException,
-            DispenserArrayController,
+            DispenserGroupController,
             possible_identifiers=[],
             port=self.__serial,
             max_connection_attempts=1,

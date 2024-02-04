@@ -3,8 +3,8 @@ from serial import Serial
 from serial.serialutil import SerialException
 from time import sleep
 
-from libs.hardware.controller.idispenser_array_controller import (
-    IDispenserArrayController,
+from libs.hardware.dispenserGroupController.iDispenserGroupController import (
+    IDispenserGroupController,
 )
 
 
@@ -12,7 +12,7 @@ class PicoException(Exception):
     pass
 
 
-class DispenserArrayController(IDispenserArrayController):
+class DispenserGroupController(IDispenserGroupController):
     __pico_port: Serial = None
     __max_connection_attempts: int = None
     __identifier: str = None
@@ -37,7 +37,7 @@ class DispenserArrayController(IDispenserArrayController):
 
     def send_timings(self, timings: list[int]) -> None:
         """
-        :param timings: list of timings to send to the controller
+        :param timings: list of timings to send to the dispenserGroupController
         :return:
         """
         try:
@@ -48,7 +48,7 @@ class DispenserArrayController(IDispenserArrayController):
 
     def get_identifier(self) -> str:
         """
-        :return: The identifier received from the controller
+        :return: The identifier received from the dispenserGroupController
         """
         return self.__identifier
 
