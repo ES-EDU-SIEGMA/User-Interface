@@ -10,3 +10,5 @@ class Ingredient:
         self.flow_speed = flow_speed
         self.__base_value = 0
 
+    def get_id(self) -> int:
+        return self.__id_
