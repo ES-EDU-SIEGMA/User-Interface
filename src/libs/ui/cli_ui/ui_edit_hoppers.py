@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 class EditHopper:
     """__return_value:= {
             "cmd": "exit" | "change_ui" | "edit",

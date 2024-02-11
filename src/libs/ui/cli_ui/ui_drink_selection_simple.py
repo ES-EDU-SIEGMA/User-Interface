@@ -1,8 +1,11 @@
+from __future__ import annotations
+
+
 class Selection:
-    """ __return_value:= {
-                            "cmd": "exit" | "change_ui" | "dispense",
-                            "data": None | "edit" | "new" | <recipe-name>
-                    }"""
+    """__return_value:= {
+            "cmd": "exit" | "change_ui" | "dispense",
+            "data": None | "edit" | "new" | <recipe-name>
+    }"""
 
     __dispensable_recipe_names: list[str]
 
@@ -23,8 +26,7 @@ class Selection:
 
         self.__print_recipe_names()
 
-        self.__return_value = {"cmd": "",
-                               "data": None}
+        self.__return_value = {"cmd": "", "data": None}
 
         self.__is_running = True
         return self.__drink_selection_loop()
@@ -49,10 +51,11 @@ class Selection:
             if not self.__try_valid_selection_input(__input):
                 print("please enter a valid input")
 
-
     def __try_valid_selection_input(self, __input: str) -> bool:
 
-        if __input.isdigit() and 0 <= int(__input) < len(self.__dispensable_recipe_names):
+        if __input.isdigit() and 0 <= int(__input) < len(
+            self.__dispensable_recipe_names
+        ):
             # check if __input is an int that represents a recipe_name that the machine knows
 
             __recipe_name: str = self.__dispensable_recipe_names[int(__input)]
@@ -85,4 +88,3 @@ class Selection:
         else:
             # no recipes are available
             print("There are no recipes available currently")
-

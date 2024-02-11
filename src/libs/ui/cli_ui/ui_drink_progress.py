@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 class Progress:
     """__return_value:= {
             "cmd": "progress",

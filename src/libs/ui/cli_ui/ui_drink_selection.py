@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 class Selection:
     """__return_value:= {
             "cmd": "exit" | "change_ui" | "dispense",
