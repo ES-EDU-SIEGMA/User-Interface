@@ -193,6 +193,8 @@ cython_debug/
 
 # config for local asdf envrionement
 /.tool-versions
+/.venv
+.envrc
 
 # Asciidoctor config files
 .asciidoctorconfig

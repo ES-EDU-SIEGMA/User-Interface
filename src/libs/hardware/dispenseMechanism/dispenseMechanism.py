@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from libs.hardware.dispenserGroupController.dispenserGroupController import (
     PicoException,
 )
