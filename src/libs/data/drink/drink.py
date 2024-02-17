@@ -40,3 +40,4 @@ class Drink:
         :param ingredient_id:
         :param percentage:
         """
+        raise NotImplementedError
