@@ -1,32 +1,184 @@
 {
-  "Apple_juice": {"flow_speed":1},
-  "Orange_juice": {"flow_speed":1},
-  "Mineral_water": {"flow_speed":1},
-  "Jaegermeister": {"flow_speed":1},
-  "Fanta": {"flow_speed":1},
-  "Coca_Cola": {"flow_speed":1},
-  "Sprite": {"flow_speed":1},
-  "RedBull": {"flow_speed":1},
-  "Strawberry_liqueur": {"flow_speed":3},
-  "Sugar_syrup": {"flow_speed":10},
-  "Lime_juice": {"flow_speed":1},
-  "Peach_tea": {"flow_speed":1},
-  "Citrus_tea": {"flow_speed":1},
-  "Bombay": {"flow_speed":1},
-  "Jim_Beam": {"flow_speed":1},
-  "Jack_Daniels": {"flow_speed":1},
-  "Korn": {"flow_speed":1},
-  "Gin": {"flow_speed":1},
-  "Peppermint_liqueur": {"flow_speed":1},
-  "Woodruff_liqueur": {"flow_speed":1},
-  "Advocaat": {"flow_speed":7},
-  "42er": {"flow_speed":3},
-  "Milk": {"flow_speed":2},
-  "Rum": {"flow_speed":1},
-  "Banana_juice": {"flow_speed":2},
-  "Multivitamin_juice": {"flow_speed":2},
-  "Tequila": {"flow_speed":2},
-  "Cointreau": {"flow_speed":2},
-  "Vodka": {"flow_speed":1},
-  "Cherry_juice": {"flow_speed":1}
+    "ingredients": [
+      {
+        "id": 0,
+        "name": "Apple_juice",
+        "flow_speed": 1,
+        "dispenser_id": 1
+      },
+      {
+        "id": 1,
+        "name": "Orange_juice",
+        "flow_speed": 1,
+        "dispenser_id": 2
+      },
+            {
+        "id": 2,
+        "name": "Mineral_water",
+        "flow_speed": 1,
+        "dispenser_id": 3
+      },
+            {
+        "id": 3,
+        "name": "Jaegermeister",
+        "flow_speed": 1,
+        "dispenser_id": 4
+      },
+            {
+        "id": 4,
+        "name": "Fanta",
+        "flow_speed": 1,
+        "dispenser_id": 5
+      },
+            {
+        "id": 5,
+        "name": "Coca_Cola",
+        "flow_speed": 1,
+        "dispenser_id": 6
+      },
+            {
+        "id": 6,
+        "name": "Sprite",
+        "flow_speed": 1,
+        "dispenser_id": null
+      },
+            {
+        "id": 7,
+        "name": "RedBull",
+        "flow_speed": 1,
+        "dispenser_id": null
+      },
+            {
+        "id": 8,
+        "name": "Strawberry_liqueur",
+        "flow_speed": 3,
+        "dispenser_id": null
+      },
+            {
+        "id": 9,
+        "name": "Sugar_syrup",
+        "flow_speed": 10,
+        "dispenser_id": null
+      },
+            {
+        "id": 10,
+        "name": "Lime_juice",
+        "flow_speed": 1,
+        "dispenser_id": null
+      },
+            {
+        "id": 11,
+        "name": "Peach_tea",
+        "flow_speed": 1,
+        "dispenser_id": null
+      },
+            {
+        "id": 12,
+        "name": "Citrus_tea",
+        "flow_speed": 1,
+        "dispenser_id": null
+      },
+                  {
+        "id": 13,
+        "name": "Bombay",
+        "flow_speed": 1,
+        "dispenser_id": null
+      },
+                  {
+        "id": 14,
+        "name": "Jim_Beam",
+        "flow_speed": 1,
+        "dispenser_id": null
+      },
+                  {
+        "id": 15,
+        "name": "Jack_Daniels",
+        "flow_speed": 1,
+        "dispenser_id": null
+      },
+                  {
+        "id": 16,
+        "name": "Korn",
+        "flow_speed": 1,
+        "dispenser_id": null
+      },
+                  {
+        "id": 17,
+        "name": "Gin",
+        "flow_speed": 1,
+        "dispenser_id": null
+      },
+                  {
+        "id": 18,
+        "name": "Peppermint_liqueur",
+        "flow_speed": 1,
+        "dispenser_id": null
+      },
+                  {
+        "id": 19,
+        "name": "Woodruff_liqueur",
+        "flow_speed": 1,
+        "dispenser_id": null
+      },
+                  {
+        "id": 20,
+        "name": "Advocaat",
+        "flow_speed": 7,
+        "dispenser_id": null
+      },
+                        {
+        "id": 21,
+        "name": "42er",
+        "flow_speed": 3,
+        "dispenser_id": null
+      },
+                        {
+        "id": 22,
+        "name": "Milk",
+        "flow_speed": 2,
+        "dispenser_id": null
+      },
+                        {
+        "id": 23,
+        "name": "Rum",
+        "flow_speed": 1,
+        "dispenser_id": null
+      },
+                        {
+        "id": 24,
+        "name": "Banana_juice",
+        "flow_speed": 2,
+        "dispenser_id": 7
+      },
+                        {
+        "id": 25,
+        "name": "Multivitamin_juice",
+        "flow_speed": 2,
+        "dispenser_id": null
+      },
+                        {
+        "id": 26,
+        "name": "Tequila",
+        "flow_speed": 2,
+        "dispenser_id": null
+      },
+                        {
+        "id": 27,
+        "name": "Cointreau",
+        "flow_speed": 2,
+        "dispenser_id": null
+      },
+                              {
+        "id": 28,
+        "name": "Vodka",
+        "flow_speed": 1,
+        "dispenser_id": null
+      },
+                              {
+        "id": 29,
+        "name": "Cherry_juice",
+        "flow_speed": 1,
+        "dispenser_id": 8
+      }
+    ]
 }

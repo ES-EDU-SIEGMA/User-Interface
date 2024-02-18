@@ -17,6 +17,7 @@ class Drink:
         """
         :return: Ingredient list from the selected drink
         """
+        # self.__ingredients = read_drinks()
         return self.__ingredients
 
     def add_ingredient(self, ingredient_id: int, percentage: int):
@@ -40,4 +41,5 @@ class Drink:
         :param ingredient_id:
         :param percentage:
         """
+
         raise NotImplementedError

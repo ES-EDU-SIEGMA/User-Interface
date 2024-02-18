@@ -2,7 +2,7 @@ class Ingredient:
     __id_: int
     name: str
     flow_speed: int
-    hopper_id: None
+    dispenser_id: None
 
     def __init__(self, id_, name, flow_speed):
         self.__id_ = id_

@@ -48,17 +48,25 @@ from the root directory of the repository
 
 > **Recipe**
 >
-> - A recipe is a liquid consisting of one or more ingredients.
-> - [json recipe file](src/libs/data/data_json/recipes.json)
+> - A drink is a liquid consisting of one or more ingredients.
+> - [json recipe file](src/libs/data/data_json/drinks.json)
 >
 > ```json
-> {
->    "recipe_name": {
->       "ingredient_name": {
->           "fill_amount":  "Integer_value"
->           }
->       }
-> }
+>     {
+      "id": 0,
+      "name": "String_value",
+      "ingredients": [
+        {
+          "id": Integer_value,
+          "percentage": Integer_value
+        },
+        {
+          "id": Integer_value,
+          "percentage": Integer_value
+        },
+        ...
+      ]
+    }
 > ```
 
 ## Dispenser Mechanism / Hardware
@@ -168,7 +176,7 @@ from the root directory of the repository
 > **configure_recipe**
 > - type: `file_path`
 > - provides the path to the json file with the recipes
-> - [recipes file](src/libs/data/data_json/recipes.json)
+> - [recipes file](src/libs/data/data_json/drinks.json)
 
 > **configure_ingredients**
 > - type: `dict`
