@@ -2,11 +2,13 @@ from src.libs.data.drink.ingredient import Ingredient
 
 
 class Drink:
-    __id_: int
-    __ingredients: list[Ingredient, int]
+    __id_: int = None
+    __name: str = None
+    __ingredients: list[int, int]
 
-    def __init__(self, id_, ingredients):
+    def __init__(self, id_, name, ingredients):
         self.__id_ = id_
+        self.__name = name
         self.__ingredients = ingredients
         self.__base_value = 0
 
@@ -17,7 +19,6 @@ class Drink:
         """
         :return: Ingredient list from the selected drink
         """
-        # self.__ingredients = read_drinks()
         return self.__ingredients
 
     def add_ingredient(self, ingredient_id: int, percentage: int):
