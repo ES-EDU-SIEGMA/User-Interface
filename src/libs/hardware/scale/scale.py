@@ -4,8 +4,8 @@ class Scale:
     """
 
     __hardware = None
-    __number_of_measurements: int
-    __base_value: int
+    __number_of_measurements: int = None
+    __base_value: int = None
 
     def __init__(self, hardware, number_of_measurements: int = 3):
         self.__hardware = hardware

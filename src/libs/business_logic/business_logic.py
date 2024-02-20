@@ -167,7 +167,7 @@ class BusinessLogic:
 
             elif __ui_cmd["cmd"] == "progress":
                 if __ui_cmd["data"] == -1:
-                    # progress of dispense drink is finished return to selection
+                    # progress of dispense datatypes is finished return to selection
                     self.__program_state = self.__program_state_selection
                 else:
                     self.__program_state.execute_command(__ui_cmd["data"])
