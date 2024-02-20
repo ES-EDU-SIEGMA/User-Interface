@@ -43,7 +43,7 @@ class StateProgress:
                 self.__PROGRAM_STATE, self.__progress_percentage
             )
         else:
-            # waited to long for the drink to finish. aborting progress display
+            # waited to long for the datatypes to finish. aborting progress display
             return self.__ui_object.select_view(self.__PROGRAM_STATE, -1)
 
     def execute_command(self, recipe_name: str):

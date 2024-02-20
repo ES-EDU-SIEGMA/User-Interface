@@ -13,4 +13,4 @@ class IUserInterface(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def display(self, input_data: list[str]) -> int:
-        raise NotImplementedError
+        raise NotImplementedError()

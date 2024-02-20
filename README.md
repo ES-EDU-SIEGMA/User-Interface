@@ -8,7 +8,7 @@
 
 ## Configuration
 
-The program can be configured by changing the [configuration.json](src/configuration.json) file.
+The program can be configured by changing the [configuration.json](src/datasources/configuration.json) file.
 See the [configuration options](#configuration-options) for an explanation.
 
 ## Program
@@ -36,7 +36,7 @@ from the root directory of the repository
 > **Ingredient**
 >
 > - an ingredient is a liquid that can be put on a hopper.
-> - [json ingredient file](src/libs/data/data_json/ingredients.json)
+> - [json ingredient file](src/datasources/ingredients.json)
 >
 > ```json
 > {
@@ -49,7 +49,7 @@ from the root directory of the repository
 > **Recipe**
 >
 > - A drink is a liquid consisting of one or more ingredients.
-> - [json recipe file](src/libs/data/data_json/drinks.json)
+> - [json recipe file](src/datasources/drinks.json)
 >
 > ```json
 >     {
@@ -171,12 +171,12 @@ from the root directory of the repository
 > **configure_ingredient**
 > - type: `file_path`
 > - provides the path to the json file with the ingredients
-> - [ingredients file](src/libs/data/data_json/ingredients.json)
+> - [ingredients file](src/datasources/ingredients.json)
 
 > **configure_recipe**
 > - type: `file_path`
 > - provides the path to the json file with the recipes
-> - [recipes file](src/libs/data/data_json/drinks.json)
+> - [recipes file](src/datasources/drinks.json)
 
 > **configure_ingredients**
 > - type: `dict`
