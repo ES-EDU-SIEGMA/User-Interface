@@ -2,6 +2,7 @@ from __future__ import annotations
 import unittest
 
 from libs.hardware.timingCalculator.calculator import Calculator
+from libs.hardware.timingCalculator.calculator import IngredientNotAvailableException
 
 
 class TestCalculation(unittest.TestCase):
@@ -10,14 +11,14 @@ class TestCalculation(unittest.TestCase):
         40,
         40,
         40,
+        None,
+        None,
+        None,
         40,
         None,
         None,
-        40,
-        40,
         None,
-        40,
-        40,
+        None,
     ]
     __ms_per_ml: int = 150
     __calculation: Calculator = None
@@ -27,32 +28,68 @@ class TestCalculation(unittest.TestCase):
             ms_per_ml=self.__ms_per_ml, hopper_sizes=self.__hopper_sizes
         )
 
-    def test_calculate_timing(self):
-        data: dict = {
-            "0": {"fill_amount": 100, "flow_speed": 1},
-            "1": {"fill_amount": 40, "flow_speed": 10},
-            "4": {"fill_amount": 39, "flow_speed": 2},
-            "5": {"fill_amount": 0, "flow_speed": 1},
-        }
-        expected_result = (
-            179,
-            [
-                [2, 6000],
-                [1, 60000],
-                [0, 0],
-                [0, 0],
-                [1, 12000],
-                [0, 0],
-                [0, 0],
-                [0, 0],
-                [0, 0],
-                [0, 0],
-                [0, 0],
-                [0, 0],
-            ],
+    def test_raises_exception_if_hopper_not_available(self):
+        data = [(0, 10, 1), (5, 90, 1)]
+
+        self.assertRaises(
+            IngredientNotAvailableException,
+            self.__calculation.calculate_timing,
+            ingredients=data,
+            volume=250,
         )
-        received_result = self.__calculation.calculate_timing(data)
-        self.assertEqual(expected_result, received_result)
+
+    def test_raises_exception_if_hopper_not_associated(self):
+        data = [(None, 10, 1), (7, 90, 1)]
+
+        self.assertRaises(
+            IngredientNotAvailableException,
+            self.__calculation.calculate_timing,
+            ingredients=data,
+            volume=250,
+        )
+
+    def test_calculation_for_one_run_required(self):
+        data = [(0, 50, 1), (7, 50, 1)]
+        weight, timings = self.__calculation.calculate_timing(
+            ingredients=data, volume=80
+        )
+
+        self.assertEqual(1, len(timings))
+        self.assertListEqual(
+            [
+                [
+                    [self.__ms_per_ml * self.__hopper_sizes[0], 0, 0, 0],
+                    [0, 0, 0, self.__ms_per_ml * self.__hopper_sizes[7]],
+                    [0, 0, 0, 0],
+                ]
+            ],
+            timings,
+        )
+        self.assertEqual(self.__hopper_sizes[0] + self.__hopper_sizes[7], weight)
+
+    def test_calculation_for_multiple_run_required(self):
+        data = [(0, 50, 1), (7, 50, 1)]
+        weight, timings = self.__calculation.calculate_timing(
+            ingredients=data, volume=160
+        )
+
+        self.assertEqual(2, len(timings))
+        self.assertListEqual(
+            [
+                [
+                    [self.__ms_per_ml * self.__hopper_sizes[0], 0, 0, 0],
+                    [0, 0, 0, self.__ms_per_ml * self.__hopper_sizes[7]],
+                    [0, 0, 0, 0],
+                ],
+                [
+                    [self.__ms_per_ml * self.__hopper_sizes[0], 0, 0, 0],
+                    [0, 0, 0, self.__ms_per_ml * self.__hopper_sizes[7]],
+                    [0, 0, 0, 0],
+                ],
+            ],
+            timings,
+        )
+        self.assertEqual((self.__hopper_sizes[0] + self.__hopper_sizes[7]) * 2, weight)
 
 
 if __name__ == "__main__":
