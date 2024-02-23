@@ -1,7 +1,9 @@
 from __future__ import annotations
+
+from time import sleep
+
 from serial import Serial
 from serial.serialutil import SerialException
-from time import sleep
 
 from libs.hardware.dispenserGroupController.iDispenserGroupController import (
     IDispenserGroupController,
@@ -25,20 +27,23 @@ class DispenserGroupController(IDispenserGroupController):
     ):
         """
         :param possible_identifiers: list of available identifiers to validate against
-        :param port: name of the serial port to use
-        :param baudrate: baudrate for the serial port
+        :param port: serial port to use
         :param max_connection_attempts: attempts to connect before giving up
+                                        (default: 5)
         """
         self.__pico_port = port
         self.__max_connection_attempts = max_connection_attempts
 
         self.__identify_controller(valid_identifiers=possible_identifiers)
-        self.__wait_for_ready_signal()
+        self.__wait_for_calibrated_signal()
 
     def send_timings(self, timings: list[int]) -> None:
         """
+        send one batch of timings to the controller
+
         :param timings: list of timings to send to the dispenserGroupController
-        :return:
+
+        :raises PicoException: if communication with controller failed!
         """
         try:
             msg: str = ";".join(map(str, timings))
@@ -51,6 +56,15 @@ class DispenserGroupController(IDispenserGroupController):
         :return: The identifier received from the dispenserGroupController
         """
         return self.__identifier
+
+    def wait_for_ready_signal(self) -> None:
+        """
+        blocking until ready was received
+        """
+        while True:
+            response = self.__read()
+            if response.__eq__("READY"):
+                break
 
     def __identify_controller(self, valid_identifiers: list[str]) -> None:
         try:
@@ -68,7 +82,7 @@ class DispenserGroupController(IDispenserGroupController):
         except ConnectionRefusedError:
             raise PicoException("Connection Refused!")
 
-    def __wait_for_ready_signal(self):
+    def __wait_for_calibrated_signal(self):
         while True:
             response = self.__read()
             if response.__eq__("CALIBRATED"):
