@@ -33,7 +33,9 @@ class DrinkMixingMachine:
     def run(self) -> None:
         while True:
             offset, state_list = self.__create_state_selection_list()
-            selection: int = self.__ui.display(state_list)
+            selection: int = self.__ui.display_list_and_wait_for_user_selection(
+                state_list
+            )
             if selection == 0:
                 break
             else:

@@ -48,7 +48,9 @@ class DispenseDrinkState(IState):
         drinks = self.__data.get_drinks()
         selection_list: list[str] = self.__create_drink_selection_list(drinks=drinks)
         selection_list.append("Exit State")
-        selected_drink: int = self.__ui.display(input_data=selection_list)
+        selected_drink: int = self.__ui.display_list_and_wait_for_user_selection(
+            input_data=selection_list
+        )
         if selected_drink == len(drinks):
             return None
         else:
