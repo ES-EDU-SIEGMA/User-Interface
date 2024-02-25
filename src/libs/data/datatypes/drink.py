@@ -26,9 +26,23 @@ class Drink:
         :param ingredient_id: ID of ingredient to add
         :param percentage: Percentage of ingredient to add
         """
-        # TODO: Check sum of all ingredients to 100 !
-        # TODO: update list
-        raise NotImplementedError()
+        foo_dict = dict(self.__ingredients)
+        foo_list_keys = list(foo_dict.keys())
+
+        if ingredient_id not in foo_list_keys:
+            sum_ingredients_before = sum(foo_dict.values())
+            foo_dict[ingredient_id] = percentage
+            x_sum = (100-percentage) / sum_ingredients_before
+
+            for y in range(len(foo_list_keys)):
+                foo_dict[foo_list_keys[y]] *= x_sum
+                foo_dict[foo_list_keys[y]] = round(foo_dict[foo_list_keys[y]])
+
+            # If the sum is more then 100, subtract this what is more from the ingredient with the highest value
+            if sum(foo_dict.values()) > 100:
+                foo_dict[max(foo_dict, key=foo_dict.get)] -= sum(foo_dict.values()) - 100
+
+            self.__ingredients = [(k, v) for k, v in foo_dict.items()]
 
     def remove_ingredient(self, ingredient_id: int):
         """
@@ -42,8 +56,6 @@ class Drink:
             foo_dict.pop(ingredient_id)
             foo_list_keys = list(foo_dict.keys())
 
-            # self.__ingredients = list(filter(lambda x: x[0] != ingredient_id, self.__ingredients))
-
             # If only two ingredients in one drink:
             if len(foo_list_keys) == 1:
                 foo_dict[foo_list_keys[0]] += removed_percent
@@ -53,7 +65,7 @@ class Drink:
                     foo_dict[foo_list_keys[y]] *= x_sum
                     foo_dict[foo_list_keys[y]] = round(foo_dict[foo_list_keys[y]])
 
-            # If the sum is more then 100, delete this what is more from the ingredient with the highest value
+            # If the sum is more then 100, subtract this what is more from the ingredient with the highest value
             if sum(foo_dict.values()) > 100:
                 foo_dict[max(foo_dict, key=foo_dict.get)] -= sum(foo_dict.values()) - 100
 
