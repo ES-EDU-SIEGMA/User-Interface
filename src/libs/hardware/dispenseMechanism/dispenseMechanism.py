@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import threading
+from threading import Thread
+
 from libs.hardware.dispenserGroupController.dispenserGroupController import (
     PicoException,
 )
@@ -45,10 +48,21 @@ class DispenseMechanism:
                 ingredients=ingredients_to_dispense, volume=volume
             )
             for dispense_cycle in timings:
+                threads = []
                 for index in range(1, len(self.__controller)):
-                    # FIXME: Optimization -> Parallelize send and then wait for ready to send new timings
-                    self.__controller[index].send_timings(dispense_cycle[index])
-                    self.__controller[index].wait_for_ready_signal()
+                    threads.append(
+                        Thread(
+                            target=self.__run_dispense_cycle,
+                            kwargs={
+                                "controller": self.__controller[index],
+                                "timings": dispense_cycle[index],
+                            },
+                        )
+                    )
+                for thread in threads:
+                    thread.start()
+                for thread in threads:
+                    thread.join()
         except PicoException as e:
             # TODO: add proper logging!
             print(e)
@@ -58,3 +72,8 @@ class DispenseMechanism:
 
     def get_expected_weight(self) -> int:
         return self.__expected_weight
+
+    @staticmethod
+    def __run_dispense_cycle(controller: IDispenserGroupController, timings: list[int]):
+        controller.send_timings(timings)
+        controller.wait_for_ready_signal()
