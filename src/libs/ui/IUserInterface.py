@@ -9,8 +9,8 @@ class IUserInterface(metaclass=abc.ABCMeta):
         return (
             hasattr(__subclass, "display_list_and_wait_for_user_selection")
             and callable(__subclass.display_list_and_wait_for_user_selection)
-            and hasattr(__subclass, "display_message_and_wait_for_user_response")
-            and callable(__subclass.display_message_and_wait_for_user_response)
+            and hasattr(__subclass, "display_message_and_wait_for_acknowledgement")
+            and callable(__subclass.display_message_and_wait_for_acknowledgement)
             and hasattr(__subclass, "display_status")
             and callable(__subclass.displays_status)
             or NotImplemented
@@ -21,7 +21,7 @@ class IUserInterface(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def display_message_and_wait_for_user_response(self, input_data: str) -> None:
+    def display_message_and_wait_for_acknowledgement(self, input_data: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod

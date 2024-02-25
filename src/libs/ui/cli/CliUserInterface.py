@@ -38,7 +38,7 @@ Selection:  """
             return False
         return True
 
-    def display_message_and_wait_for_user_response(self, input_data: str) -> None:
+    def display_message_and_wait_for_acknowledgement(self, input_data: str) -> None:
         print(input_data)
         input("Please press any key to continue!")
 
