@@ -34,9 +34,30 @@ class Drink:
         """
         :param ingredient_id: ingredient ID to remove
         """
-        # TODO: adjust percentage of other ingredients
-        # TODO: update list
-        raise NotImplementedError()
+        foo_dict = dict(self.__ingredients)
+        foo_list_keys = list(foo_dict.keys())
+
+        if ingredient_id in foo_list_keys:
+            removed_percent = foo_dict[ingredient_id]
+            foo_dict.pop(ingredient_id)
+            foo_list_keys = list(foo_dict.keys())
+
+            # self.__ingredients = list(filter(lambda x: x[0] != ingredient_id, self.__ingredients))
+
+            # If only two ingredients in one drink:
+            if len(foo_list_keys) == 1:
+                foo_dict[foo_list_keys[0]] += removed_percent
+            else:
+                x_sum = 100 / sum(foo_dict.values())
+                for y in range(len(foo_list_keys)):
+                    foo_dict[foo_list_keys[y]] *= x_sum
+                    foo_dict[foo_list_keys[y]] = round(foo_dict[foo_list_keys[y]])
+
+            # If the sum is more then 100, delete this what is more from the ingredient with the highest value
+            if sum(foo_dict.values()) > 100:
+                foo_dict[max(foo_dict, key=foo_dict.get)] -= sum(foo_dict.values()) - 100
+
+            self.__ingredients = [(k, v) for k, v in foo_dict.items()]
 
     def adjust_amount(self, ingredient_id: int, percentage: int):
         """
