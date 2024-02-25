@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 from libs.data.data_handler.IDatahandler import IDatahandler
 from libs.data.datatypes.drink import Drink
 from libs.data.datatypes.ingredient import Ingredient
@@ -18,25 +20,39 @@ class JSONDatahandler(IDatahandler):
         self.__path_to_drinks = path_to_drinks
 
     def read_ingredients(self) -> list[Ingredient]:
-        # TODO: implement
-        raise NotImplementedError()
+        return list(self.__read(self.__path_to_ingredients).values())
 
     def write_ingredients(self, ingredients: list[Ingredient]) -> None:
-        # TODO: implement
-        raise NotImplementedError()
+        self.__write(self.__path_to_ingredients, ingredients)
 
     def read_drinks(self) -> list[Drink]:
-        # TODO: implement
-        raise NotImplementedError()
+        return list(self.__read(self.__path_to_drinks).values())
 
     def write_drinks(self, drinks: list[Drink]) -> None:
-        # TODO: implement
-        raise NotImplementedError()
+        self.__write(self.__path_to_drinks, dict(drinks))
 
     def __write(self, path_to_file: str, data: dict) -> None:
-        # TODO: implement
-        raise NotImplementedError()
+        try:
+            with open(
+                    file=path_to_file, mode="w"
+            ) as __json_recipes:
+                return json.dump(data)
+
+        except Exception as __error:
+            print(
+                f"produced an error while reading in the recipe file.\nerror: {__error}"
+            )
+            return {}
 
     def __read(self, path_to_file: str) -> dict:
-        # TODO: implement
-        raise NotImplementedError()
+        try:
+            with open(
+                file=path_to_file, mode="r"
+            ) as __json_recipes:
+                return json.load(__json_recipes)
+
+        except Exception as __error:
+            print(
+                f"produced an error while reading in the recipe file.\nerror: {__error}"
+            )
+            return {}
