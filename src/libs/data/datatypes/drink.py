@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+from math import floor
+
+from libs.data.datatypes.ingredient import Ingredient
+
+
+class DrinkException(Exception):
+    pass
+
 
 class Drink:
     __drink_id: int = None
@@ -7,10 +15,10 @@ class Drink:
     """tuple(<ingredient_id>, <percentage>)"""
     name: str = None
 
-    def __init__(self, drink_id, name, ingredients):
+    def __init__(self, drink_id: int, name: str, ingredients: list[Ingredient]):
         self.__drink_id = drink_id
-        self.name = name
         self.__ingredients = ingredients
+        self.name = name
 
     def get_id(self) -> int:
         return self.__drink_id
@@ -25,51 +33,61 @@ class Drink:
         """
         :param ingredient_id: ID of ingredient to add
         :param percentage: Percentage of ingredient to add
+
+        :raise DrinkException: if ingredient already added to drink!
         """
-        foo_dict = dict(self.__ingredients)
-        foo_list_keys = list(foo_dict.keys())
 
-        if ingredient_id not in foo_list_keys:
-            sum_ingredients_before = sum(foo_dict.values())
-            foo_dict[ingredient_id] = percentage
-            x_sum = (100-percentage) / sum_ingredients_before
+        if self.__ingredients is None or len(self.__ingredients) == 0:
+            self.__ingredients = []
 
-            for y in range(len(foo_list_keys)):
-                foo_dict[foo_list_keys[y]] *= x_sum
-                foo_dict[foo_list_keys[y]] = round(foo_dict[foo_list_keys[y]])
+        ingredients: dict[int, int] = dict(self.__ingredients)
 
-            # If the sum is more then 100, subtract this what is more from the ingredient with the highest value
-            if sum(foo_dict.values()) > 100:
-                foo_dict[max(foo_dict, key=foo_dict.get)] -= sum(foo_dict.values()) - 100
+        if ingredient_id in ingredients:
+            raise DrinkException("Drink already added!")
 
-            self.__ingredients = [(k, v) for k, v in foo_dict.items()]
+        # scale existing ingredients (soft max of remaining total after new ingredient added)
+        scaling_factor = (100 - percentage) / 100
+        for key, share in ingredients.items():
+            ingredients[key] = floor(share * scaling_factor)
+
+        # add new ingredient ; adjust percentage to compensate rounding errors
+        ingredients[ingredient_id] = 100 - sum(ingredients.values())
+
+        self.__ingredients = [(k, v) for k, v in ingredients.items()]
 
     def remove_ingredient(self, ingredient_id: int):
         """
         :param ingredient_id: ingredient ID to remove
+
+        :raise DrinkException: if ingredient is not part of the drink
         """
-        foo_dict = dict(self.__ingredients)
-        foo_list_keys = list(foo_dict.keys())
+        if self.__ingredients is None or len(self.__ingredients) == 0:
+            raise DrinkException("No ingredients found!")
 
-        if ingredient_id in foo_list_keys:
-            removed_percent = foo_dict[ingredient_id]
-            foo_dict.pop(ingredient_id)
-            foo_list_keys = list(foo_dict.keys())
+        if len(self.__ingredients) == 1:
+            self.__ingredients = []
+            return
 
-            # If only two ingredients in one drink:
-            if len(foo_list_keys) == 1:
-                foo_dict[foo_list_keys[0]] += removed_percent
-            else:
-                x_sum = 100 / sum(foo_dict.values())
-                for y in range(len(foo_list_keys)):
-                    foo_dict[foo_list_keys[y]] *= x_sum
-                    foo_dict[foo_list_keys[y]] = round(foo_dict[foo_list_keys[y]])
+        ingredients: dict[int, int] = dict(self.__ingredients)
 
-            # If the sum is more then 100, subtract this what is more from the ingredient with the highest value
-            if sum(foo_dict.values()) > 100:
-                foo_dict[max(foo_dict, key=foo_dict.get)] -= sum(foo_dict.values()) - 100
+        if ingredient_id not in ingredients:
+            raise DrinkException("Ingredient not found!")
 
-            self.__ingredients = [(k, v) for k, v in foo_dict.items()]
+        # scaling factor for soft max
+        scaling_factor = 100 - ingredients[ingredient_id]
+
+        # remove ingredient
+        ingredients.pop(ingredient_id)
+
+        # scale remaining ingredients (soft max of new total)
+        for key, share in ingredients.items():
+            ingredients[key] = floor(share / scaling_factor * 100)
+
+        # adjust the lowest share to compensate rounding errors
+        key = min(ingredients, key=ingredients.get)
+        ingredients[key] += 100 - sum(ingredients.values())
+
+        self.__ingredients = [(k, v) for k, v in ingredients.items()]
 
     def adjust_amount(self, ingredient_id: int, percentage: int):
         """
