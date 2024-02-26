@@ -1,0 +1,22 @@
+{
+    "ingridients": [
+        {
+            "_Ingredient__ingredient_id": 1,
+            "name": "Cola",
+            "flow_speed": 1,
+            "dispenser_id": 2
+        },
+        {
+            "_Ingredient__ingredient_id": 2,
+            "name": "Sprite",
+            "flow_speed": 1,
+            "dispenser_id": 1
+        },
+        {
+            "_Ingredient__ingredient_id": 3,
+            "name": "Fanta",
+            "flow_speed": 1,
+            "dispenser_id": 1
+        }
+    ]
+}

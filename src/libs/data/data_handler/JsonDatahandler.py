@@ -20,39 +20,48 @@ class JSONDatahandler(IDatahandler):
         self.__path_to_drinks = path_to_drinks
 
     def read_ingredients(self) -> list[Ingredient]:
-        return list(self.__read(self.__path_to_ingredients).values())
+
+        ingredients_dict = self.__read(self.__path_to_ingredients)
+
+        # convert dictionary to list
+        ingredients: list[Ingredient] = []
+        for key, item in ingredients_dict.items():
+            ingredients.append(Ingredient(ingredient_id=key, name=item, flow_speed=key, dispenser_id=key))
+
+        return ingredients
 
     def write_ingredients(self, ingredients: list[Ingredient]) -> None:
-        self.__write(self.__path_to_ingredients, ingredients)
+        ingredient_list = []
+
+        for i in range(len(ingredients)):
+            ingredient_list.append(dict(vars(ingredients[i])))
+
+        self.__write(self.__path_to_ingredients, {"ingridients": ingredient_list})
 
     def read_drinks(self) -> list[Drink]:
-        return list(self.__read(self.__path_to_drinks).values())
+        drinks_dict = self.__read(self.__path_to_ingredients)
+
+        # convert dictionary to list
+        drinks: list[Drink] = []
+        for key, item in drinks_dict.items():
+            drinks.append(Drink(drink_id=key, name=item, ingredients=item))
+
+        return drinks
 
     def write_drinks(self, drinks: list[Drink]) -> None:
-        self.__write(self.__path_to_drinks, dict(drinks))
+        drink_list = []
+
+        for i in range(len(drinks)):
+            drink_list.append(dict(vars(drinks[i])))
+
+        self.__write(self.__path_to_drinks, {"drinks": drink_list})
+
 
     def __write(self, path_to_file: str, data: dict) -> None:
-        try:
-            with open(
-                    file=path_to_file, mode="w"
-            ) as __json_recipes:
-                return json.dump(data)
-
-        except Exception as __error:
-            print(
-                f"produced an error while reading in the recipe file.\nerror: {__error}"
-            )
-            return {}
+        with open(path_to_file, "w") as out_file:
+            json.dump(data, out_file, indent=4)
 
     def __read(self, path_to_file: str) -> dict:
-        try:
-            with open(
-                file=path_to_file, mode="r"
-            ) as __json_recipes:
-                return json.load(__json_recipes)
+        with open(path_to_file, "r") as out_file:
+            return json.load(out_file)
 
-        except Exception as __error:
-            print(
-                f"produced an error while reading in the recipe file.\nerror: {__error}"
-            )
-            return {}

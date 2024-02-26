@@ -23,7 +23,7 @@ class TestDataStorageGetMethods(unittest.TestCase):
     )
 
     __configuration_recipe_file_path: str = absolute_path(
-        join(dirname(realpath(__file__)), "test_recipes.json")
+        join(dirname(realpath(__file__)), "test_drinks.json")
     )
 
     __data_storage_object: json_data_module.DataStorage = json_data_module.DataStorage(
@@ -98,7 +98,7 @@ class TestDataStorageSetMethod(unittest.TestCase):
     )
 
     __configuration_recipe_file_path: str = absolute_path(
-        join(dirname(realpath(__file__)), "test_recipes.json")
+        join(dirname(realpath(__file__)), "test_drinks.json")
     )
 
     __data_storage_object: json_data_module.DataStorage = json_data_module.DataStorage(
@@ -150,7 +150,7 @@ class TestDataStorageCreateMethod(unittest.TestCase):
     )
 
     __configuration_recipe_file_path: str = absolute_path(
-        join(dirname(realpath(__file__)), "test_recipes.json")
+        join(dirname(realpath(__file__)), "test_drinks.json")
     )
 
     __data_storage_object: json_data_module.DataStorage = json_data_module.DataStorage(

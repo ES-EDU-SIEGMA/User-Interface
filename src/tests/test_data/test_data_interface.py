@@ -17,7 +17,7 @@ class TestDataInterfaceGetMethods(unittest.TestCase):
     )
 
     __configuration_recipe_file_path: str = absolute_path(
-        join(dirname(realpath(__file__)), "test_json_data", "test_recipes.json")
+        join(dirname(realpath(__file__)), "test_json_data", "test_drinks.json")
     )
 
     __data_object: data_interface_module.DataInterface = (
@@ -83,7 +83,7 @@ class TestDataInterfaceSetMethod(unittest.TestCase):
     )
 
     __configuration_recipe_file_path: str = absolute_path(
-        join(dirname(realpath(__file__)), "test_json_data", "test_recipes.json")
+        join(dirname(realpath(__file__)), "test_json_data", "test_drinks.json")
     )
 
     __data_object: data_interface_module.DataInterface = (
@@ -146,7 +146,7 @@ class TestDataInterfaceCreateMethod(unittest.TestCase):
     )
 
     __configuration_recipe_file_path: str = absolute_path(
-        join(dirname(realpath(__file__)), "test_json_data", "test_recipes.json")
+        join(dirname(realpath(__file__)), "test_json_data", "test_drinks.json")
     )
 
     __data_object: data_interface_module.DataInterface = (
