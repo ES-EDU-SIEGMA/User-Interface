@@ -43,7 +43,7 @@ class DrinkMixingMachine:
         self.__on_exit()
 
     def __on_exit(self) -> None:
-        raise NotImplementedError()
+        pass
 
     def __create_state_selection_list(self) -> (int, list[str]):
         state_selection_list = ["Exit Application"]
