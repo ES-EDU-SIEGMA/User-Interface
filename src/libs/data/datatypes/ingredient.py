@@ -5,10 +5,10 @@ class Ingredient:
     __ingredient_id: int = None
     name: str = None
     flow_speed: int = None
-    dispenser_id: int = None
+    dispenser_id: int | None = None
 
     def __init__(
-        self, ingredient_id: int, name: str, flow_speed: int, dispenser_id: int
+        self, ingredient_id: int, name: str, flow_speed: int, dispenser_id: int | None
     ):
         self.__ingredient_id = ingredient_id
         self.name = name
