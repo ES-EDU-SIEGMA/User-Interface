@@ -1,76 +1,103 @@
 from __future__ import annotations
 
 import unittest
-
 from os.path import abspath as absolute_path, join, dirname, realpath
-from libs.data.data_handler import JsonDatahandler as json_data_module
+from os import remove
+
+from libs.data.data_handler.JsonDatahandler import JSONDatahandler
 from libs.data.datatypes.drink import Drink
 from libs.data.datatypes.ingredient import Ingredient
 
-class TestJsonDatahandler(unittest.TestCase):
 
-    __configuration_ingredient_file_path: str = absolute_path(
+class TestJsonDatahandler(unittest.TestCase):
+    __ingredient_read_sources: str = absolute_path(
         join(dirname(realpath(__file__)), "test_ingredients.json")
     )
+    __ingredient_write_sources: str = absolute_path(
+        join(dirname(realpath(__file__)), "test_ingredients_write.json")
+    )
+    __expected_ingredients: list[Ingredient] = [
+        Ingredient(1, "Cola", 1, 2),
+        Ingredient(2, "Sprite", 1, 1),
+        Ingredient(3, "Fanta", 1, None),
+    ]
 
-    __configuration_recipe_file_path: str = absolute_path(
+    __drinks_read_sources: str = absolute_path(
         join(dirname(realpath(__file__)), "test_drinks.json")
     )
-
-    __data_storage_object: json_data_module.JSONDatahandler = json_data_module.JSONDatahandler(
-        __configuration_ingredient_file_path,
-        __configuration_recipe_file_path,
+    __drinks_write_sources: str = absolute_path(
+        join(dirname(realpath(__file__)), "test_drinks_write.json")
     )
+    __expected_drinks: list[Drink] = [
+        Drink(
+            drink_id=1,
+            name="Cherry Banana Juice",
+            ingredients=[(24, 50), (29, 50)],
+        ),
+        Drink(
+            drink_id=2,
+            name="Apple Spritzer",
+            ingredients=[],
+        ),
+    ]
+
+    data_storage_object: JSONDatahandler = None
+
+    def setUp(self):
+        self.data_storage_object = JSONDatahandler(
+            path_to_ingredients=self.__ingredient_read_sources,
+            path_to_drinks=self.__drinks_read_sources,
+        )
 
     def test_read_ingredients(self):
-        __expected_result_list: list[Ingredient] = [(Ingredient(1, "Cola", 1, 2)),
-                                      (Ingredient(2, "Sprite", 1, 1)),
-                                      (Ingredient(3, "Fanta", 1, 1))]
-        __expected_result = []
-
-        for i in range(len(__expected_result_list)):
-            __expected_result.append(dict(vars(__expected_result_list[i])))
-
-        __received_result_list: list[Ingredient] = self.__data_storage_object.read_ingredients()
-
-        __received_result = []
-
-        for i in range(len(__received_result_list)):
-            __received_result.append(dict(vars(__received_result_list[i])))
-
-        self.assertEqual(__expected_result, __received_result)
-
-    def test_read_drinks(self):
-        __expected_result: list[Drink] = [(Drink(drink_id=1, name="Cherry_banana_juice", ingredients=list[(24, 50), (29, 50)])),
-                                          (Drink(drink_id=2, name="Apple_spritzer", ingredients=list[(0, 60), (2, 40)]))]
-
-        __received_result: list[Drink] = self.__data_storage_object.read_drinks()
-
-        self.assertEqual(__expected_result, __received_result)
+        for index, item in enumerate(self.data_storage_object.read_ingredients()):
+            self.assertEqual(item.get_id(), self.__expected_ingredients[index].get_id())
+            self.assertEqual(item.name, self.__expected_ingredients[index].name)
+            self.assertEqual(
+                item.flow_speed, self.__expected_ingredients[index].flow_speed
+            )
+            self.assertEqual(
+                item.dispenser_id, self.__expected_ingredients[index].dispenser_id
+            )
 
     def test_write_ingredients(self):
+        datahandler = JSONDatahandler(
+            path_to_ingredients=self.__ingredient_write_sources,
+            path_to_drinks=self.__drinks_write_sources,
+        )
+        datahandler.write_ingredients(ingredients=self.__expected_ingredients)
+        with open(self.__ingredient_read_sources, "r") as expected, open(
+            self.__ingredient_write_sources, "r"
+        ) as result:
+            expected_data = expected.read()
+            result_data = result.read()
+            self.assertMultiLineEqual(expected_data, result_data)
 
-        __expected_result: list[Ingredient] = [(Ingredient(1, "Cola", 1, 2)),
-                                      (Ingredient(2, "Sprite", 1, 1)),
-                                      (Ingredient(3, "Fanta", 1, 1))]
+        remove(self.__ingredient_write_sources)
 
-        self.__data_storage_object.write_ingredients(__expected_result)
-
-        __received_result: list[Ingredient] = self.__data_storage_object.read_ingredients()
-
-        self.assertEqual(__expected_result, __received_result)
+    def test_read_drinks(self):
+        for index, item in enumerate(self.data_storage_object.read_drinks()):
+            self.assertEqual(item.get_id(), self.__expected_drinks[index].get_id())
+            self.assertEqual(item.name, self.__expected_drinks[index].name)
+            self.assertListEqual(
+                item.get_ingredients(), self.__expected_drinks[index].get_ingredients()
+            )
 
     def test_write_drinks(self):
+        datahandler = JSONDatahandler(
+            path_to_ingredients=self.__ingredient_write_sources,
+            path_to_drinks=self.__drinks_write_sources,
+        )
+        datahandler.write_drinks(drinks=self.__expected_drinks)
+        with open(self.__drinks_read_sources, "r") as expected, open(
+            self.__drinks_write_sources, "r"
+        ) as result:
+            expected_data = expected.read()
+            result_data = result.read()
+            self.assertMultiLineEqual(expected_data, result_data)
 
-        __expected_result: list[Drink] = [(Drink(drink_id=1, name="Cherry_banana_juice", ingredients=list[(24, 50), (29, 50)])),
-                                          (Drink(drink_id=2, name="Apple_spritzer", ingredients=list[(0, 60), (2, 40)]))]
-
-        self.__data_storage_object.write_drinks(__expected_result)
-
-        __received_result: list[Drink] = self.__data_storage_object.read_drinks()
-
-        self.assertEqual(__expected_result, __received_result)
+        remove(self.__drinks_write_sources)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
