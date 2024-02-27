@@ -6,7 +6,7 @@
   "dispenser": {
     "glass_size": 250,
     "ms_per_ml": 100,
-    "hopper_size": [
+    "hopper_sizes": [
       40,
       40,
       40,

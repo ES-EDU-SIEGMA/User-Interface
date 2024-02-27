@@ -17,11 +17,10 @@ from libs.hardware.dispenserGroupController.dispenserGroupController import (
 from libs.hardware.dispenserGroupController.iDispenserGroupController import (
     IDispenserGroupController,
 )
-from libs.hardware.scale.scale import Scale
-from libs.hardware.tatobari_hx711.emulated_hx711 import HX711
 from libs.hardware.timingCalculator.calculator import Calculator
 from libs.ui.IUserInterface import IUserInterface
 from libs.ui.cli.CliUserInterface import CliUserInterface
+from libs.ui.gui.GuidedUserInterface import GuidedUserInterface
 
 __serial_ports: list[Serial] = []
 
@@ -29,16 +28,23 @@ __serial_ports: list[Serial] = []
 class Serial:
     __identifier: str = ""
     __last_send_message: str = ""
-    __last_was_identifier: str = False
+    __last_was_identifier: bool = False
     __timing_pattern: re.Pattern = None
 
     def __init__(self, identifier: str):
-        self.timing_pattern: re.Pattern = re.compile(
+        self.__timing_pattern: re.Pattern = re.compile(
             r"[0-9]+;[0-9]+;[0-9]+;[0-9]+;", re.IGNORECASE
         )
         self.__identifier: str = identifier
 
+    def reset_input_buffer(self):
+        pass
+
+    def reset_output_buffer(self):
+        pass
+
     def write(self, data_input: bytes) -> None:
+        print(f"send to controller: '{data_input.decode('utf-8').rstrip()}'")
         # store for read handling
         self.__last_send_message = data_input.decode("utf-8").rstrip()
 
@@ -46,8 +52,10 @@ class Serial:
         # define answer to return
         if self.__last_send_message is "i":
             answer = self.__identifier
+            self.__last_was_identifier = True
         elif self.__last_send_message is "" and self.__last_was_identifier:
             answer = "CALIBRATED"
+            self.__last_was_identifier = False
         elif self.__timing_pattern.match(self.__last_send_message):
             answer = "READY"
         else:
@@ -56,7 +64,30 @@ class Serial:
         # reset last message
         self.__last_send_message = ""
 
+        print(f"answer: {answer}")
         return answer.encode("utf-8")
+
+
+class Scale:
+    __base_value: int = None
+
+    def __init__(self, hardware, number_of_measurements: int = 3):
+        """
+        :param hardware: scale object to retrieve data from
+        :param number_of_measurements: number of real measurements to average for result
+                                       (default: 3)
+        """
+        self.__base_value = 0
+
+    def tare(self) -> None:
+        self.__base_value = 10
+
+    def get_weight(self) -> int:
+        """
+        :return: measured weight in gramm
+        """
+        measurement = 90 - self.__base_value
+        return measurement
 
 
 def arg_parser() -> Namespace:
@@ -93,16 +124,7 @@ def setup_data(path_to_ingredients: str, path_to_drinks: str) -> Data:
 
 
 def setup_scale(number_of_measurements: int) -> Scale:
-    # init hardware library (test double)
-    scale_hardware: HX711 = HX711(dout=5, pd_sck=6)
-    scale_hardware.set_reading_format(byte_format="MSB", bit_format="MSB")
-    scale_hardware.set_reference_unit(reference_unit=870298)
-
-    # reset hardware
-    scale_hardware.reset()
-    scale_hardware.tare()
-
-    return Scale(hardware=scale_hardware, number_of_measurements=number_of_measurements)
+    return Scale(hardware=None, number_of_measurements=number_of_measurements)
 
 
 def setup_dispenser(
@@ -128,37 +150,46 @@ def setup_dispenser(
 
 def setup_ui() -> IUserInterface:
     return CliUserInterface()
+    # return GuidedUserInterface()
 
 
 if __name__ == "__main__":
     """
     dummies:
-        - scale hardware (HX711 emulated)
+        - scale hardware (Scale)
         - serial ports (Serial)
     """
     args = arg_parser()
     config = load_config(path_to_config=args.config)
+    print("CONFIG LOADED")
 
     data: Data = setup_data(
         path_to_ingredients=args.ingredients,
         path_to_drinks=args.drinks,
     )
+    print("SETUP DATA SOURCES")
 
     scale: Scale = setup_scale(
         number_of_measurements=config["scale"]["measurements_per_value"]
     )
+    print("SETUP SCALE")
 
     dispense_mechanism: DispenseMechanism = setup_dispenser(
         serial_ports=config["serial"]["port"],
         identifier=config["serial"]["identifier"],
-        max_connect_attempts=config["serial"]["max_connectio_attempts"],
+        max_connect_attempts=config["serial"]["max_connection_attempts"],
         ms_per_ml=config["dispenser"]["ms_per_ml"],
         hopper_sizes=config["dispenser"]["hopper_sizes"],
     )
+    print("SETUP DISPENSER")
 
     ui: IUserInterface = setup_ui()
+    print("SETUP UI")
 
     dmm = DrinkMixingMachine(
         scale=scale, dispense_mechanism=dispense_mechanism, data=data, ui=ui
     )
+    print("SETUP COMPLETE")
+
     dmm.run()
+    print("EXIT APP")

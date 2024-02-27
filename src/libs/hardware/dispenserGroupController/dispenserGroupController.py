@@ -46,7 +46,7 @@ class DispenserGroupController(IDispenserGroupController):
         :raises PicoException: if communication with controller failed!
         """
         try:
-            msg: str = ";".join(map(str, timings))
+            msg: str = ";".join(map(str, timings)) + ";"
             self.__write(message=msg)
         except SerialException:
             raise PicoException("Send Timing Failed!")
@@ -85,7 +85,7 @@ class DispenserGroupController(IDispenserGroupController):
     def __wait_for_calibrated_signal(self):
         while True:
             response = self.__read()
-            if response.__eq__("CALIBRATED"):
+            if response is not None and response.__eq__("CALIBRATED"):
                 break
 
     def __read(self) -> str:

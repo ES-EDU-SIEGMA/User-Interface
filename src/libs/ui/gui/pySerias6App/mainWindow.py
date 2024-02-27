@@ -22,7 +22,7 @@ class SelectionDialog(QDialog):
         btn = QDialogButtonBox.Ok
         self.buttonbox = QDialogButtonBox(btn)
         self.buttonbox.accepted.connect(self.accept)
-        self.buttonbox.accepted.connect(self.result)
+        # self.buttonbox.accepted.connect(self.result)
 
         self.layout = QVBoxLayout()
         selection_label = QLabel("Please select your option:")
@@ -61,6 +61,8 @@ class MainWindow(QMainWindow):
         self.selection_signal.connect(self.show_selection)
         self.status_signal.connect(self.show_status)
         self.message_signal.connect(self.show_message)
+
+        self.show()
 
     def show_selection(self, selection: list[str]) -> None:
         msg: SelectionDialog = SelectionDialog(self, selection)

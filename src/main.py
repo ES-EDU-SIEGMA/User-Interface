@@ -24,6 +24,7 @@ from libs.hardware.tatobari_hx711.hx711 import HX711
 from libs.hardware.timingCalculator.calculator import Calculator
 from libs.ui.IUserInterface import IUserInterface
 from libs.ui.cli.CliUserInterface import CliUserInterface
+from libs.ui.gui.GuidedUserInterface import GuidedUserInterface
 
 __serial_ports: list[Serial] = []
 
@@ -108,34 +109,42 @@ def close_serial_ports():
 
 def setup_ui() -> IUserInterface:
     return CliUserInterface()
+    # return GuidedUserInterface()
 
 
 if __name__ == "__main__":
     args = arg_parser()
     config = load_config(path_to_config=args.config)
+    print("CONFIG LOADED")
 
     data: Data = setup_data(
         path_to_ingredients=args.ingredients,
         path_to_drinks=args.drinks,
     )
+    print("SETUP DATA SOURCES")
 
     scale: Scale = setup_scale(
         number_of_measurements=config["scale"]["measurements_per_value"]
     )
+    print("SETUP SCALE")
 
     dispense_mechanism: DispenseMechanism = setup_dispenser(
         serial_ports=config["serial"]["port"],
         identifier=config["serial"]["identifier"],
-        max_connect_attempts=config["serial"]["max_connectio_attempts"],
+        max_connect_attempts=config["serial"]["max_connection_attempts"],
         ms_per_ml=config["dispenser"]["ms_per_ml"],
         hopper_sizes=config["dispenser"]["hopper_sizes"],
     )
+    print("SETUP DISPENSER")
 
     ui: IUserInterface = setup_ui()
+    print("SETUP UI")
 
     dmm = DrinkMixingMachine(
         scale=scale, dispense_mechanism=dispense_mechanism, data=data, ui=ui
     )
-    dmm.run()
+    print("SETUP COMPLETE")
 
+    dmm.run()
     close_serial_ports()
+    print("EXIT APP")

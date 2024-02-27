@@ -55,7 +55,7 @@ class TestHopper(unittest.TestCase):
         self.__serial.write = Mock()
         self.__controller.send_timings([10, 20, 30, 0])
         self.assertEqual(
-            first=self.__serial.write.call_args[0][0], second=b"10;20;30;0\n"
+            first=self.__serial.write.call_args[0][0], second=b"10;20;30;0;\n"
         )
 
 

@@ -4,8 +4,9 @@ from enum import Enum
 from queue import Queue
 from threading import Thread
 
+from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QApplication
-from PySide6.QtGui import QScreen
+import sys
 
 from libs.ui.gui.pySerias6App.mainWindow import MainWindow
 
@@ -14,15 +15,16 @@ class MessageType(Enum):
     SELECTION = 0
     MESSAGE = 1
     STATUS = 2
+    EXIT = 3
 
 
 class UiApp(Thread):
     __main_window: MainWindow = None
     __output_queue: Queue = None
+    __app: QApplication = None
 
     def __init__(self, messages: Queue, responses: Queue):
         Thread.__init__(self)
-        self.daemon = True
         self.__input_thread = Thread(
             target=self.__input_handle, kwargs={"input_queue": messages}
         )
@@ -31,12 +33,11 @@ class UiApp(Thread):
     def run(self):
         self.__input_thread.start()
 
-        app = QApplication([])
-        width, height = app.screens()[0].size().toTuple()
+        self.__app = QApplication([])
+        width, height = self.__app.screens()[0].size().toTuple()
         self.__main_window = MainWindow(width, height)
-        self.__main_window.show()
         self.__main_window.response_signal.connect(self.__output_handle)
-        app.exec()
+        sys.exit(self.__app.exec())
 
     def __input_handle(self, input_queue: Queue):
         while True:
@@ -47,6 +48,9 @@ class UiApp(Thread):
                 self.display_message(data)
             elif msg_type == MessageType.STATUS:
                 self.display_status(data)
+            elif msg_type == MessageType.EXIT:
+                print("EXIT GUI")
+                # self.__main_window.close()
             else:
                 raise NotImplementedError()
 

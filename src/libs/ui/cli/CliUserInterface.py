@@ -5,7 +5,6 @@ from libs.ui.IUserInterface import IUserInterface
 
 class CliUserInterface(IUserInterface):
     __pre_message: str = """
-If you want to abort please enter 0 and confirm with enter.
 Please choose a option by entering the number and confirm with enter:
 """
     __post_message: str = """
@@ -44,3 +43,6 @@ Selection:  """
 
     def display_status(self, input_data: str) -> None:
         print(input_data)
+
+    def exit_ui(self) -> None:
+        print("EXIT UI")

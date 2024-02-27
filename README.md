@@ -31,11 +31,10 @@ usage: main.py [-h] --config CONFIG --ingredients INGREDIENTS --drinks DRINKS
 Start the Drink Mixing Machine
 
 optional arguments:
-  -h, --help            show this help message and exit
-  --config CONFIG       Absolute path to the config file
-  --ingredients INGREDIENTS
-                        Absolute path to the ingredients file
-  --drinks DRINKS       Absolute path to the drinks file
+  -h, --help                 show this help message and exit
+  --config CONFIG            Absolute path to the config file
+  --ingredients INGREDIENTS  Absolute path to the ingredients file
+  --drinks DRINKS            Absolute path to the drinks file
 ```
 
 ### Config Files
