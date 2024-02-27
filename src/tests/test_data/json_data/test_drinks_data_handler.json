@@ -1,0 +1,23 @@
+{
+    "drinks": [
+        {
+            "id": 1,
+            "name": "Cherry Banana Juice",
+            "ingredients": [
+                {
+                    "id": 24,
+                    "percentage": 50
+                },
+                {
+                    "id": 29,
+                    "percentage": 50
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Apple Spritzer",
+            "ingredients": []
+        }
+    ]
+}

@@ -11,10 +11,10 @@ from libs.data.datatypes.ingredient import Ingredient
 
 class TestJsonDatahandler(unittest.TestCase):
     __ingredient_read_sources: str = absolute_path(
-        join(dirname(realpath(__file__)), "test_ingredients.json")
+        join(dirname(realpath(__file__)), "../json_data/test_ingredients_data_handler.json")
     )
     __ingredient_write_sources: str = absolute_path(
-        join(dirname(realpath(__file__)), "test_ingredients_write.json")
+        join(dirname(realpath(__file__)), "../json_data/test_ingredients_write.json")
     )
     __expected_ingredients: list[Ingredient] = [
         Ingredient(1, "Cola", 1, 2),
@@ -23,10 +23,10 @@ class TestJsonDatahandler(unittest.TestCase):
     ]
 
     __drinks_read_sources: str = absolute_path(
-        join(dirname(realpath(__file__)), "test_drinks.json")
+        join(dirname(realpath(__file__)), "../json_data/test_drinks_data_handler.json")
     )
     __drinks_write_sources: str = absolute_path(
-        join(dirname(realpath(__file__)), "test_drinks_write.json")
+        join(dirname(realpath(__file__)), "../json_data/test_drinks_write.json")
     )
     __expected_drinks: list[Drink] = [
         Drink(

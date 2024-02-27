@@ -31,8 +31,9 @@ class Data:
 
         :raises DataException: if ingredient already exists
         """
-        if ingredient in self.__ingredients:
-            raise DataException("Ingredient exists already!")
+        for index in range(len(self.__ingredients)):
+            if ingredient.get_id() == self.__ingredients[index].get_id():
+                raise DataException("Ingredient exists already!")
 
         self.__ingredients.append(ingredient)
         self.__datahandler.write_ingredients(self.__ingredients)
@@ -43,7 +44,11 @@ class Data:
 
         :raises DataException: if ingredient does not exist
         """
-        if ingredient not in self.__ingredients:
+        counter: int = 0
+        for index in range(len(self.__ingredients)):
+            if ingredient.get_id() != self.__ingredients[index].get_id():
+                counter += 1
+        if counter == len(self.__ingredients):
             raise DataException("Ingredient does not exist!")
 
         for index, element in enumerate(self.__ingredients):
