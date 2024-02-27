@@ -1,6 +1,23 @@
 {
     "drinks": [
         {
-            "_Drink__drink_id": 1,
-            "name": "Cherry_banana_juice",
-            "_Drink__ingredients": 
+            "id": 1,
+            "name": "Cherry Banana Juice",
+            "ingredients": [
+                {
+                    "id": 24,
+                    "percentage": 50
+                },
+                {
+                    "id": 29,
+                    "percentage": 50
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Apple Spritzer",
+            "ingredients": []
+        }
+    ]
+}
