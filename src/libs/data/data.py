@@ -1,15 +1,19 @@
 from __future__ import annotations
 
+from libs.data.data_handler.IDatahandler import IDatahandler
 from libs.data.datatypes.drink import Drink
 from libs.data.datatypes.ingredient import Ingredient
-from libs.data.data_handler.IDatahandler import IDatahandler
 
 
-class DataExceptionID(Exception):
+class DataException(Exception):
     pass
 
 
-class DataExceptionName(Exception):
+class DataExceptionID(DataException):
+    pass
+
+
+class DataExceptionName(DataException):
     pass
 
 
@@ -18,8 +22,8 @@ class Data:
     __ingredients: list[Ingredient] = None
     __drinks: list[Drink] = None
 
-    def __init__(self, datahandler: IDatahandler):
-        self.__data_handler = datahandler
+    def __init__(self, data_handler: IDatahandler):
+        self.__data_handler = data_handler
         self.__ingredients = self.__data_handler.read_ingredients()
         self.__drinks = self.__data_handler.read_drinks()
 
@@ -35,10 +39,10 @@ class Data:
 
         :raises DataException: if ingredient already exists
         """
-        for index in range(len(self.__ingredients)):
-            if ingredient.get_id() == self.__ingredients[index].get_id():
+        for element in self.__ingredients:
+            if ingredient.get_id() == element.get_id():
                 raise DataExceptionID("Ingredient-ID or Name exists already!")
-            if ingredient.name == self.__ingredients[index].name:
+            if ingredient.name == element.name:
                 raise DataExceptionName("Ingredient-Name exists already!")
 
         self.__ingredients.append(ingredient)
@@ -46,21 +50,17 @@ class Data:
 
     def update_ingredient(self, ingredient: Ingredient) -> None:
         """
-        :param ingredient: ingredient to be updated
+        :param ingredient: ingredient to with updated data
 
         :raises DataException: if ingredient does not exist
         """
-        counter: int = 0
-        for index in range(len(self.__ingredients)):
-            if ingredient.get_id() != self.__ingredients[index].get_id():
-                counter += 1
-        if counter == len(self.__ingredients):
-            raise DataExceptionID("Ingredient does not exist!")
-
         for index, element in enumerate(self.__ingredients):
             if element.get_id() == ingredient.get_id():
                 self.__ingredients[index] = ingredient
-                return
+                break
+        else:
+            # only executed if no matching ingredient were found
+            raise DataException("Ingredient does not exist!")
 
     def get_drinks(self) -> list[Drink]:
         """
@@ -85,10 +85,10 @@ class Data:
 
         :raises DataException: if drink already exists
         """
-        for index in range(len(self.__drinks)):
-            if drink.get_id() == self.__drinks[index].get_id():
+        for element in self.__drinks:
+            if drink.get_id() == element.get_id():
                 raise DataExceptionID("Drink-ID exists already!")
-            if drink.name == self.__drinks[index].name:
+            if drink.name == element.name:
                 raise DataExceptionName("Drink-Name exists already!")
 
         self.__drinks.append(drink)
@@ -100,14 +100,10 @@ class Data:
 
         :raises DataException: if drink does not exist
         """
-        counter: int = 0
-        for index in range(len(self.__drinks)):
-            if drink.get_id() != self.__drinks[index].get_id():
-                counter += 1
-        if counter == len(self.__drinks):
-            raise DataExceptionID("Drink does not exist!")
-
         for index, element in enumerate(self.__drinks):
             if element.get_id() == drink.get_id():
                 self.__drinks[index] = drink
-                return
+                break
+        else:
+            # only executed if no matching drink were found
+            raise DataException("Drink does not exist!")

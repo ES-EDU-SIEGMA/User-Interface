@@ -9,6 +9,7 @@ class TestDrink(unittest.TestCase):
     __id: int = 178
     __name: str = "Test Drink"
     __ingredients: list[(int, int)] = [(1, 25), (3, 50), (2, 25)]
+
     drink: Drink = None
 
     def setUp(self):
