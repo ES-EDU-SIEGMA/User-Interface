@@ -2,7 +2,7 @@
   "drinks": [
     {
       "id": 0,
-      "name": "Cherry_banana_juice",
+      "name": "Cherry Banana Juice",
       "ingredients": [
         {
           "id": 24,
@@ -16,7 +16,7 @@
     },
     {
       "id": 1,
-      "name": "Apple_spritzer",
+      "name": "Apple Spritzer",
       "ingredients": [
         {
           "id": 0,

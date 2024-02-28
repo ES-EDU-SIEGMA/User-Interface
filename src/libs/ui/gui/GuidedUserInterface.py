@@ -19,7 +19,7 @@ class GuidedUserInterface(IUserInterface):
 
         self.__ui = UiApp(messages=self.__queue_to_ui, responses=self.__queue_from_ui)
         self.__ui.start()
-        sleep(5)
+        sleep(3)
 
     def display_list_and_wait_for_user_selection(self, input_data: list[str]) -> int:
         self.__queue_to_ui.put((MessageType.SELECTION, input_data))
@@ -33,11 +33,6 @@ class GuidedUserInterface(IUserInterface):
     def display_status(self, input_data: str) -> None:
         self.__queue_to_ui.put((MessageType.STATUS, input_data))
 
-
-if __name__ == "__main__":
-    ui = GuidedUserInterface()
-    result = ui.display_list_and_wait_for_user_selection(["1","2","3"])
-    print(f"Result: {result}")
-    while True:
-        print("RUNNING")
-        sleep(60)
+    def exit_ui(self) -> None:
+        self.__queue_to_ui.put((MessageType.EXIT, 0))
+        self.__ui.join()

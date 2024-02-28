@@ -3,10 +3,8 @@
 from __future__ import annotations
 
 import json
+import re
 from argparse import ArgumentParser, Namespace
-
-from RPi.GPIO import GPIO
-from serial import Serial
 
 from libs.data.data import Data
 from libs.data.data_handler.IDatahandler import IDatahandler
@@ -19,13 +17,76 @@ from libs.hardware.dispenserGroupController.dispenserGroupController import (
 from libs.hardware.dispenserGroupController.iDispenserGroupController import (
     IDispenserGroupController,
 )
-from libs.hardware.scale.scale import Scale
-from libs.hardware.tatobari_hx711.hx711 import HX711
 from libs.hardware.timingCalculator.calculator import Calculator
 from libs.ui.IUserInterface import IUserInterface
 from libs.ui.cli.CliUserInterface import CliUserInterface
 
 __serial_ports: list[Serial] = []
+
+
+class Serial:
+    __identifier: str = ""
+    __last_send_message: str = ""
+    __last_was_identifier: bool = False
+    __timing_pattern: re.Pattern = None
+
+    def __init__(self, identifier: str):
+        self.__timing_pattern: re.Pattern = re.compile(
+            r"[0-9]+;[0-9]+;[0-9]+;[0-9]+;", re.IGNORECASE
+        )
+        self.__identifier: str = identifier
+
+    def reset_input_buffer(self):
+        pass
+
+    def reset_output_buffer(self):
+        pass
+
+    def write(self, data_input: bytes) -> None:
+        print(f"send to controller: '{data_input.decode('utf-8').rstrip()}'")
+        # store for read handling
+        self.__last_send_message = data_input.decode("utf-8").rstrip()
+
+    def readline(self) -> bytes:
+        # define answer to return
+        if self.__last_send_message is "i":
+            answer = self.__identifier
+            self.__last_was_identifier = True
+        elif self.__last_send_message is "" and self.__last_was_identifier:
+            answer = "CALIBRATED"
+            self.__last_was_identifier = False
+        elif self.__timing_pattern.match(self.__last_send_message):
+            answer = "READY"
+        else:
+            answer = "F"
+
+        # reset last message
+        self.__last_send_message = ""
+
+        print(f"answer: {answer}")
+        return answer.encode("utf-8")
+
+
+class Scale:
+    __base_value: int = None
+
+    def __init__(self, hardware, number_of_measurements: int = 3):
+        """
+        :param hardware: scale object to retrieve data from
+        :param number_of_measurements: number of real measurements to average for result
+                                       (default: 3)
+        """
+        self.__base_value = 0
+
+    def tare(self) -> None:
+        self.__base_value = 10
+
+    def get_weight(self) -> int:
+        """
+        :return: measured weight in gramm
+        """
+        measurement = 90 - self.__base_value
+        return measurement
 
 
 def arg_parser() -> Namespace:
@@ -62,20 +123,7 @@ def setup_data(path_to_ingredients: str, path_to_drinks: str) -> Data:
 
 
 def setup_scale(number_of_measurements: int) -> Scale:
-    # disable warnings for GPIO and use BCM for pin addressing
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BCM)
-
-    # init hardware library
-    scale_hardware: HX711 = HX711(dout=5, pd_sck=6)
-    scale_hardware.set_reading_format(byte_format="MSB", bit_format="MSB")
-    scale_hardware.set_reference_unit(reference_unit=870298)
-
-    # reset hardware
-    scale_hardware.reset()
-    scale_hardware.tare()
-
-    return Scale(hardware=scale_hardware, number_of_measurements=number_of_measurements)
+    return Scale(hardware=None, number_of_measurements=number_of_measurements)
 
 
 def setup_dispenser(
@@ -86,9 +134,8 @@ def setup_dispenser(
     hopper_sizes: list[int],
 ) -> DispenseMechanism:
     controller_list: list[IDispenserGroupController] = []
-    for serial_port in serial_ports:
-        device = Serial(port=serial_port)
-        __serial_ports.append(device)
+    for name in identifier:
+        device = Serial(identifier=name)
         controller: IDispenserGroupController = DispenserGroupController(
             possible_identifiers=identifier,
             port=device,
@@ -100,18 +147,17 @@ def setup_dispenser(
     return DispenseMechanism(controller=controller_list, timing_calculator=calculator)
 
 
-def close_serial_ports():
-    for serial_port in __serial_ports:
-        serial_port.close()
-        __serial_ports.remove(serial_port)
-
-
 def setup_ui() -> IUserInterface:
     return CliUserInterface()
     # return GuidedUserInterface()
 
 
 if __name__ == "__main__":
+    """
+    dummies:
+        - scale hardware (Scale)
+        - serial ports (Serial)
+    """
     args = arg_parser()
     config = load_config(path_to_config=args.config)
     print("CONFIG LOADED")
@@ -145,5 +191,4 @@ if __name__ == "__main__":
     print("SETUP COMPLETE")
 
     dmm.run()
-    close_serial_ports()
     print("EXIT APP")

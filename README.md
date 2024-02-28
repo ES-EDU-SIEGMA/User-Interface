@@ -1,195 +1,66 @@
-# SIEGMA - DrinkMixingMachine <br/>  Python codebase
+# Drink Mixing Machine — UI and Backend
+
+This repository holds the Python codebase for the Drink Mixing Machine backend and user interface.
 
 ## Requirements
 
-- Python version 3.9
-- Dependencies from [requirements.txt](requirements.txt)
-- Git Submodules (load via `git submodule update --init --recursive` after clone)
+- Python version 3.7
+    - [virtualenv](https://pypi.org/project/virtualenv/) installed
+
+## Setup Guide (Nix based)
+
+1. Assure [Requirements](#requirements) are met
+2. Clone the repository: `git clone https://github.com/ES-EDU-SIEGMA/User-Interface.git`
+3. Go into repository: `cd User-Interface`
+4. Initialize Python virtual environment: `python -m venv .venv`
+5. Load the virtual environment: `source .venv/bin/activate`
+6. Install required Python dependencies: `pip install -r requirements.txt`
+7. Open the project in your IDE of choice
+8. Have fun 🎆
+
+> The most convenient way to start the application once the steps 1-6 are done,
+> is to execute the [start_machine.sh bash script](./start_machine.sh).
 
 ## Configuration
 
-The program can be configured by changing the [configuration.json](src/datasources/configuration.json) file.
-See the [configuration options](#configuration-options) for an explanation.
+### CLI arguments
 
-## Program
+```text
+usage: main.py [-h] --config CONFIG --ingredients INGREDIENTS --drinks DRINKS
 
-Overview of the program:
+Start the Drink Mixing Machine
 
-- ![uml diagram program overview](documentation/class_diagram_general_overview_program.png)
-- ![uml sequence diagram program start](documentation/sequence_diagram_program_start.png)
-- ![uml sequence diagram dispense drink](documentation/sequence_diagram_dispense_drink.png)
-
-To run the application execute:
-
-```bash
-python src/main.py
+optional arguments:
+  -h, --help                 show this help message and exit
+  --config CONFIG            Absolute path to the config file
+  --ingredients INGREDIENTS  Absolute path to the ingredients file
+  --drinks DRINKS            Absolute path to the drinks file
 ```
 
-from the root directory of the repository
+### Config Files
 
-## Data model
+As seen in the [CLI arguments section](#cli-arguments) the application requires three configuration files to work:
 
-### General overview of the data model:
+**CONFIG:**
 
-![data model uml diagram](documentation/Data_model.png)
+- Provides basic application settings
 
-> **Ingredient**
->
-> - an ingredient is a liquid that can be put on a hopper.
-> - [json ingredient file](src/datasources/ingredients.json)
->
-> ```json
-> {
->    "ingredient_name": {
->       "flow_speed": "Integer_value"
->    }
-> }
-> ```
+**INGREDIENTS:**
 
-> **Recipe**
->
-> - A drink is a liquid consisting of one or more ingredients.
-> - [json recipe file](src/datasources/drinks.json)
->
-> ```json
->     {
-      "id": 0,
-      "name": "String_value",
-      "ingredients": [
-        {
-          "id": Integer_value,
-          "percentage": Integer_value
-        },
-        {
-          "id": Integer_value,
-          "percentage": Integer_value
-        },
-        ...
-      ]
-    }
-> ```
+- Provides the available ingredients alongside their required meta-data
 
-## Dispenser Mechanism / Hardware
+**DRINK:**
 
-### General information
+- Provides the available drinks alongside their required meta-data
+- Represents a combination of different ingredients
 
-- The dispenser mechanism is controlled through rp2040 based microcontroller.
-- To activate a dispenser, the Raspberry PI communicates with the RP2040 base microcontroller.
-- Each microcontroller controls one to four stepper motor driver that controls one dispenser each.
-- The connection between the Raspberry PI and the microcontroller works over serial UART.
-- The Raspberry PI is connected to the microcontroller through its USB ports.
+> Examples can be found in the [datasources folder](./src/datasources)
 
-### Connection initialization
+## General System Architecture
 
-- The Raspberry PI tries to initialize a connection with a tiny on each USB port that is named in
-  the [configuration file](#configuration-options).
-- If a connection couldn't be established, the Raspberry PI will throw an Exception.
-- After connecting to all microcontrollers, the Raspberry PI will try to identify each connection.
-- The Raspberry PI identifies a microcontroller if the identifier (String) send by the microcontroller is the same as
-  those in the [configuration file](#configuration-options).
-- The Raspberry PI will throw an Exception if an unknown identifier is received.
+![Program Structure](./documentation/programm_structure.svg)
 
-### Tiny pico communication
+## FAQ
 
-- The Raspberry PI calculates the motor timings for each dispenser to be emptied.
-- After calculating the timings, the Raspberry PI sends these timings to the corresponding microcontroller.
+- [Further Information](https://github.com/ES-EDU-SIEGMA/Documentation/tree/main/documentation)
 
-> **Message Syntax:**  
-> `timing_hopper_0;timing_hopper_1;timings_hopper_2;timing_hopper_3;\n`
-
-### Hopper Positions
-
-- Each microcontroller controls up to four dispensers
-- The internal positions range from zero - (four * number of microcontrollers)
-    - The internal position 0 refers to dispenser 0 on microcontroller 0 in "configure_connection_pi_tiny"
-    - The internal position 7 refers to dispenser 3 on microcontroller 1 in "configure_connection_pi_tiny".
-
-## Scale
-
-### General information:
-
-- The scale is connected to a high-performance ADC (hx711)
-- The Raspberry PI reads out the scale values by accessing the ADC
-- We use an external library to access the hx711
-- A scale value in the program is the result of averaging multiple scale values received from the hx711
-- The scale needs to be calibrated by using a REFERENCE_UNIT value
-
-### Technical details
-
-- [hx711 git-hub link](https://github.com/tatobari/hx711py)
-- [hx711 data sheet link](https://cdn.sparkfun.com/datasheets/Sensors/ForceFlex/hx711_english.pdf)
-
-## Configuration options
-
-> **configuration_only_selection**
-> - type: `Boolean`
-> - runs a program that only consists of the drink selection if set to true
-
-> **configure_glass_size**
-> - type:` Integer`
-> - millilitre amount that the glass can hold
-> - this value is used during the new recipe creation to check if a new recipe fits in the glass
-
-> **configure_measurements_per_scale_value**
-> - type: `Integer`
-> - each scale value is calculated as an average
-> - this configuration option determines how many measurements are combined to one average
-
-> **configure_max_waiting_time**
-> - type: `Integer`
-> - this option limits the amount of time the machine waits for a drink to finish dispensing
-> - if the current waiting time exceeds the max waiting time, the machine will return to its idle state
-> - when the code is run on the machine, the max waiting time should be high enough to prevent early abortions of the
-    dispense process
-
-> **configure_connection_pi_tiny**
-> - type: `list[String]`
-> - holds the path to every serial port on the Raspberry PI from which a Serial connection to a microcontroller should
-    be established
-
-> **configure_pico_identifier**
-> - type: `list[String]`
-> - each microcontroller returns an identifier which is used to differentiate the different microcontroller
-> - this option holds all identifiers that the Raspberry PI expects
-> - the Raspberry PI throws an Exception if it receives an unknown identifier
-
-> **configure_max_serial_identifier_attempt**
-> - type: `Integer`
-> - limits the amount of times the Raspberry PI will try to connect and identify a microcontroller
-> - if the Raspberry PI hasn't identified the pico after its max attempts, it will throw an Exception
-
-> **configuration_ms_per_ml**
-> - type: `Integer`
-> - variable that is used to configure the calculation of hopper timings on the Raspberry PI
-
-> **configuration_hopper_sizes**
-> - type: `list[Integer]`
-> - this option holds the hopper sizes for each hopper measured in millilitre
-> - list position n refers to hopper at position n
-> - None refers to an empty hopper or no hopper at all.
-
-> **configure_ingredient**
-> - type: `file_path`
-> - provides the path to the json file with the ingredients
-> - [ingredients file](src/datasources/ingredients.json)
-
-> **configure_recipe**
-> - type: `file_path`
-> - provides the path to the json file with the recipes
-> - [recipes file](src/datasources/drinks.json)
-
-> **configure_ingredients**
-> - type: `dict`
-> - the dictionary holds the initial configuration of the hoppers with ingredients.
->
-> ```json
-> {
->     "configure_ingredients": {
->         "ingredient_name": {
->             "hopper_position": "Integer_value",
->             "amount": "Integer_value"
->         }
->     }
-> }
-> ```
- 

@@ -43,7 +43,7 @@ class DrinkMixingMachine:
         self.__on_exit()
 
     def __on_exit(self) -> None:
-        raise NotImplementedError()
+        self.__ui.exit_ui()
 
     def __create_state_selection_list(self) -> (int, list[str]):
         state_selection_list = ["Exit Application"]
@@ -68,6 +68,6 @@ class DrinkMixingMachine:
     def __execute_state(state: IState) -> None:
         try:
             state.run()
-        except Exception as e:
+        except Exception:
             # TODO add proper logging!
-            print(e)
+            print("State not available")

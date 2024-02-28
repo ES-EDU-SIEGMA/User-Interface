@@ -49,7 +49,7 @@ class DispenseMechanism:
             )
             for dispense_cycle in timings:
                 threads = []
-                for index in range(1, len(self.__controller)):
+                for index in range(0, len(self.__controller)):
                     threads.append(
                         Thread(
                             target=self.__run_dispense_cycle,
@@ -59,6 +59,8 @@ class DispenseMechanism:
                             },
                         )
                     )
+
+                print(f"threads: {len(threads)}")
                 for thread in threads:
                     thread.start()
                 for thread in threads:
@@ -75,5 +77,6 @@ class DispenseMechanism:
 
     @staticmethod
     def __run_dispense_cycle(controller: IDispenserGroupController, timings: list[int]):
+        print(f"timings: {timings}")
         controller.send_timings(timings)
         controller.wait_for_ready_signal()
