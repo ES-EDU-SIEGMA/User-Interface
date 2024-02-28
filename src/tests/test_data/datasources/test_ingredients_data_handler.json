@@ -1,0 +1,22 @@
+{
+    "ingredients": [
+        {
+            "id": 1,
+            "name": "Cola",
+            "flow_speed": 1,
+            "dispenser_id": 2
+        },
+        {
+            "id": 2,
+            "name": "Sprite",
+            "flow_speed": 1,
+            "dispenser_id": 1
+        },
+        {
+            "id": 3,
+            "name": "Fanta",
+            "flow_speed": 1,
+            "dispenser_id": null
+        }
+    ]
+}

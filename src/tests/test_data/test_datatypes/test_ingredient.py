@@ -10,6 +10,7 @@ class TestIngredient(unittest.TestCase):
     __flow_speed: int = 1
     __name: str = "Test Ingredient"
     __dispenser_id: int = 1
+
     ingredient: Ingredient = None
 
     def setUp(self):
