@@ -15,7 +15,12 @@ class Drink:
     """tuple(<ingredient_id>, <percentage>)"""
     name: str = None
 
-    def __init__(self, drink_id: int, name: str, ingredients: list[Ingredient]):
+    def __init__(self, drink_id: int, name: str, ingredients: list[(int, int)]):
+        """
+        :param drink_id: id of the drink
+        :param name: name of the drink
+        :param ingredients: list of ingredients: tuple(<ingredient_id>, <percentage>)
+        """
         self.__drink_id = drink_id
         self.__ingredients = ingredients
         self.name = name
@@ -36,7 +41,6 @@ class Drink:
 
         :raise DrinkException: if ingredient already added to drink!
         """
-
         if self.__ingredients is None or len(self.__ingredients) == 0:
             self.__ingredients = []
 
