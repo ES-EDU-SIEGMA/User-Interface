@@ -4,7 +4,6 @@ from enum import Enum
 from queue import Queue
 from threading import Thread
 
-from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QApplication
 import sys
 
@@ -25,6 +24,7 @@ class UiApp(Thread):
 
     def __init__(self, messages: Queue, responses: Queue):
         Thread.__init__(self)
+
         self.__input_thread = Thread(
             target=self.__input_handle, kwargs={"input_queue": messages}
         )
@@ -34,10 +34,12 @@ class UiApp(Thread):
         self.__input_thread.start()
 
         self.__app = QApplication([])
+
         width, height = self.__app.screens()[0].size().toTuple()
         self.__main_window = MainWindow(width, height)
         self.__main_window.response_signal.connect(self.__output_handle)
-        sys.exit(self.__app.exec())
+
+        self.__app.exec_()
 
     def __input_handle(self, input_queue: Queue):
         while True:
@@ -50,7 +52,6 @@ class UiApp(Thread):
                 self.display_status(data)
             elif msg_type == MessageType.EXIT:
                 print("EXIT GUI")
-                # self.__main_window.close()
             else:
                 raise NotImplementedError()
 

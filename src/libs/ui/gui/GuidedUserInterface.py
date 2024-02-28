@@ -36,10 +36,3 @@ class GuidedUserInterface(IUserInterface):
     def exit_ui(self) -> None:
         self.__queue_to_ui.put((MessageType.EXIT, 0))
         self.__ui.join()
-
-
-if __name__ == "__main__":
-    ui = GuidedUserInterface()
-    result = ui.display_list_and_wait_for_user_selection(["1", "2", "3"])
-    print(f"Result: {result}")
-    # ui.exit_ui()

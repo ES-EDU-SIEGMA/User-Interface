@@ -44,7 +44,6 @@ class DrinkMixingMachine:
 
     def __on_exit(self) -> None:
         self.__ui.exit_ui()
-        pass
 
     def __create_state_selection_list(self) -> (int, list[str]):
         state_selection_list = ["Exit Application"]

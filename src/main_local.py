@@ -20,7 +20,6 @@ from libs.hardware.dispenserGroupController.iDispenserGroupController import (
 from libs.hardware.timingCalculator.calculator import Calculator
 from libs.ui.IUserInterface import IUserInterface
 from libs.ui.cli.CliUserInterface import CliUserInterface
-from libs.ui.gui.GuidedUserInterface import GuidedUserInterface
 
 __serial_ports: list[Serial] = []
 
@@ -120,7 +119,7 @@ def setup_data(path_to_ingredients: str, path_to_drinks: str) -> Data:
     data_handler: IDatahandler = JSONDatahandler(
         path_to_ingredients=path_to_ingredients, path_to_drinks=path_to_drinks
     )
-    return Data(datahandler=data_handler)
+    return Data(data_handler=data_handler)
 
 
 def setup_scale(number_of_measurements: int) -> Scale:
