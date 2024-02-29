@@ -4,7 +4,7 @@ This repository holds the Python codebase for the Drink Mixing Machine backend a
 
 ## Requirements
 
-- Python version 3.7
+- Python version 3.9
     - [virtualenv](https://pypi.org/project/virtualenv/) installed
 
 ## Setup Guide (Nix based)
