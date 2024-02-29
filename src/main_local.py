@@ -49,10 +49,10 @@ class Serial:
 
     def readline(self) -> bytes:
         # define answer to return
-        if self.__last_send_message is "i":
+        if self.__last_send_message == "i":
             answer = self.__identifier
             self.__last_was_identifier = True
-        elif self.__last_send_message is "" and self.__last_was_identifier:
+        elif self.__last_send_message == "" and self.__last_was_identifier:
             answer = "CALIBRATED"
             self.__last_was_identifier = False
         elif self.__timing_pattern.match(self.__last_send_message):
