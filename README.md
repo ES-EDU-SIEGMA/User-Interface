@@ -4,7 +4,7 @@ This repository holds the Python codebase for the Drink Mixing Machine backend a
 
 ## Requirements
 
-- Python version 3.7
+- Python version 3.9
     - [virtualenv](https://pypi.org/project/virtualenv/) installed
 
 ## Setup Guide (Nix based)
@@ -12,11 +12,13 @@ This repository holds the Python codebase for the Drink Mixing Machine backend a
 1. Assure [Requirements](#requirements) are met
 2. Clone the repository: `git clone https://github.com/ES-EDU-SIEGMA/User-Interface.git`
 3. Go into repository: `cd User-Interface`
-4. Initialize Python virtual environment: `python -m venv .venv`
-5. Load the virtual environment: `source .venv/bin/activate`
-6. Install required Python dependencies: `pip install -r requirements.txt`
-7. Open the project in your IDE of choice
-8. Have fun 🎆
+4. Download required submodules `git submodule update --init --recursive`
+5. Make the scripts executable: `chmod +x start_machine.sh start_demo.sh`
+6. Initialize Python virtual environment: `python -m venv .venv`
+7. Load the virtual environment: `source .venv/bin/activate`
+8. Install required Python dependencies: `pip install -r requirements.txt`
+9. Open the project in your IDE of choice
+10. Have fun 🎆
 
 > The most convenient way to start the application once the steps 1-6 are done,
 > is to execute the [start_machine.sh bash script](./start_machine.sh).

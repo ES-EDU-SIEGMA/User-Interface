@@ -60,7 +60,6 @@ class DispenseMechanism:
                         )
                     )
 
-                print(f"threads: {len(threads)}")
                 for thread in threads:
                     thread.start()
                 for thread in threads:
@@ -77,6 +76,5 @@ class DispenseMechanism:
 
     @staticmethod
     def __run_dispense_cycle(controller: IDispenserGroupController, timings: list[int]):
-        print(f"timings: {timings}")
         controller.send_timings(timings)
         controller.wait_for_ready_signal()
