@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from argparse import ArgumentParser, Namespace
 
-from RPi.GPIO import GPIO
+import RPi.GPIO as GPIO
 from serial import Serial
 
 from libs.data.data import Data
